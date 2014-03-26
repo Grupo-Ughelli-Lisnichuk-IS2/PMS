@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-<link rel='stylesheet' href='{{STATIC_URL}}css/base.css'>
 {% block titulo %}Ingresa al sistema{% endblock %}
 {% block encabezado %}
 	<h1>Ingresar</h1>

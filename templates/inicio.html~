@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 <html lang='es'>
-<link rel='stylesheet' href='{{STATIC_URL}}css/base.css'>
+
         <meta charset='utf-8'>
 
 
