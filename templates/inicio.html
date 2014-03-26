@@ -1,16 +1,17 @@
-<html lang='es'>
-    <head>
-        <meta charset='utf-8'>
-        <title>{% block titulo %} Bienvenido {% endblock %}</title>
-        <style> {% block style_css %} .col{background-color:#0C9BBB;} {% endblock %} </style>
-        <link rel="icon" type="image/x-icon" href="/static/logo.png"/>
-    </head>
-{% block encabezado %}
+{% extends "base.html" %}
 
+<html lang='es'>
+
+        <meta charset='utf-8'>
+
+
+{% block encabezado %}
+    <title>{% block titulo %} Bienvenido {% endblock %}</title>
     <center><IMG SRC="/static/icono.png"></center>
     <h2> <center><a href='/ingresar'>Iniciar Sesion</a></center></h2>
 
 {% endblock %}
+
 
 
 
