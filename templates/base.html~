@@ -3,7 +3,7 @@
 <head>
   <meta charset='utf-8'>
   <title> Project Manajement System - {% block titulo %}{% endblock %}</title>
-  <link rel='stylesheet' href='/static/base.css'>
+  <link rel='stylesheet' href='/static/estilos.css'>
   <link rel='shortcut icon' href='/static/logo.png'>
   {% block style_css %}{% endblock %}
 </head>
