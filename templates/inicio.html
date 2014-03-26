@@ -1,13 +1,16 @@
-{% block titulo %} <h1> Project Management System </h1>{% endblock %}
-
+<html lang='es'>
+    <head>
+        <meta charset='utf-8'>
+        <title>{% block titulo %} Bienvenido {% endblock %}</title>
+        <style> {% block style_css %} .col{background-color:#0C9BBB;} {% endblock %} </style>
 {% block encabezado %}
-	<h2>Bienvenido </h2>
+	<center><h1 class="col"> Project Management System </h1></center>
 {% endblock %}
  <header>
 
 	<nav>
 	  <ul id='menu'>
-		  <li><a href='/ingresar'>Iniciar Sesion</a></li>>
+		  <center><li><a href='/ingresar'>Iniciar Sesion</a></li> </center>
     </ul>
 	</nav>
 	<hr>
