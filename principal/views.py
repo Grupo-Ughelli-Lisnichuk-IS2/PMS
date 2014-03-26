@@ -61,7 +61,7 @@ def nuevo_usuario(request):
 def nuevo_perfil(request):
 	if request.method=='POST':
 		user_form = UserCreateForm(request.POST, instance=request.user)
-		perfil_form = PerfilCreationForm(request.POST, instance=request.user.perfil)
+		perfil_form = PerfilCreateForm(request.POST, instance=request.user)
 
 		if user_form.is_valid() and perfil_form.is_valid():
 			user_form.save()
@@ -69,8 +69,8 @@ def nuevo_perfil(request):
 			return HttpResponseRedirect('/privado')
 	else:
 		user_form = UserCreateForm(instance=request.user)
-		perfil_form = PerfilCreateForm(instance=request.user.perfil)
-	return render_to_response('nuevoperfil2.html',{'user_form':userform, 'perfil_form':perfil_form}, context_instance=RequestContext(request))
+		perfil_form = PerfilCreateForm(instance=request.user)
+	return render_to_response('nuevoperfil2.html',{'user_form':UserCreateForm, 'perfil_form':perfil_form}, context_instance=RequestContext(request))
 
 
 
