@@ -1,10 +1,18 @@
-{% block titulo %}Ingresa al sistema{% endblock %}
-{% block encabezado %}
-	<h1>Ingresa</h1>
-{% endblock %}
-{% block contenido %}
-	<form id='formulario' method='post' action=''>{% csrf_token %}
+<html lang='es'>
+    <head>
+        <meta charset='utf-8'>
+            <title>{% block titulo %}Ingresa al sistema{% endblock %}</title>
+            <style> {% block style_css %} .col{background-color:#0C9BBB;} {% endblock %} </style>
+    </head>
+    <body>
+        <header class="col">
+            {% block encabezado %} {% endblock %}
+	        <h1>Ingresa</h1>
+            {% block contenido %} {% endblock %}
+        </header>
+	    <form id='formulario' method='post' action=''>{% csrf_token %}
 		<table>{{formulario}}</table>
 		<p><input type='submit' value='Ingresar'/></p>
-	</form>
-{% endblock %}
+	    </form>
+    </body>
+</html>
