@@ -83,7 +83,11 @@ DATABASES = {
  }
 }
 
+#Configuraciones de urls de login
 
+INDEX_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/principal'
 
 
 # Internationalization
