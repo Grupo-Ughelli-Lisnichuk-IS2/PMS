@@ -13,11 +13,10 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     #url(r'^admin/', include(admin.site.urls)),
     url(r'^usuarios/$',login_required(views.UsuariosListView.as_view(), '/usuarios', '/login')),
-
     url(r'^principal/$',login_required(TemplateView.as_view(template_name='principal.html'), '/', '/login')),
-
     url(r'^register/$', login_required(views.RegisterView.as_view(), '/register', '/login')),
-
+ url(r'^login/$', views.LoginView.as_view(), name='login'),
+    url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'^register/success/$',
         views.RegisterSuccessView.as_view(
         ), name='register-success'),
