@@ -24,6 +24,20 @@ class LoginForm(AuthenticationForm):
                 self.fields[f_name].widget.attrs['class'] = classes
 
 
+class UsuarioChangeStateForm(forms.Form):
+
+    is_active = forms.BooleanField(label=_("Activo:  "))
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(UsuarioChangeStateForm, self).__init__(*args, **kwargs)
+      #  f = self.fields.get('user_permissions', None)
+        #if f is not None:
+         #   f.queryset = f.queryset.select_related('content_type')
+
 
 class RegistrationForm(forms.Form):
 

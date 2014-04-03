@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
     # register
     url(r'^register/$', login_required(views.RegisterView.as_view(), '/register', '/login')),
+    url(r'^modificar/$', views.UsuarioChangeStateView.as_view(), name='modificar'),
     url(r'^register/success/$',
         views.RegisterSuccessView.as_view(
         ), name='register-success'),
