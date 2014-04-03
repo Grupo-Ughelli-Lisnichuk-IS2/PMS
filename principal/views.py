@@ -1,77 +1,69 @@
-from principal.forms import UserCreateForm, PerfilCreateForm
-from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from django.core.mail import EmailMessage
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View, TemplateView, ListView
+from django.utils.decorators import method_decorator
+from django.core.urlresolvers import reverse
+from principal.forms import RegistrationForm, LoginForm, UsuarioChangeStateForm
+from django.views.generic.edit import FormView
+from PMS import settings
+from django.views.decorators.csrf import csrf_protect
+from django.db.models import Q
+from django.shortcuts import render_to_response
+
+
+__author__ = 'Grupo R13'
+__date__ = '04-04-2013'
+__version__ = '1.0'
+__text__ = 'Este modulo contiene funciones que permiten el control de administracion de usuarios'
 
 
 
-# Create your views here.
-def inicio(request):
-    return render_to_response('inicio.html',context_instance=RequestContext(request))
-def ingresar(request):
-  #  if not request.user.is_anonymous():
-   #     return HttpResponseRedirect('/privado')
-    if request.method == 'POST':
-        formulario = AuthenticationForm(request.POST)
-        if formulario.is_valid:
-            usuario = request.POST['username']
-            clave = request.POST['password']
-            acceso = authenticate(username=usuario, password=clave)
+class RegisterView(FormView):
+    ''' vista para la creacion de un nuevo ususario
+    '''
+    template_name = 'registration/register.html'
+    form_class = RegistrationForm
 
-            if acceso is not None:
-                if acceso.is_superuser:
-                    login(request, acceso)
-                    return HttpResponseRedirect('/admin')
-                if acceso.is_active:
-                    login(request, acceso)
-                    return HttpResponseRedirect('/privado')
-                else:
-                    return render_to_response('noactivo.html', context_instance=RequestContext(request))
-            else:
-                return render_to_response('nousuario.html', context_instance=RequestContext(request))
-    else:
-        formulario = AuthenticationForm()
-    return render_to_response('ingresar.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    @method_decorator(csrf_protect)
+    def dispatch(self, request, *args, **kwargs):
+        #if request.user.is_authenticated():
+         #   return HttpResponseRedirect(config.INDEX_REDIRECT_URL)
+        #else:
+            return super(RegisterView, self).dispatch(request, *args, **kwargs)
 
-@login_required(login_url='/ingresar')
-def privado(request):
-    usuario = request.user
-    return render_to_response('privado.html', {'usuario':usuario}, context_instance=RequestContext(request))
+    def form_valid(self, form):
+
+        user = User.objects.create_user(
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1'],
+            email=form.cleaned_data['email'],
+            first_name=form.cleaned_data['first_name'],
+            last_name = form.cleaned_data['last_name']
+        )
+
+        return super(RegisterView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('register-success')
 
 
-@login_required(login_url='/ingresar')
-def nuevo_usuario(request):
-	if request.method=='POST':
-		formulario = UserCreationForm(request.POST)
-		if formulario.is_valid:
-			formulario.save()
-			return HttpResponseRedirect('/')
-	else:
-		formulario = UserCreateForm()
-	return render_to_response('nuevousuario.html',{'formulario':formulario}, context_instance=RequestContext(request))
+class RegisterSuccessView(TemplateView):
+    template_name = 'registration/success.html'
 
 
-@login_required(login_url='/ingresar')
-def nuevo_perfil(request):
-	if request.method=='POST':
-		user_form = UserCreateForm(request.POST, instance=request.user)
-		perfil_form = PerfilCreateForm(request.POST, instance=request.user)
+class UsuariosListView(ListView):
+    '''
+    vista para listar todos los usuarios registrados en el sistema
 
-		if user_form.is_valid() and perfil_form.is_valid():
-			user_form.save()
-			perfil_form.save()
-			return HttpResponseRedirect('/privado')
-	else:
-		user_form = UserCreateForm(instance=request.user)
-		perfil_form = PerfilCreateForm(instance=request.user)
-	return render_to_response('nuevoperfil2.html',{'user_form':UserCreateForm, 'perfil_form':perfil_form}, context_instance=RequestContext(request))
-
-
-
+    '''
+    model = User
+    template_name='lista_usuarios.html'
+    login_required = True
+    def dispatch(self, *args, **kwargs):
+        return super(UsuariosListView, self).dispatch(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(UsuariosListView, self).get_context_data(**kwargs)
+        return context
 
