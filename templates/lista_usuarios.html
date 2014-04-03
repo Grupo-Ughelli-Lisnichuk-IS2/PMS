@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% if user.is_authenticated %}
+
+
+{% block titulo %} <center><h1>ADMINISTRACION DE USUARIOS</h1></center> {% endblock %}
+
+{% block contenido %}
+
+
+ <br>
+
+	<table width="100%" border="3">
+	<tr>
+	<th scope="col"> </th>
+	<th scope="col">Usuario</th>
+	<th scope="col">Nombre</th>
+	<th scope="col">Apellido</th>
+	</tr>
+
+	 {% for dato in object_list %}
+			<tr border="10">
+				<td><input name="select" type="radio" value={{ dato.pk }} checked/></td>
+				<td>{{ dato.username }}</td>
+				<td>{{ dato.first_name }}</td>
+				<td>{{ dato.last_name }}</td>
+			</tr>
+  	{% empty %}
+	<li>Aún no hay usuarios registrados</li>
+	{% endfor %}
+
+	</table>
+    <button> <a href= "{% url principal.views.detalle_usuario dato.id %}" ></a> </button>
+    <button> <a href= "{% url 'modificar' %}"> Modificar un usuario </a> </button>
+	<br>
+
+{% endblock %}
+{% endif%}
