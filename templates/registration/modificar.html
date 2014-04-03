@@ -1,0 +1,31 @@
+
+<link rel='stylesheet' href='{{STATIC_URL}}css/base.css'>
+
+    <head>
+        <title>{% block titulo%} Registrarse {%endblock%}</title>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <form method="post" action="." class="form-register" role="form">{% csrf_token %}
+                <h2 class="form-register-heading"> Nuevo Usuario </h2>
+                    {% if form.errors %}
+                        <div class="alert alert-danger"> "Check the red fields."</div>
+                    {% endif %}
+
+                  <br>  {% for field in form %}
+                        <ul>{{ field.label }}{{ field}}</ul>
+                    {% endfor %}
+                </br>
+                    
+                <button class="btn btn-lg btn-primary btn-block" type="submit"> {% block crear %} Crear Usuario {% endblock%}</button>
+
+            </form>
+        </div>
+
+   {% comment %}     <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>Usuario registrado correctamente</title>{% endblock %}
+
+        <button> <a href= '/usuarios' > Regresar al listado </a> </button>
+    </head>
+    <body>
+        {% block contenido %}
+        <div class="container">
+            <h4>Usuario registrado Correctamente <span class="glyphicon glyphicon-ok"></span></h4>
+
+        </div>
+        {% endblock %}
+{% comment %}
+        <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>
