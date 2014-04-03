@@ -8,8 +8,20 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 
+class LoginForm(AuthenticationForm):
 
+    username = forms.RegexField(label=_("Usuario: "),regex=r'^\w+$', widget=forms.TextInput(
+        attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Username")}))
+    password = forms.CharField(label=_("Contraseña: "),widget=forms.PasswordInput(
+        attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Password")}))
 
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        if self.errors:
+            for f_name in self.fields:
+                classes = self.fields[f_name].widget.attrs.get('class', '')
+                classes += ' has-error'
+                self.fields[f_name].widget.attrs['class'] = classes
 
 
 

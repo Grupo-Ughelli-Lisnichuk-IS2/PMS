@@ -8,7 +8,7 @@ body {
     font-size: 12px;
     font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
     color: #333;
-    background: #fff;
+
 }
 
 /* LINKS */
@@ -239,23 +239,29 @@ p img, h1 img, h2 img, h3 img, h4 img, td img {
 /* TABLES */
 
 table {
+
     border-collapse: collapse;
     border-color: #ccc;
 }
 
 td, th {
     font-size: 11px;
-    line-height: 13px;
-    border-bottom: 1px solid #eee;
+    line-height: 20px;
+    border-bottom: 2px solid #eee;
     vertical-align: top;
-    padding: 5px;
+    padding: 10px;
     font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+
 }
 
 th {
-    text-align: left;
+    text-align: center;
     font-size: 12px;
     font-weight: bold;
+}
+td {
+    line-height: 30px;
+
 }
 
 thead th,
@@ -291,8 +297,9 @@ tr.row-label td {
     padding-top: 2px;
     padding-bottom: 0;
     border-bottom: none;
-    color: #666;
+    color: #CC3434;
     margin-top: -1px;
+    line-height: 20px;
 }
 
 tr.alt {

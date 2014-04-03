@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View, TemplateView, ListView
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
-from principal.forms import RegistrationForm, LoginForm, UsuarioChangeStateForm
+from principal.forms import RegistrationForm, LoginForm
 from django.views.generic.edit import FormView
 from PMS import settings
 from django.views.decorators.csrf import csrf_protect
@@ -14,7 +14,7 @@ from django.shortcuts import render_to_response
 
 
 __author__ = 'Grupo R13'
-__date__ = '04-04-2014'
+__date__ = '04-04-2013'
 __version__ = '1.0'
 __text__ = 'Este modulo contiene funciones que permiten el control de administracion de usuarios'
 
@@ -46,32 +46,6 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-
-
-
-class UsuarioChangeStateView(FormView):
-    '''vista para cambiar el estado de un usuario'''
-    template_name = 'registration/modificar.html'
-    form_class = UsuarioChangeStateForm
-
-    @method_decorator(csrf_protect)
-    def dispatch(self, request, *args, **kwargs):
-        #if request.user.is_authenticated():
-         #   return HttpResponseRedirect(config.INDEX_REDIRECT_URL)
-        #else:
-            return super(UsuarioChangeStateView, self).dispatch(request, *args, **kwargs)
-
-    def form_valid(self, form):
-
-        user = User.objects.update_user(
-            is_active=form.cleaned_data['is_active'],
-        )
-
-        return super(UsuarioChangeStateView, self).form_valid(form)
-
-    def get_success_url(self):
-
-        return reverse('register-success')
 
 
 
@@ -121,7 +95,6 @@ class UsuariosListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(UsuariosListView, self).get_context_data(**kwargs)
         return context
-
 def search(request):
     '''
     vista para buscar los usuarios del sistema
@@ -140,4 +113,3 @@ def search(request):
             "results": results,
             "query": query
             })
-

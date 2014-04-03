@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>Iniciar Sesion</title> {% endblock %}
+
+    </head>
+    <body>
+        {% block contenido %}
+         <center>
+        <div class="container">
+            <form method="post" action="." class="form-signin" role="form">{% csrf_token %}
+                <h2 class="form-signin-heading"> Iniciar Sesion </h2>
+                {% if form.errors %}
+                    <div class="alert alert-danger"> No coinciden el usuario o la contraseña </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <ul>{{ field.label }}{{ field}}</ul>
+                {% endfor %}
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit"> Iniciar Sesion </button>
+
+            </form>
+
+        </div>
+        </center>
+        {% endblock %}
+    {% comment %}    <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>
