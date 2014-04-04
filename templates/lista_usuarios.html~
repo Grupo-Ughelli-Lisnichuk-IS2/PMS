@@ -16,14 +16,26 @@
 	<th scope="col">Usuario</th>
 	<th scope="col">Nombre</th>
 	<th scope="col">Apellido</th>
+	<th scope="col">Opciones</th>
 	</tr>
 
-	 {% for dato in object_list %}
+	 {% for dato in datos %}
 			<tr border="10">
-				<td><input name="select" type="radio" value={{ dato.pk }} checked/></td>
+				<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td>
 				<td>{{ dato.username }}</td>
 				<td>{{ dato.first_name }}</td>
 				<td>{{ dato.last_name }}</td>
+<td> <form action='{% url 'principal.views.detalle_usuario' dato.pk %}'>
+   <input type="submit" value="Ver Detalle"> 
+</form>
+</td>
+<td>
+ <form action='{% url 'principal.views.modificar_usuario' dato.pk %}'>
+   <input type="submit" value="Modificar"> 
+</form>
+</td>
+
+
 			</tr>
   	{% empty %}
 	<li>Aún no hay usuarios registrados</li>
@@ -31,8 +43,20 @@
 
 	</table>
 
-    <button> <a href= '/register'> Agregar un usuario </a> </button>
-    <button> <a href= "{% url 'modificar' %}"> Modificar un usuario </a> </button>
+
+
+
+
+
+
+
+<form action="/register">
+    <input type="submit" value="Agregar un Usuario">
+</form>
+
+<form action="/modificar">
+    <input type="submit" value="Modificar un Usuario">
+</form>
 	<br>
 
 {% endblock %}

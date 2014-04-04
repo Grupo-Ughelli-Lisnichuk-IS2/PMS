@@ -10,7 +10,8 @@ from django.views.generic.edit import FormView
 from PMS import settings
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 
 __author__ = 'Grupo R13'
@@ -47,6 +48,11 @@ class LogoutView(View):
         logout(request)
         return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
 
+def modificar_usuario(request, id_user):
+	dato = get_object_or_404(User,pk=id_user) 
+	dato.is_active=False
+	dato.save()
+	return render_to_response('detalle_usuario.html',{'usuario':dato}, context_instance=RequestContext(request))
 
 
 class UsuarioChangeStateView(FormView):
@@ -107,20 +113,17 @@ class RegisterView(FormView):
 class RegisterSuccessView(TemplateView):
     template_name = 'registration/success.html'
 
+def lista_usuarios(request):
+	usuarios = User.objects.all()
+	return render_to_response('lista_usuarios.html',{'datos':usuarios}, context_instance = RequestContext(request))
 
-class UsuariosListView(ListView):
-    '''
-    vista para listar todos los usuarios registrados en el sistema
 
-    '''
-    model = User
-    template_name='lista_usuarios.html'
-    login_required = True
-    def dispatch(self, *args, **kwargs):
-        return super(UsuariosListView, self).dispatch(*args, **kwargs)
-    def get_context_data(self, **kwargs):
-        context = super(UsuariosListView, self).get_context_data(**kwargs)
-        return context
+def detalle_usuario(request, id_user):
+	dato = get_object_or_404(User,pk=id_user)
+	return render_to_response('detalle_usuario.html',{'usuario':dato}, context_instance=RequestContext(request))
+
+
+
 def search(request):
     '''
     vista para buscar los usuarios del sistema

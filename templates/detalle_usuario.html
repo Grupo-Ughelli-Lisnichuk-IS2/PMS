@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block titulo %} {{usuario.titulo}} {% endblock %}
+
+{% block encabezado %}
+	<h1>{{usuario.username|title}}</h1>
+{% endblock %}
+
+{% block contenido %}
+	<div id='NombreUsuario'>
+		<h2>Nombre de Usuario</h2>
+		<p>{{usuario.username}}</p>
+	</div>
+	<div id='Nombre'>
+		<h2>Nombre:</h2>
+		<p>{{usuario.first_name}}</p>
+	</div>
+	<div id='Apellido'>
+		<h2>Apellido:</h2>
+		<p>{{usuario.last_name}}</p>
+	</div>
+	<div id='Email'>
+		<h2>Email:</h2>
+		<p>{{usuario.email}}</p>
+	</div>
+
+	<div id='Activo'>
+		<h2>Activo:</h2>
+		<p>{{usuario.is_active}}</p>
+	</div>
+
+	<div id='Creado'>
+		<h2>Creado:</h2>
+		<p>{{usuario.date_joined}}</p>
+	</div>
+
+	<div id='Ultima'>
+		<h2>Ultima vez:</h2>
+		<p>{{usuario.last_login}}</p>
+	</div>
+
+{% endblock %}
+
+
+		

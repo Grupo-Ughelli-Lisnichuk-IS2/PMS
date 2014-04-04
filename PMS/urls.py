@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, url
 from django.contrib import admin
-
 from principal import views
 
 from django.views.generic import edit, TemplateView
@@ -12,7 +11,9 @@ urlpatterns = patterns('',
      url(r'^$',TemplateView.as_view(template_name='inicio.html')),
     # url(r'^blog/', include('blog.urls')),
     #url(r'^admin/', include(admin.site.urls)),
-    url(r'^usuarios/$',login_required(views.UsuariosListView.as_view(), '/usuarios', '/login')),
+    url(r'^usuarios/$',login_required(views.lista_usuarios, '/usuarios', '/login')),
+url(r'^usuarios/(?P<id_user>\d+)$','principal.views.detalle_usuario'),
+url(r'^modificar/(?P<id_user>\d+)$','principal.views.modificar_usuario'),
     url(r'^search/$',views.search, name='buscar_usuarios'),
     url(r'^principal/$',login_required(TemplateView.as_view(template_name='principal.html'), '/', '/login')),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
