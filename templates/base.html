@@ -4,12 +4,25 @@
   <meta charset='utf-8'>
   {% block titulo %} <title> Project Management System </title>{% endblock %}
   {% block iconos %}<link rel='stylesheet' href='/static/css/base.css'>
-  <link rel='shortcut icon' href='/static/logo.png'> {% endblock %}
+  <link rel='shortcut icon' href='/static/logo.png'> 
+		{% if messages %}
+			<ul class="messages">
+			{% for message in messages %}
+			<li{% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		
+			{% endfor %}
+			</ul>
+		{% endif %}
+
+{% endblock %}
+
   {% block style_css %}<link rel='stylesheet' href='{{STATIC_URL}}css/base.css'>{% endblock %}
 </head>
 <body>
 
-	{% block contenido %}{% endblock %}
+	{% block contenido %}
+
+	{% endblock %}
     {% block busqueda %}
 
         <body>

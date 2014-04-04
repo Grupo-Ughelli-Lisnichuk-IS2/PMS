@@ -19,6 +19,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,'templates'),
 )
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(BASE_DIR,'static'),
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -33,22 +39,31 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_PROFILE_MODULE = 'principal.Perfil'
 
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',cle
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admindocs',
     'django.contrib.admin',
     'principal',
 )
+
+DELETE_MESSAGE = 50
+
+MESSAGE_TAGS = {
+    DELETE_MESSAGE : 'deleted',
+}
+
+TEMPLATE_CONTEXT_PROCESSORS = {
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',  
+    'django.contrib.messages.context_processors.messages',
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -80,7 +95,11 @@ DATABASES = {
  }
 }
 
+#Configuraciones de urls de login
 
+INDEX_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/principal'
 
 
 # Internationalization
@@ -98,6 +117,3 @@ USE_TZ = True
 
 SITE_ID = 1
 STATIC_URL = '/static/'
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS=(os.path.join('/home/dani/PMS/PMS','static'),)

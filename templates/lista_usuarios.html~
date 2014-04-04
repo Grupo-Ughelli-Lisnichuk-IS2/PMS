@@ -28,8 +28,6 @@
 <td> <form action='{% url 'principal.views.detalle_usuario' dato.pk %}'>
    <input type="submit" value="Ver Detalle"> 
 </form>
-</td>
-<td>
  <form action='{% url 'principal.views.modificar_usuario' dato.pk %}'>
    <input type="submit" value="Modificar"> 
 </form>
@@ -45,18 +43,11 @@
 
 
 
-
-
-
-
-
 <form action="/register">
     <input type="submit" value="Agregar un Usuario">
 </form>
 
-<form action="/modificar">
-    <input type="submit" value="Modificar un Usuario">
-</form>
+
 	<br>
 
 {% endblock %}

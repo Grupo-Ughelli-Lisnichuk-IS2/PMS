@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, url
 from django.contrib import admin
 from principal import views
-
 from django.views.generic import edit, TemplateView
 from django.contrib.auth.decorators import login_required, permission_required
 admin.autodiscover()

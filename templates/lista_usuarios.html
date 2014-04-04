@@ -16,6 +16,7 @@
 	<th scope="col">Usuario</th>
 	<th scope="col">Nombre</th>
 	<th scope="col">Apellido</th>
+	<th scope="col">Activo</th>
 	<th scope="col">Opciones</th>
 	</tr>
 
@@ -25,6 +26,7 @@
 				<td>{{ dato.username }}</td>
 				<td>{{ dato.first_name }}</td>
 				<td>{{ dato.last_name }}</td>
+				<td>{{ dato.is_active }}</td>
 <td> <form action='{% url 'principal.views.detalle_usuario' dato.pk %}'>
    <input type="submit" value="Ver Detalle"> 
 </form>

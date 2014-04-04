@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-
+from django.contrib import messages
 
 __author__ = 'Grupo R13'
 __date__ = '04-04-2013'
@@ -47,12 +47,6 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-
-def modificar_usuario(request, id_user):
-	dato = get_object_or_404(User,pk=id_user) 
-	dato.is_active=False
-	dato.save()
-	return render_to_response('detalle_usuario.html',{'usuario':dato}, context_instance=RequestContext(request))
 
 
 class UsuarioChangeStateView(FormView):
@@ -113,6 +107,9 @@ class RegisterView(FormView):
 class RegisterSuccessView(TemplateView):
     template_name = 'registration/success.html'
 
+
+
+
 def lista_usuarios(request):
 	usuarios = User.objects.all()
 	return render_to_response('lista_usuarios.html',{'datos':usuarios}, context_instance = RequestContext(request))
@@ -121,6 +118,15 @@ def lista_usuarios(request):
 def detalle_usuario(request, id_user):
 	dato = get_object_or_404(User,pk=id_user)
 	return render_to_response('detalle_usuario.html',{'usuario':dato}, context_instance=RequestContext(request))
+
+
+def modificar_usuario(request, id_user):
+	dato = get_object_or_404(User,pk=id_user) 
+	dato.is_active=not(dato.is_active)
+	dato.save()
+    	messages.add_message(request, settings.DELETE_MESSAGE,"Estado Cambiado")
+	return render_to_response('lista_usuarios.html', {'datos':User.objects.all}, context_instance=RequestContext(request))
+
 
 
 
