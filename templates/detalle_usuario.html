@@ -1,44 +1,30 @@
 {% extends 'base.html' %}
-{% block titulo %} {{usuario.titulo}} {% endblock %}
-
-{% block encabezado %}
-	<h1>{{usuario.username|title}}</h1>
-{% endblock %}
-
+<html>
 {% block contenido %}
-	<div id='NombreUsuario'>
-		<h2>Nombre de Usuario</h2>
-		<p>{{usuario.username}}</p>
-	</div>
-	<div id='Nombre'>
-		<h2>Nombre:</h2>
-		<p>{{usuario.first_name}}</p>
-	</div>
-	<div id='Apellido'>
-		<h2>Apellido:</h2>
-		<p>{{usuario.last_name}}</p>
-	</div>
-	<div id='Email'>
-		<h2>Email:</h2>
-		<p>{{usuario.email}}</p>
-	</div>
+<br>
+    <center>
+    <h1>Detalles de usuario {{usuario.username|title}}</h1>
+    </center>
+          	<br>
+          	<br>
+            <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
 
-	<div id='Activo'>
-		<h2>Activo:</h2>
-		<p>{{usuario.is_active}}</p>
-	</div>
+            <div><label><b>Nombres: </b></label>{{ usuario.first_name }}</div>
+            <div><label><b>Apellidos: </b></label>{{ usuario.last_name }}</div>
+            <div><label><b>Nombre de Usuario: </b></label>{{ usuario.username }}</div>
+             {% ifequal usuario.is_active  True %}
+                    <div><label><b>Estado: </b></label> Activo </div>
+             {% endifequal %}
+             {% ifequal usuario.is_active  False %}
+                 <div><label><b>Estado: </b></label> Inactivo </div>
+            {% endifequal %}
 
-	<div id='Creado'>
-		<h2>Creado:</h2>
-		<p>{{usuario.date_joined}}</p>
-	</div>
-
-	<div id='Ultima'>
-		<h2>Ultima vez:</h2>
-		<p>{{usuario.last_login}}</p>
-	</div>
-
+            <div><label><b>Fecha de creacion: </b></label>{{ usuario.date_joined }}  </div>
+            <div><label><b>Ultimo acceso: </b></label>{{ usuario.last_login}}  </div>
+            <center>
+            <form action="/usuarios">
+            <input type="submit" value="Regresar al listado">
+            </form>
+            </center>
 {% endblock %}
-
-
-		
+</html>

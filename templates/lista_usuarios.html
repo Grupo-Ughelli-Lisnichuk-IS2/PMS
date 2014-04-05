@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 
-{% if user.is_authenticated %}
 
 
-{% block titulo %} <center><h1>ADMINISTRACION DE USUARIOS</h1></center> {% endblock %}
 
 {% block contenido %}
-
+<center><h1>ADMINISTRACION DE USUARIOS</h1></center>
 
  <br>
     <center>
@@ -16,7 +14,7 @@
 	<th scope="col">Usuario</th>
 	<th scope="col">Nombre</th>
 	<th scope="col">Apellido</th>
-	<th scope="col">Activo</th>
+	<th scope="col">Estado</th>
 	<th colspan="2" scope="col">Opciones</th>
 
     </tr>
@@ -27,14 +25,19 @@
 				<td>{{ dato.username }}</td>
 				<td>{{ dato.first_name }}</td>
 				<td>{{ dato.last_name }}</td>
-				<td>{{ dato.is_active }}</td>
-<td> <form action='{% url 'principal.views.detalle_usuario' dato.pk %}'>
+				{% ifequal dato.is_active  True %}
+                    <td> Activo </td>
+                {% endifequal %}
+                {% ifequal dato.is_active False %}
+                    <td> Inactivo </td>
+                {% endifequal %}
+<td> <form action='{% url 'principal.viewsUsuarios.detalle_usuario' dato.pk %}'>
    <input type="submit" value="Ver Detalle"> 
 </form>
 </td>
 <td>
- <form action='{% url 'principal.views.modificar_usuario' dato.pk %}'>
-   <input type="submit" value="Modificar"> 
+ <form action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'>
+   <input type="submit" value="Cambiar Estado">
 </form>
 </td>
 			</tr>
@@ -47,12 +50,27 @@
 
 </form>
 
+
 <form action="/register">
     <input type="submit" value="Agregar un Usuario">
 </form>
-
+<form action="/principal">
+            <input type="submit" value="Regresar al menu principal">
+            </form>
 
 	<br>
 
 {% endblock %}
-{% endif%}
+ {% block busqueda %}
+
+        <body>
+  <h1>Buscar Usuarios</h1>
+  <form action='{% url 'principal.viewsUsuarios.buscarUsuario' %}'>
+    <label for="q">Nombre: </label>
+    <input type="text" name="q" value="{{ query|escape }}">
+    <input type="submit" value="Buscar">
+  </form>
+
+
+</body>
+    {% endblock %}
