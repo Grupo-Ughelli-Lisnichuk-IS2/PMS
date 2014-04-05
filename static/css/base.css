@@ -167,7 +167,10 @@ pre.literal-block {
 code strong {
     color: #930;
 }
+label{
 
+    font-size: 14px;
+}
 hr {
     clear: both;
     color: #eee;
@@ -267,7 +270,7 @@ td, th {
     line-height: 20px;
     border-bottom: 2px solid #eee;
     vertical-align: top;
-    padding: 10px;
+    padding: 5px;
     font-family: "Lucida Grande", Verdana, Arial, sans-serif;
 
 }
@@ -606,11 +609,17 @@ td ul.errorlist li {
     border: 1px solid red;
 }
 
+div {
+
+    font-size: 14px;
+
+}
+
 div.system-message {
     background: #ffc;
     margin: 10px;
     padding: 6px 8px;
-    font-size: .8em;
+    font-size: .14em;
 }
 
 div.system-message p.system-message-title {
