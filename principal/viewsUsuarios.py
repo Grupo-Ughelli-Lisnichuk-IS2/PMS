@@ -15,7 +15,7 @@ from django.template import RequestContext
 from django.contrib import messages
 
 __author__ = 'Grupo R13'
-__date__ = '04-04-2013'
+__date__ = '04-04-2014'
 __version__ = '1.0'
 __text__ = 'Este modulo contiene funciones que permiten el control de administracion de usuarios'
 
@@ -85,16 +85,30 @@ class RegisterSuccessView(TemplateView):
 
 
 def lista_usuarios(request):
+    '''
+    vista para listar los usuarios del sistema
+    '''
+
     usuarios = User.objects.all()
     return render_to_response('lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
 
 def detalle_usuario(request, id_user):
+
+    '''
+    vista para ver los detalles del usuario <id_user> del sistema
+    '''
+
     dato = get_object_or_404(User, pk=id_user)
     return render_to_response('detalle_usuario.html', {'usuario': dato}, context_instance=RequestContext(request))
 
 
 def modificar_usuario(request, id_user):
+
+    '''
+    vista para modificar los usuarios del sistema
+    '''
+
     dato = get_object_or_404(User, pk=id_user)
     dato.is_active = not (dato.is_active)
     dato.save()
