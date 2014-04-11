@@ -1,28 +1,78 @@
+
 {% extends "base.html" %}
+
 {% block busqueda %} {% endblock %}
     {% block contenido%}
+
+
     <body>
 
+        <center>
         <div class="container">
-            <form method="post" action="." class="form-register" role="form">{% csrf_token %}
+            <form  method="post" action="." class="form-register" role="form" name="fvalida" onSubmit="return valida_envia();">{% csrf_token %}
                 <h2 class="form-register-heading"> Nuevo Usuario </h2>
-                    {% if form.errors %}
-                        <div class="alert alert-danger"> "Check the red fields."</div>
+                   {% if form.errors %}
+
+                        <div class="alert alert-danger"> "Usuario ya existe"</div>
                     {% endif %}
 
                   <br>  {% for field in form %}
                         <ul>{{ field.label }}{{ field}}</ul>
                     {% endfor %}
                 </br>
-                    
-                <button class="btn btn-lg btn-primary btn-block" type="submit"> {% block crear %} Crear Usuario {% endblock%}</button>
 
+               <center>
+                <button  type="submit"> {% block crear %} Crear Usuario {% endblock%}</button>
+                <button> <a href= '/usuarios' > Regresar al listado </a> </button>
+                </center>
             </form>
         </div>
+</center>
+   <script>
+    function validarEmail( email ) {
+    expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if ( !expr.test(email) )
+    {alert("Error: La dirección de correo " + email + " es incorrecta.");
+         document.fvalida.email.focus()
+        return false;
+    }
+    }
+    function valida_envia(){
+   	//valido el nombre
+        if (document.fvalida.username.value.length==0){
+      	 alert("Tiene que escribir su nombre de usuario")
+      	 document.fvalida.username.focus()
+      	 return false;
+   	    }
+        document.fvalida.clean_username();
+   	if (document.fvalida.first_name.value.length==0){
+      	 alert("Tiene que escribir su nombre")
+      	 document.fvalida.first_name.focus()
+      	 return false;
+   	    }
+    if (document.fvalida.last_name.value.length==0){
+      	 alert("Tiene que escribir su apellido")
+      	 document.fvalida.last_name.focus()
+      	 return false;
+   	    }
+    mail= document.fvalida.email.value
+    validarEmail(mail)
+    if (document.fvalida.password1.value.length<6){
+      	 alert("Debe escribir un password de al menos 6 caracteres")
+      	 document.fvalida.password1.focus()
+      	 return false;
+   	    }
+        if (document.fvalida.password1.value!=document.fvalida.password2.value){
+      	 alert("Passwords no coinciden")
+      	 document.fvalida.password1.focus()
+      	 return false;
+   	    }
+       	document.fvalida.submit();
+    }
 
-   {% comment %}     <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
-{% endcomment %}
+
+    </script>
+
     </body>
 {% endblock%}
 </html>
