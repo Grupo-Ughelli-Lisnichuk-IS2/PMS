@@ -4,7 +4,33 @@
 
 
 {% block contenido %}
-<center><h1>ADMINISTRACION DE USUARIOS</h1></center>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea cambiar el estado?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+
+
+    <center><h1>ADMINISTRACION DE USUARIOS</h1></center>
 
  <br>
     <center>
@@ -36,8 +62,8 @@
 </form>
 </td>
 <td>
- <form action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'>
-   <input type="submit" value="Cambiar Estado">
+ <form class="ask-plain" action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'  >
+   <input type="submit" value="Cambiar Estado" >
 </form>
 </td>
 			</tr>
