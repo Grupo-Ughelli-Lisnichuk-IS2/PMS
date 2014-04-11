@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class LoginForm(AuthenticationForm):
-
+    '''Formulario para login de un usuario'''
     username = forms.RegexField(label=_("Usuario: "),regex=r'^\w+$', widget=forms.TextInput(
         attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Username")}))
     password = forms.CharField(label=_("Contraseña: "),widget=forms.PasswordInput(
@@ -24,23 +24,9 @@ class LoginForm(AuthenticationForm):
                 self.fields[f_name].widget.attrs['class'] = classes
 
 
-class UsuarioChangeStateForm(forms.Form):
-
-    is_active = forms.BooleanField(label=_("Activo:  "))
-
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(UsuarioChangeStateForm, self).__init__(*args, **kwargs)
-      #  f = self.fields.get('user_permissions', None)
-        #if f is not None:
-         #   f.queryset = f.queryset.select_related('content_type')
-
 
 class RegistrationForm(forms.Form):
-
+    '''FOrmulario para creacion de un usuario'''
     username = forms.RegexField(label=_("Usuario:  "),regex=r'^\w+$', widget=forms.TextInput(
         attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Username")}))
     first_name = forms.CharField(label=_("Nombre:  "),widget=forms.TextInput(

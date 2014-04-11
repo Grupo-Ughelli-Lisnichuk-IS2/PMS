@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import View, TemplateView, ListView
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
-from principal.forms import RegistrationForm, LoginForm, UsuarioChangeStateForm
+from principal.formsUsuarios import RegistrationForm, LoginForm
 from django.views.generic.edit import FormView
 from PMS import settings
 from django.views.decorators.csrf import csrf_protect
@@ -47,31 +47,6 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
-
-
-class UsuarioChangeStateView(FormView):
-    '''vista para cambiar el estado de un usuario'''
-    template_name = 'registration/modificar.html'
-    form_class = UsuarioChangeStateForm
-
-    @method_decorator(csrf_protect)
-    def dispatch(self, request, *args, **kwargs):
-        #if request.user.is_authenticated():
-         #   return HttpResponseRedirect(config.INDEX_REDIRECT_URL)
-        #else:
-            return super(UsuarioChangeStateView, self).dispatch(request, *args, **kwargs)
-
-    def form_valid(self, form):
-
-        user = User.objects.update_user(
-            is_active=form.cleaned_data['is_active'],
-        )
-
-        return super(UsuarioChangeStateView, self).form_valid(form)
-
-    def get_success_url(self):
-
-        return reverse('register-success')
 
 
 
@@ -128,9 +103,7 @@ def modificar_usuario(request, id_user):
 	return render_to_response('lista_usuarios.html', {'datos':User.objects.all}, context_instance=RequestContext(request))
 
 
-
-
-def search(request):
+def buscarUsuario(request):
     '''
     vista para buscar los usuarios del sistema
     '''
@@ -144,7 +117,4 @@ def search(request):
             results = User.objects.filter(qset).distinct()
     else:
         results = []
-    return render_to_response("base.html", {
-            "results": results,
-            "query": query
-            })
+    return render_to_response('lista_usuarios.html', {'datos':results}, context_instance=RequestContext(request))
