@@ -35,18 +35,19 @@
 
  <br>
     <center>
-	<table width="80%" border="2">
-	<tr>
-	{% comment %}<th scope="col"> </th> {% endcomment %}
-	<th scope="col">Usuario</th>
-	<th scope="col">Nombre</th>
-	<th scope="col">Apellido</th>
-	<th scope="col">Estado</th>
-	<th colspan="2" scope="col">Opciones</th>
+	<table class='table table-hover',width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Usuario</th>
+	            <th style="text-align:center">Nombre</th>
+	            <th style="text-align:center">Apellido</th>
+	            <th style="text-align:center">Estado</th>
+	            <th colspan="2" style="text-align:center">Opciones</th>
+            </tr>
+        </theader>
 
-    </tr>
-
-	 {% for dato in datos %}
+	    {% for dato in datos %}
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
 				<td>{{ dato.username }}</td>
@@ -58,32 +59,33 @@
                 {% ifequal dato.is_active False %}
                     <td> Inactivo </td>
                 {% endifequal %}
-<td> <form action='{% url 'principal.viewsUsuarios.detalle_usuario' dato.pk %}'>
-   <input type="submit" value="Ver Detalle"> 
-</form>
-</td>
-<td>
- <form class="ask-plain" action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'  >
-   <input type="submit" value="Cambiar Estado" >
-</form>
-</td>
+                <td>
+                    <a class="btn" href="/usuarios/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
+                    {% comment %}<form action='{% url 'principal.viewsUsuarios.detalle_usuario' dato.pk %}'>
+                        <input type="submit" value="Ver Detalle">
+                        </form>{% endcomment %}
+                </td>
+                <td>
+                    <form class="ask-plain" action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'  >
+                        <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
+                    </form>
+                </td>
 			</tr>
-  	{% empty %}
-	<li>Aún no hay usuarios registrados</li>
-	{% endfor %}
+            {% empty %}
+                <li>Aún no hay usuarios registrados</li>
+	    {% endfor %}
 
 	</table>
     </center>
 
 </form>
 
-
-<form action="/register">
-    <input type="submit" value="Agregar un Usuario">
-</form>
-<form action="/principal">
-            <input type="submit" value="Regresar al menu principal">
-            </form>
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/register"><li class="icon-plus"></li> Agregar un Usuario</a>
+                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
 
 	<br>
 
@@ -95,7 +97,7 @@
   <form action='{% url 'principal.viewsUsuarios.buscarUsuario' %}'>
     <label for="q">Nombre: </label>
     <input type="text" name="q" value="{{ query|escape }}">
-    <input type="submit" value="Buscar">
+    <li class="icon-search"></li><input type="submit" value="Buscar">
   </form>
 
 

@@ -1,30 +1,65 @@
 <!DOCTYPE html>
 <html lang='es'>
 <head>
-  <meta charset='utf-8'>
-  {% block titulo %} <title> Project Management System </title>{% endblock %}
-  {% block iconos %}<link rel='stylesheet' href='/static/css/base.css'>
-  <link rel='shortcut icon' href='/static/logo.png'>
+  	<meta charset='utf-8'>
+  	<title> {% block title %} Project Management System {% endblock %}</title>
+	<link rel='stylesheet' href='/static/bootstrap/css/bootstrap.css'>
+	<link rel='stylesheet' href='/static/bootstrap/css/bootstrap-responsive.css'>
+	<script src='/static/js/jquery.js'></script>
+	<script src='/static/bootstrap/js/bootstrap.js'></script>
+    {% comment %}<style type="text/css">
+        body{
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>{% endcomment %}
+    {% block iconos %}
+	    <link rel='shortcut icon' href='/static/logo.png'>
+	    {% if messages %}
+		    <ul class="messages">
+		        {% for message in messages %}
+		            <li{% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		        {% endfor %}
+		    </ul>
+	    {% endif %}
+    {% endblock %}
 
-		{% if messages %}
-			<ul class="messages">
-			{% for message in messages %}
-			<li{% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-		
-			{% endfor %}
-			</ul>
-		{% endif %}
-
-{% endblock %}
-
-  {% block style_css %}<link rel='stylesheet' href='{{STATIC_URL}}css/base.css'>{% endblock %}
 </head>
 <body>
+    {% if user.is_authenticated %}
+	    <div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class = "navbar-inner">
+			    <a class = "brand" href="/principal"> Principal </a>
+                    <div class="btn-group pull-right">
+    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ user.username }}</a>
+    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+    <li><a href="#"><i class="icon-pencil"></i> Configurar Cuenta</a></li>
+    <li class="divider"></li>
+    <li><a href='/logout'><i class="icon-off"></i> Cerrar Sesion</a></li>
+    </ul>
+    </div>
 
 
-	{% block contenido %}
+		       </div>
+	    </div>
 
-	{% endblock %}
+
+    {% endif %}
+	
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="hero-unit">
+	                {% block contenido %}
+	                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     {% block busqueda %}
 
 	{% endblock %}
