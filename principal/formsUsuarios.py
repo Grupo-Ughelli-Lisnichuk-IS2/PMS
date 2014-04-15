@@ -34,11 +34,11 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField(label=_("Apellido:  "),widget=forms.TextInput(
         attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Apellido")}))
     email = forms.EmailField(label=_("Email:  "),widget=forms.TextInput(
-        attrs={'maxlength': 60, 'class': 'form-control', 'placeholder': _("Email Address")}))
+        attrs={'maxlength': 60, 'class': 'form-control', 'placeholder': _("Email ")}))
     password1 = forms.CharField(label=_("Constraseña:  "),widget=forms.PasswordInput(
         attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Password")}))
     password2 = forms.CharField(label=_("Repita la contraseña:  "), widget=forms.PasswordInput(
-        attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Confirm your password")}))
+        attrs={'maxlength': 30, 'class': 'form-control', 'placeholder': _("Confirme su password")}))
 
 
     def __init__(self, *args, **kwargs):
@@ -56,10 +56,10 @@ class RegistrationForm(forms.Form):
                 username__iexact=self.cleaned_data['username'])
         except User.DoesNotExist:
             return self.cleaned_data['username']
-        raise forms.ValidationError(_("Account already exists."))
+        raise forms.ValidationError(_("Cuenta ya existe."))
 
     def clean(self):
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                raise forms.ValidationError(_("Passwords don't match."))
+                raise forms.ValidationError(_("Passwords no coindicen."))
         return self.cleaned_data

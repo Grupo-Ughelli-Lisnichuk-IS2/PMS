@@ -1,54 +1,102 @@
 {% extends 'base.html' %}
 
-{% if user.is_authenticated %}
 
 
-{% block titulo %} <center><h1>ADMINISTRACION DE USUARIOS</h1></center> {% endblock %}
 
 {% block contenido %}
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
 
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Are you sure')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+
+
+    <center><h1>ADMINISTRACION DE USUARIOS</h1></center>
 
  <br>
-
-	<table width="100%" border="3">
+    <center>
+	<table width="80%" border="2">
 	<tr>
-	<th scope="col"> </th>
+	{% comment %}<th scope="col"> </th> {% endcomment %}
 	<th scope="col">Usuario</th>
 	<th scope="col">Nombre</th>
 	<th scope="col">Apellido</th>
-	<th scope="col">Opciones</th>
-	</tr>
+	<th scope="col">Estado</th>
+	<th colspan="2" scope="col">Opciones</th>
+
+    </tr>
 
 	 {% for dato in datos %}
-			<tr border="10">
-				<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td>
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
 				<td>{{ dato.username }}</td>
 				<td>{{ dato.first_name }}</td>
 				<td>{{ dato.last_name }}</td>
-<td> <form action='{% url 'principal.views.detalle_usuario' dato.pk %}'>
+				{% ifequal dato.is_active  True %}
+                    <td> Activo </td>
+                {% endifequal %}
+                {% ifequal dato.is_active False %}
+                    <td> Inactivo </td>
+                {% endifequal %}
+<td> <form action='{% url 'principal.viewsUsuarios.detalle_usuario' dato.pk %}'>
    <input type="submit" value="Ver Detalle"> 
 </form>
- <form action='{% url 'principal.views.modificar_usuario' dato.pk %}'>
-   <input type="submit" value="Modificar"> 
+</td>
+<td>
+ <form class="ask-plain" action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'  >
+   <input type="submit" value="Cambiar Estado" >
 </form>
 </td>
-
-
 			</tr>
   	{% empty %}
 	<li>Aún no hay usuarios registrados</li>
 	{% endfor %}
 
 	</table>
+    </center>
 
+</form>
 
 
 <form action="/register">
     <input type="submit" value="Agregar un Usuario">
 </form>
-
+<form action="/principal">
+            <input type="submit" value="Regresar al menu principal">
+            </form>
 
 	<br>
 
 {% endblock %}
-{% endif%}
+ {% block busqueda %}
+
+        <body>
+  <h1>Buscar Usuarios</h1>
+  <form action='{% url 'principal.viewsUsuarios.buscarUsuario' %}'>
+    <label for="q">Nombre: </label>
+    <input type="text" name="q" value="{{ query|escape }}">
+    <input type="submit" value="Buscar">
+  </form>
+
+
+</body>
+    {% endblock %}
