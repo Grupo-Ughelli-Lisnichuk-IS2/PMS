@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.contrib import admin
-from principal import viewsUsuarios
+from usuarios import viewsUsuarios
 from django.views.generic import edit, TemplateView
 from django.contrib.auth.decorators import login_required, permission_required
 admin.autodiscover()
@@ -11,8 +11,10 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     #url(r'^admin/', include(admin.site.urls)),
     url(r'^usuarios/$',login_required(viewsUsuarios.lista_usuarios,'/usuarios','/login')),
-    url(r'^usuarios/(?P<id_user>\d+)$', 'principal.viewsUsuarios.detalle_usuario'),
-    url(r'^modificar/(?P<id_user>\d+)$', 'principal.viewsUsuarios.modificar_usuario'),
+    url(r'^usuarios/(?P<id_user>\d+)$', 'usuarios.viewsUsuarios.detalle_usuario'),
+    url(r'^modificar/(?P<id_user>\d+)$', 'usuarios.viewsUsuarios.modificar_usuario'),
+    url(r'^configurar/$', 'usuarios.viewsUsuarios.editar_perfil'),
+    url(r'^cambiarPass/$', 'usuarios.viewsUsuarios.cambiar_pass'),
     url(r'^search/$',viewsUsuarios.buscarUsuario, name='buscar_usuarios'),
     url(r'^principal/$',login_required(TemplateView.as_view(template_name='principal.html'), '/', '/login')),
     url(r'^login/$', viewsUsuarios.LoginView.as_view(), name='login'),

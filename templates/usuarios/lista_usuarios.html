@@ -61,12 +61,12 @@
                 {% endifequal %}
                 <td>
                     <a class="btn" href="/usuarios/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
-                    {% comment %}<form action='{% url 'principal.viewsUsuarios.detalle_usuario' dato.pk %}'>
+                    {% comment %}<form action='{% url 'usuarios.viewsUsuarios.detalle_usuario' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
                 </td>
                 <td>
-                    <form class="ask-plain" action='{% url 'principal.viewsUsuarios.modificar_usuario' dato.pk %}'  >
+                    <form class="ask-plain" action='{% url 'usuarios.viewsUsuarios.modificar_usuario' dato.pk %}'  >
                         <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
                     </form>
                 </td>
@@ -94,7 +94,7 @@
 
         <body>
   <h1>Buscar Usuarios</h1>
-  <form action='{% url 'principal.viewsUsuarios.buscarUsuario' %}'>
+  <form action='{% url 'usuarios.viewsUsuarios.buscarUsuario' %}'>
     <label for="q">Nombre: </label>
     <input type="text" name="q" value="{{ query|escape }}">
     <li class="icon-search"></li><input type="submit" value="Buscar">
