@@ -17,7 +17,7 @@ class Fase(models.Model):
     fInicio = models.DateField(verbose_name='Fecha de Inicio')
     orden = models.SmallIntegerField(verbose_name='Orden')
     estado = models.CharField(max_length=3, choices=ESTADOS, verbose_name='Estado')
-    fCreacion = models.DateField(verbose_name='Fecha de Creacion', editable=False)
+    fCreacion = models.DateField(verbose_name='Fecha de Creacion', auto_now=True)
     fModificacion = models.DateField(verbose_name='Fecha de Modificacion')
     #proyecto = models.ForeignKey(Proyectos)
 
