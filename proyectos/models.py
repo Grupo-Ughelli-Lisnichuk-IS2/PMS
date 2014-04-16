@@ -10,7 +10,7 @@ ESTADOS = (
 )
 
 
-class proyecto(models.Model):
+class Proyecto(models.Model):
     nombre= models.CharField(max_length=100, verbose_name='Nombre',unique=True)
     descripcion= models.TextField(verbose_name='Descripcion')
     fecha_ini=models.DateField(null=False)

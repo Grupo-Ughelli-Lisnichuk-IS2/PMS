@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import Permission
-from proyectos.models import proyecto
+from proyectos.models import Proyecto
 
 # Create your models here.
 
@@ -22,7 +22,7 @@ class Fase(models.Model):
     fCreacion = models.DateField(verbose_name='Fecha de Creacion', auto_now=True)
     fModificacion = models.DateField(verbose_name='Fecha de Modificacion')
     permisos = models.ManyToManyField(Permission)
-    proyecto = models.ForeignKey(proyecto)
+    proyecto = models.ForeignKey(Proyecto)
 
 #    def save(self, *args, **kwargs):
 #    ''' On save, update timestamps '''
