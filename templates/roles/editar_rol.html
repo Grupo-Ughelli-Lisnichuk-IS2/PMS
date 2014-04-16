@@ -3,16 +3,16 @@
 {% block contenido %}
 <br>
     <center>
-    <h1>Modificar usuario {{usuario.username|title}}</h1>
+    <h1>Modificar Rol {{rol.name|title}}</h1>
     </center>
 <form action="" method="post">{% csrf_token %}
-    {{ user_form }}
+    {{ rol }}
 
     <input type="submit" value="Guardar cambios">
 </form>
       <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <a class="btn" href="/cambiarPass"><li class="icon-plus"></li> Cambiar Password</a>
+                <a class="btn" href="/roles"><li class="icon-arrow-left"></li> Regresar</a>
 
             </ul>
        </div>

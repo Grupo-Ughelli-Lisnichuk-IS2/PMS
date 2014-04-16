@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block contenido %}
+<form id="formulario" method="post" action="">{% csrf_token %} {{ group_form }}
+<p><input type="submit" value="Crear Rol"></p>
+</form>
+{% endblock %}

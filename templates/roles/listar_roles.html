@@ -1,8 +1,4 @@
 {% extends 'base.html' %}
-
-
-
-
 {% block contenido %}
 	<head>
 
@@ -19,7 +15,7 @@
 					e.preventDefault();
 					thisHref	= $(this).attr('action');
 
-					if(confirm('Seguro que desea cambiar el estado?')) {
+					if(confirm('Seguro que desea eliminar el Rol?')) {
 						window.location = thisHref;
 					}
 
@@ -31,7 +27,7 @@
 </head>
 
 
-    <center><h1>Administracion de Usuarios</h1></center>
+    <center><h1>Administracion de Roles</h1></center>
 
  <br>
     <center>
@@ -39,10 +35,9 @@
         <theader>
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
-	            <th style="text-align:center">Usuario</th>
+	            <th style="text-align:center">Id Rol</th>
 	            <th style="text-align:center">Nombre</th>
-	            <th style="text-align:center">Apellido</th>
-	            <th style="text-align:center">Estado</th>
+
 	            <th colspan="2" style="text-align:center">Opciones</th>
             </tr>
         </theader>
@@ -50,29 +45,31 @@
 	    {% for dato in datos %}
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
-				<td>{{ dato.username }}</td>
-				<td>{{ dato.first_name }}</td>
-				<td>{{ dato.last_name }}</td>
-				{% ifequal dato.is_active  True %}
-                    <td> Activo </td>
-                {% endifequal %}
-                {% ifequal dato.is_active False %}
-                    <td> Inactivo </td>
-                {% endifequal %}
+				<td>{{ dato.id }}</td>
+				<td>{{ dato.name }}</td>
                 <td>
-                    <a class="btn" href="/usuarios/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
+                    <a class="btn" href="/roles/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
                     {% comment %}<form action='{% url 'usuarios.viewsUsuarios.detalle_usuario' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
                 </td>
+
                 <td>
-                    <form class="ask-plain" action='{% url 'usuarios.viewsUsuarios.modificar_usuario' dato.pk %}'  >
-                        <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
+                    <form class="ask-plain" action='{% url 'roles.views.eliminar_rol' dato.pk %}'  >
+                        <input class="btn" type="submit" value="Eliminar Rol" ><li class="icon-pencil"></li>
                     </form>
+
                 </td>
+              <td>
+                    <form class="btn" action='{% url 'roles.views.editar_rol' dato.pk %}'  >
+                        <input class="btn" type="submit" value="Modificar Rol" ><li class="icon-pencil"></li>
+                    </form>
+
+                </td>
+
 			</tr>
             {% empty %}
-                <li>Aún no hay usuarios registrados</li>
+                <li>Aún no hay roles registrados</li>
 	    {% endfor %}
 
 	</table>
@@ -82,7 +79,7 @@
 
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <a class="btn" href="/register"><li class="icon-plus"></li> Agregar un Usuario</a>
+                <a class="btn" href="/crearRol"><li class="icon-plus"></li> Agregar un Rol</a>
                 <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>
@@ -92,9 +89,10 @@
 {% endblock %}
  {% block busqueda %}
 
+
         <body>
-  <h1>Buscar Usuarios</h1>
-  <form action='{% url 'usuarios.viewsUsuarios.buscarUsuario' %}'>
+  <h1>Buscar Roles</h1>
+  <form action='{% url 'roles.views.buscarRol' %}'>
     <label for="q">Nombre: </label>
     <input type="text" name="q" value="{{ query|escape }}">
     <li class="icon-search"></li><input type="submit" value="Buscar">
@@ -102,4 +100,5 @@
 
 
 </body>
+
     {% endblock %}

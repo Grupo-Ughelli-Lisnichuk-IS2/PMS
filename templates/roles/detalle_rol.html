@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Detalles del Rol {{rol.name|title}}</h1>
+    </center>
+          	<br>
+
+
+            <h2>Permisos:</h2>
+
+            {% for permiso in permisos %}
+
+					<li>{{ permiso.name }}</li>
+
+  			{% endfor %}
+
+            <center>
+            <form action="/roles">
+            <input type="submit" value="Regresar al listado">
+            </form>
+            </center>
+</div>
+{% endblock %}
+</html>
