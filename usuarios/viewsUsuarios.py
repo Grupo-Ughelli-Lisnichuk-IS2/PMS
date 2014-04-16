@@ -90,7 +90,7 @@ def lista_usuarios(request):
     vista para listar los usuarios del sistema
     '''
 
-    usuarios = User.objects.all()
+    usuarios = User.objects.all().order_by('is_active').reverse()
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
 
@@ -148,7 +148,7 @@ def modificar_usuario(request, id_user):
     dato.is_active = not (dato.is_active)
     dato.save()
     messages.add_message(request, settings.DELETE_MESSAGE, "Estado Cambiado")
-    usuarios = User.objects.all()
+    usuarios = User.objects.all().order_by('is_active').reverse()
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
 
@@ -163,7 +163,7 @@ def buscarUsuario(request):
             Q(first_name=query) |
             Q(last_name=query)
         )
-        results = User.objects.filter(qset).distinct()
+        results = User.objects.filter(qset).distinct().order_by('is_active').reverse()
     else:
         results = []
     return render_to_response('usuarios/lista_usuarios.html', {'datos': results}, context_instance=RequestContext(request))
