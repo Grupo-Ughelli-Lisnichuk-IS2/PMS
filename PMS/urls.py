@@ -5,6 +5,7 @@ from roles import views
 from django.views.generic import edit, TemplateView
 from django.contrib.auth.decorators import login_required, permission_required
 admin.autodiscover()
+from fases import viewsFases
 
 urlpatterns = patterns('',
     # Examples:
@@ -31,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^register/success/$',
         viewsUsuarios.RegisterSuccessView.as_view(
         ), name='register-success'),
+        url(r'^fases/registrar$','fases.viewsFases.registrar_fase'),
 
         )
 
