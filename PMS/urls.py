@@ -33,6 +33,8 @@ urlpatterns = patterns('',
         viewsUsuarios.RegisterSuccessView.as_view(
         ), name='register-success'),
         url(r'^fases/registrar$','fases.viewsFases.registrar_fase'),
+        url(r'^fases/$',login_required(viewsFases.listar_fases,'/fases','/login')),
+        url(r'^fases/(?P<id_fase>\d+)$', 'fases.viewsFases.detalle_fase'),
 
         )
 
