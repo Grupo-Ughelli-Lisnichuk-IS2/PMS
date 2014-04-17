@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Detalles de {{proyecto.nombre|title}}</h1>
+    </center>
+          	<br>
+          	<br>
+            <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
+
+
+            <div><label><b>Id: </b></label>{{ proyecto.id }}</div>
+            <div><label><b>Nombre: </b></label>{{ proyecto.nombre }}</div>
+            <div><label><b>Descripción: </b></label>{{ proyecto.descripcion }}</div>
+            <div><label><b>Observaciones: </b></label>{{ proyecto.observaciones }}</div>
+            <div><label><b>Estado: </b></label>{{ proyecto.estado }}</div>
+            <div><label><b>Fecha de Inicio: </b></label>{{ proyecto.fecha_ini }}</div>
+            <div><label><b>Fecha de Finalizacion: </b></label>{{ proyecto.fecha_fin}}</div>
+            <div><label><b>Lider: </b></label>{{ lider.first_name}} {{ lider.last_name}}</div>
+            <div><label><b>Miembros del comite: </b></label></div>
+            {% for integrante in comite %}
+                <li><b>Nombre: </b>{{ integrante.first_name}} {{ integrante.last_name}}</li>
+            {% endfor %}
+            <center>
+            <form action="/proyectos">
+            <input type="submit" value="Regresar al listado">
+            </form>
+            </center>
+</div>
+{% endblock %}
+</html>

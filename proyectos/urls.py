@@ -1,14 +1,17 @@
 from django.conf.urls import patterns, url
 from django.contrib import admin
-from usuarios import viewsUsuarios
-from roles import viewsRoles
-from django.views.generic import edit, TemplateView
+
 from django.contrib.auth.decorators import login_required, permission_required
 admin.autodiscover()
-from fases import viewsFases
+from proyectos import viewsProyectos
 
 urlpatterns = patterns('',
-        url(r'^registrar/$','fases.viewsFases.registrar_fase'),
-        url(r'^$',login_required(viewsFases.listar_fases,'/fases','/login')),
-        url(r'^/(?P<id_fase>\d+)$', 'fases.viewsFases.detalle_fase'),
+        url(r'^registrar/$','proyectos.viewsProyectos.registrar_proyecto'),
+        url(r'^$',login_required(viewsProyectos.listar_proyectos,'/proyectos','/login')),
+        url(r'^(?P<id_proyecto>\d+)$', 'proyectos.viewsProyectos.detalle_proyecto'),
+        url(r'^search/$',viewsProyectos.buscar_proyecto, name='buscar_proyectos'),
+        url(r'^modificar/(?P<id_proyecto>\d+)$', 'proyectos.viewsProyectos.editar_proyecto'),
+          url(r'^register/success/$',
+        viewsProyectos.RegisterSuccessView.as_view(
+        ), name='register-success'),
         )

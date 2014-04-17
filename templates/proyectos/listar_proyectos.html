@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+	<head>
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea cambiar el estado?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+
+
+    <center><h1>Administracion de Proyectos</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Nombre</th>
+	            <th style="text-align:center">Estado</th>
+	            <th style="text-align:center">Lider</th>
+	            <th colspan="2" style="text-align:center">Opciones</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos  %}
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.nombre }}</td>
+				<td>{{ dato.estado }}</td>
+		        {% for lider in lideres %}
+                        <td>{{ lider }}</td>
+                {% endfor %}
+		                <td>
+                	    <a class="btn" href="/proyectos/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
+                    {% comment %}<form action='{% url 'fases.viewsFases.detalle_fase' dato.pk %}'>
+                        <input type="submit" value="Ver Detalle">
+                        </form>{% endcomment %}
+                </td>
+                <td>
+                     <a class="btn" href="/proyectos/modificar/{{ dato.pk }}"><li class="icon-eye-open"></li> Modificar</a>
+                    </form>
+                </td>
+			</tr>
+            {% empty %}
+                <li>Aún no hay proyectos registrados</li>
+	    {% endfor %}
+
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/proyectos/registrar"><li class="icon-plus"></li> Agregar un Proyecto</a>
+                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
+ {% block busqueda %}
+
+        <body>
+  <h1>Buscar Proyectos</h1>
+  <form action='{% url 'proyectos.viewsProyectos.buscar_proyecto' %}'>
+    <label for="q">Nombre: </label>
+    <input type="text" name="q" value="{{ query|escape }}">
+    <li class="icon-search"></li><input type="submit" value="Buscar">
+  </form>
+
+
+</body>
+    {% endblock %}
+
