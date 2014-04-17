@@ -8,5 +8,5 @@ from fases import viewsFases
 urlpatterns = patterns('',
         url(r'^registrar/$','fases.viewsFases.registrar_fase'),
         url(r'^$',login_required(viewsFases.listar_fases,'/fases','/login')),
-        url(r'^/(?P<id_fase>\d+)$', 'fases.viewsFases.detalle_fase'),
+        url(r'^(?P<id_fase>\d+)$', 'fases.viewsFases.detalle_fase'),
         )
