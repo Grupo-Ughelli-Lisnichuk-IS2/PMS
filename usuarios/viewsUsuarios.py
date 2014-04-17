@@ -115,7 +115,7 @@ def cambiar_pass (request,
             # formulario validado correctamente
             perfil_form.save()
 
-            return HttpResponseRedirect('/register/success/')
+            return HttpResponseRedirect('/usuarios/register/success/')
      else:
         # formulario inicial
         perfil_form=password_change_form(user=request.user)
@@ -130,7 +130,7 @@ def editar_perfil(request):
         if user_form.is_valid():
             # formulario validado correctamente
             user_form.save()
-            return HttpResponseRedirect('/register/success/')
+            return HttpResponseRedirect('/usuarios/register/success/')
 
     else:
         # formulario inicial

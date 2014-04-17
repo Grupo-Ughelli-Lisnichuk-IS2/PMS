@@ -16,5 +16,6 @@ class Proyecto(models.Model):
     fecha_ini=models.DateField(null=False)
     fecha_fin=models.DateField(null=False)
     estado=models.CharField(max_length=3,choices= ESTADOS, default='PEN')
-    lider = models.ForeignKey(User)
+    lider = models.ForeignKey(User, related_name='lider')
     observaciones = models.TextField(verbose_name='Observaciones')
+    comite = models.ManyToManyField(User, related_name='comite')

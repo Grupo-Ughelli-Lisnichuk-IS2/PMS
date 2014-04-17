@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import Group, Permission
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.template import RequestContext
-from roles.forms import GroupForm
+from django.views.generic import TemplateView
+from roles.formsRoles import GroupForm
 from django.shortcuts import render_to_response
 from django.db.models import Q
 # Create your views here.
@@ -15,7 +16,7 @@ def crear_rol(request):
         if group_form.is_valid():
             # formulario validado correctamente
             group_form.save()
-            return HttpResponseRedirect('/register/success/')
+            return HttpResponseRedirect('/roles/register/success/')
 
     else:
         # formulario inicial
@@ -72,6 +73,9 @@ def eliminar_rol(request, id_rol):
     dato.delete()
     grupos = Group.objects.all()
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
+
+class RegisterSuccessView(TemplateView):
+    template_name = 'roles/creacion_correcta.html'
 
 def editar_rol(request,id_rol):
     rol= Group.objects.get(id=id_rol)
