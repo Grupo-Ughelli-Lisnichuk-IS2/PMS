@@ -13,9 +13,10 @@ def registrar_proyecto(request):
     '''
     if request.method=='POST':
         formulario = ProyectoForm(request.POST)
+
         if formulario.is_valid():
             formulario.save()
-            return HttpResponseRedirect('proyecto/register/success')
+            return HttpResponseRedirect('/proyecto/register/success')
     else:
         formulario = ProyectoForm()
     return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -42,11 +43,8 @@ def listar_proyectos(request):
     '''
 
     proyectos = Proyecto.objects.all()
-    lideres = []
-    for lider in proyectos:
-        aux=User.objects.get(id=(lider.lider_id))
-        lideres.append(aux.username)
-    return render_to_response('proyectos/listar_proyectos.html', {'datos': proyectos, 'lideres':lideres}, context_instance=RequestContext(request))
+
+    return render_to_response('proyectos/listar_proyectos.html', {'datos': proyectos}, context_instance=RequestContext(request))
 
 def buscar_proyecto(request):
     '''
@@ -58,15 +56,12 @@ def buscar_proyecto(request):
             Q(nombre=query)
         )
         results = Proyecto.objects.filter(qset).distinct()
-        lideres=[]
-        for lider in results:
-            aux=User.objects.get(id=(lider.lider_id))
-            lideres.append(aux.username)
+
     else:
         results = []
-        lideres = []
 
-    return render_to_response('proyectos/listar_proyectos.html', {'datos': results, 'lideres': lideres}, context_instance=RequestContext(request))
+
+    return render_to_response('proyectos/listar_proyectos.html', {'datos': results}, context_instance=RequestContext(request))
 
 def editar_proyecto(request,id_proyecto):
     proyecto= Proyecto.objects.get(id=id_proyecto)

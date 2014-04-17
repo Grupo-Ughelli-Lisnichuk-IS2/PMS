@@ -44,13 +44,16 @@
         </theader>
 
 	    {% for dato in datos  %}
+
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
 				<td>{{ dato.nombre }}</td>
 				<td>{{ dato.estado }}</td>
-		        {% for lider in lideres %}
-                        <td>{{ lider }}</td>
-                {% endfor %}
+                <td>{{ dato.lider }}</td>
+
+
+
+
 		                <td>
                 	    <a class="btn" href="/proyectos/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
                     {% comment %}<form action='{% url 'fases.viewsFases.detalle_fase' dato.pk %}'>
@@ -64,8 +67,8 @@
 			</tr>
             {% empty %}
                 <li>Aún no hay proyectos registrados</li>
-	    {% endfor %}
 
+{% endfor %}
 	</table>
     </center>
 
