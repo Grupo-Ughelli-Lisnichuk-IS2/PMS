@@ -40,7 +40,7 @@
 	            <th style="text-align:center">Orden</th>
 	            <th style="text-align:center">Nombre</th>
 	            <th style="text-align:center">Estado</th>
-	            <th colspan="2" style="text-align:center">Opciones</th>
+	            <th colspan="1" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -57,11 +57,14 @@
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
                 </td>
-{% comment %}                <td>
+                <td>
+
+	    <a class="btn" href="/fases/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
+{% comment %}
                     <form class="ask-plain" action='{% url 'usuarios.viewsUsuarios.modificar_usuario' dato.pk %}'  >
                         <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
                     </form>
-                </td>{% endcomment %}
+{% endcomment %}                </td>
 			</tr>
             {% empty %}
                 <li>Aún no hay usuarios registrados</li>
@@ -82,6 +85,9 @@
 	<br>
 
 {% endblock %}
+
+{% comment %}
+
  {% block busqueda %}
 
         <body>
@@ -95,4 +101,4 @@
 
 </body>
     {% endblock %}
-
+{% endcomment %}

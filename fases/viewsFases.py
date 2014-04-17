@@ -3,7 +3,7 @@ from fases.models import Fase
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from fases.formsFases import FaseForm
+from fases.formsFases import FaseForm, ModificarFaseForm
 
 
 # Create your views here.
@@ -37,3 +37,20 @@ def detalle_fase(request, id_fase):
 
     dato = get_object_or_404(Fase, pk=id_fase)
     return render_to_response('fases/detalle_fase.html', {'datos': dato}, context_instance=RequestContext(request))
+
+
+def editar_fase(request,id_fase):
+    fase= Fase.objects.get(id=id_fase)
+    if request.method == 'POST':
+        # formulario enviado
+        fase_form = ModificarFaseForm(request.POST, instance=fase)
+
+        if fase_form.is_valid():
+            # formulario validado correctamente
+            fase_form.save()
+            return HttpResponseRedirect('/register/success/')
+    else:
+        # formulario inicial
+        fase_form = ModificarFaseForm(instance=fase)
+    return render_to_response('fases/editar_fase.html', { 'form': fase_form, 'fase': fase}, context_instance=RequestContext(request))
+

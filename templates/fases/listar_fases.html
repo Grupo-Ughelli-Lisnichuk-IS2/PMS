@@ -57,11 +57,14 @@
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
                 </td>
-{% comment %}                <td>
+                <td>
+
+	    <a class="btn" href="/fases/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
+{% comment %}
                     <form class="ask-plain" action='{% url 'usuarios.viewsUsuarios.modificar_usuario' dato.pk %}'  >
                         <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
                     </form>
-                </td>{% endcomment %}
+{% endcomment %}                </td>
 			</tr>
             {% empty %}
                 <li>Aún no hay usuarios registrados</li>

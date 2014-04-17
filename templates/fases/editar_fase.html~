@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Editar {{fase.nombre|title}}</h1>
+	<br>
+    </center>
+<form action="" method="post">{% csrf_token %}
+    {{ form }}
+
+    <input type="submit" value="Guardar cambios">
+</form>
+      <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/fases"><li class="icon-arrow-left"></li> Regresar</a>
+
+            </ul>
+       </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Detalles de {{datos.nombre|title}}</h1>
+    </center>
+          	<br>
+          	<br>
+            <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
+
+
+            <div><strong>Id: </strong>{{ datos.id }}</div>
+            <div><label><b>Orden: </b></label>{{ datos.orden }}</div>
+            <div><label><b>Nombre: </b></label>{{ datos.nombre }}</div>
+            <div><label><b>Descripción: </b></label>{{ datos.descripcion }}</div>
+            <div><label><b>Cantidad Máxima de Items: </b></label>{{ datos.maxItems }}</div>
+            <div><label><b>Estado: </b></label>{{ datos.estado }}</div>
+            <div><label><b>Fecha de Inicio: </b></label>{{ datos.fInicio }}</div>
+            <div><label><b>Fecha de Creación: </b></label>{{ datos.fCreacion }}</div>
+            <div><label><b>Fecha de Modificación: </b></label>{{ datos.fmodificacion }}</div>
+            <center>
+            <form action="/fases">
+            <input type="submit" value="Regresar al listado">
+            </form>
+            </center>
+</div>
+{% endblock %}
+</html>
