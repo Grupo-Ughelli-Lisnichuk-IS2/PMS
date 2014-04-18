@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from proyectos.models import Proyecto
 from fases.models import Fase
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models import Q
 def registrar_proyecto(request):
     '''
@@ -16,6 +16,9 @@ def registrar_proyecto(request):
         formulario = ProyectoForm(request.POST)
 
         if formulario.is_valid():
+            lider=formulario.cleaned_data['lider']
+            roles = Group.objects.get(name='Lider')
+            lider.groups.add(roles)
             formulario.save()
             return HttpResponseRedirect('/proyectos/register/success')
     else:
