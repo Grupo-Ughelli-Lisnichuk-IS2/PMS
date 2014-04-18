@@ -150,7 +150,7 @@ def modificar_usuario(request, id_user):
     if dato.is_active == False:
         roles=User.objects.filter(groups__id=dato.id)
         comite=Proyecto.objects.filter(comite__id=dato.id)
-        if comite.count()==0 and roles.count()==0:
+        if comite.count()==0 and roles.count():
             dato.save()
             messages.add_message(request, settings.DELETE_MESSAGE, "Estado Cambiado")
 

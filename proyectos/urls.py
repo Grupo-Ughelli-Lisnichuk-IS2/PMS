@@ -14,7 +14,6 @@ urlpatterns = patterns('',
         url(r'^cambiarEstado/(?P<id_proyecto>\d+)$', 'proyectos.viewsProyectos.cambiar_estado_proyecto'),
         url(r'^importar/(?P<id_proyecto>\d+)$', 'proyectos.viewsProyectos.importar_proyecto'),
         url(r'^register/success/$',
-        viewsProyectos.RegisterSuccessView.as_view(
-        ), name='register-success'),
+        'proyectos.viewsProyectos.RegisterSuccessView'),
         url(r'^register/failed/(?P<id_proyecto>\d+)$','proyectos.viewsProyectos.RegisterFailedView')
         )

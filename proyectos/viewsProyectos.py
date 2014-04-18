@@ -59,8 +59,8 @@ def importar_proyecto(request, id_proyecto):
 
 
 @login_required
-class RegisterSuccessView(TemplateView):
-    template_name = 'proyectos/creacion_correcta.html'
+def RegisterSuccessView(request):
+    return HttpResponseRedirect ('/proyectos/register/success/')
 
 
 @login_required
