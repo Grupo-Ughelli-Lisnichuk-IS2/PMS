@@ -17,9 +17,24 @@ def registrar_proyecto(request):
 
         if formulario.is_valid():
             formulario.save()
-            return HttpResponseRedirect('/proyecto/register/success')
+            return HttpResponseRedirect('/proyectos/register/success')
     else:
         formulario = ProyectoForm()
+    return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+def importar_proyecto(request, id_proyecto):
+    '''
+    Vista para registrar un nuevo proyecto con su lider
+    '''
+    proyecto=Proyecto.objects.get(id=id_proyecto)
+    if request.method=='POST':
+        formulario = ProyectoForm(request.POST, initial={'nombre':proyecto.nombre,'observaciones':proyecto.observaciones, 'descripcion':proyecto.descripcion, 'fecha_ini':proyecto.fecha_ini, 'fecha_fin':proyecto.fecha_fin} )
+
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/proyectos/register/success')
+    else:
+        formulario = ProyectoForm(initial={'nombre':proyecto.nombre,'observaciones':proyecto.observaciones, 'descripcion':proyecto.descripcion, 'fecha_ini':proyecto.fecha_ini, 'fecha_fin':proyecto.fecha_fin} )
     return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 class RegisterSuccessView(TemplateView):
