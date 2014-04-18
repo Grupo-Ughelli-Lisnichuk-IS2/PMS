@@ -23,7 +23,7 @@ def registrar_fase(request,id_proyecto):
         formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
 
-            fecha=datetime.strptime(str(request.POST["fInicio"]),'%m/%d/%y')
+            fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
             fecha=fecha.strftime('%Y-%m-%d')
             newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
             newFase.save()
@@ -85,11 +85,10 @@ def importar_fase(request, id_fase,id_proyecto):
         proyecto = Proyecto.objects.get(id=id_proyecto)
         formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
-            fecha=datetime.strptime(str(request.POST["fInicio"]),'%m/%d/%y')
+            fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
             fecha=fecha.strftime('%Y-%m-%d')
             newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
             newFase.save()
-            formulario.save()
             return HttpResponseRedirect('/principal')
     else:
         formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden})
