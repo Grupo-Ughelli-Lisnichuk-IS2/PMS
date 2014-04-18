@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from proyectos.formsProyectos import ProyectoForm, CambiarEstadoForm
@@ -11,8 +10,6 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from django.contrib import messages
 from PMS import settings
-
-@login_required
 def registrar_proyecto(request):
     '''
     Vista para registrar un nuevo proyecto con su lider
@@ -34,7 +31,6 @@ def registrar_proyecto(request):
         formulario = ProyectoForm()
     return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
-@login_required
 def importar_proyecto(request, id_proyecto):
     '''
     Vista para registrar un nuevo proyecto con su lider
@@ -56,18 +52,13 @@ def importar_proyecto(request, id_proyecto):
         formulario = ProyectoForm(initial={'nombre':proyecto.nombre,'observaciones':proyecto.observaciones, 'descripcion':proyecto.descripcion, 'fecha_ini':proyecto.fecha_ini, 'fecha_fin':proyecto.fecha_fin} )
     return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
-
-@login_required
 class RegisterSuccessView(TemplateView):
     template_name = 'proyectos/creacion_correcta.html'
 
 
-@login_required
 def RegisterFailedView(request, id_proyecto):
     return render_to_response('proyectos/cambio_estado_fallido.html', {'dato': id_proyecto}, context_instance=RequestContext(request))
 
-
-@login_required
 def detalle_proyecto(request, id_proyecto):
 
     '''
@@ -80,7 +71,7 @@ def detalle_proyecto(request, id_proyecto):
     return render_to_response('proyectos/detalle_proyecto.html', {'proyecto': dato, 'comite': comite, 'lider':lider}, context_instance=RequestContext(request))
 
 
-@login_required
+
 def listar_proyectos(request):
     '''
     vista para listar los proyectos del sistema del sistema junto con el nombre de su lider
@@ -91,7 +82,6 @@ def listar_proyectos(request):
 
     return render_to_response('proyectos/listar_proyectos.html', {'datos': proyectos}, context_instance=RequestContext(request))
 
-@login_required
 def buscar_proyecto(request):
     '''
     vista para buscar los proyectos del sistema
@@ -108,7 +98,7 @@ def buscar_proyecto(request):
 
 
     return render_to_response('proyectos/listar_proyectos.html', {'datos': results}, context_instance=RequestContext(request))
-@login_required
+
 def editar_proyecto(request,id_proyecto):
     proyecto= Proyecto.objects.get(id=id_proyecto)
     nombre= proyecto.nombre
@@ -130,8 +120,6 @@ def editar_proyecto(request,id_proyecto):
         proyecto_form = ProyectoForm(instance=proyecto)
     return render_to_response('proyectos/editar_proyecto.html', { 'proyecto': proyecto_form, 'nombre':nombre}, context_instance=RequestContext(request))
 
-
-@login_required
 def cambiar_estado_proyecto(request,id_proyecto):
     proyecto= Proyecto.objects.get(id=id_proyecto)
     nombre= proyecto.nombre
@@ -149,10 +137,10 @@ def cambiar_estado_proyecto(request,id_proyecto):
                             return render_to_response('proyectos/cambio_estado_fallido.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
                         if cantidad<3:
                             return render_to_response('proyectos/cambio_estado_fallido.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
-                        fases=Fase.objects.filter(proyecto_id=id_proyecto)
-                        for fase in fases:
-                            fase.estado='EJE'
-                            fase.save()
+                       # fases=Fase.objects.filter(proyecto_id=id_proyecto)
+                        #for fase in fases:
+                         #   fase.estado='EJE'
+                          #  fase.save()
                         # formulario validado correctamente
                         proyecto_form.save()
                         return HttpResponseRedirect('/proyectos/register/success/')
