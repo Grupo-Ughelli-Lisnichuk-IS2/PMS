@@ -47,8 +47,10 @@
         <div class="row-fluid">
             <div class="span12">
                 <div class="hero-unit">
-                 {% if messages %}
-		    <div class="messages">
+
+                    {% if messages %}
+
+                     <div class="messages">
 		        {% for message in messages %}
 		            <li{% if message.tags %} class= "{{ message.tags }}"{% endif %}>{{ message }}</li>
 		        {% endfor %}
@@ -56,6 +58,7 @@
 	    {% endif %}
 	                {% block contenido %}
 	                {% endblock %}
+
                 </div>
             </div>
         </div>
