@@ -5,7 +5,7 @@ from proyectos.models import Proyecto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesForm
+from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesForm, AsignarForm
 from datetime import datetime
 
 
@@ -113,6 +113,7 @@ def asignar_usuario(request,id_fase):
     usuarios=User.objects.filter(is_active=True)
     fase=Fase.objects.get(id=id_fase)
     return render_to_response('fases/lista_usuarios.html', {'datos': usuarios, 'fase' : fase}, context_instance=RequestContext(request))
+
 def asignar_rol(request,id_usuario, id_fase):
     '''
     vista para listar las fases de un proyecto
