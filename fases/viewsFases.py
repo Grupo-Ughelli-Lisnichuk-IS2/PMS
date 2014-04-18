@@ -122,7 +122,7 @@ def asignar_rol(request,id_usuario, id_fase):
     if request.method=='POST':
 
 
-        formulario = RolesForm(request.POST, fase=fase)
+        formulario = RolesForm(request.POST, fase=id_fase)
         if formulario.is_valid():
             roles = request.POST.getlist("roles")
             for rol in roles:
@@ -130,5 +130,5 @@ def asignar_rol(request,id_usuario, id_fase):
             usuario.save()
             return HttpResponseRedirect('/fases/proyecto/'+str(fase.proyecto_id))
     else:
-        formulario = RolesForm(fase=fase)
+        formulario = RolesForm(fase=id_fase)
     return render_to_response('fases/listar_roles.html', {'roles': formulario, 'usuario':usuario}, context_instance=RequestContext(request))
