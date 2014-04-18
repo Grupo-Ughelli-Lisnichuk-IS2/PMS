@@ -11,6 +11,9 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from django.contrib import messages
 from PMS import settings
+from django.shortcuts import redirect
+
+
 
 @login_required
 def registrar_proyecto(request):
@@ -83,6 +86,7 @@ def detalle_proyecto(request, id_proyecto):
 
 @login_required
 def listar_proyectos(request):
+
     '''
     vista para listar los proyectos del sistema del sistema junto con el nombre de su lider
     '''
