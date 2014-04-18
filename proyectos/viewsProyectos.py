@@ -65,7 +65,8 @@ def listar_proyectos(request):
     vista para listar los proyectos del sistema del sistema junto con el nombre de su lider
     '''
 
-    proyectos = Proyecto.objects.all()
+    proyectos = Proyecto.objects.all().exclude(estado='ACT')
+
 
     return render_to_response('proyectos/listar_proyectos.html', {'datos': proyectos}, context_instance=RequestContext(request))
 
