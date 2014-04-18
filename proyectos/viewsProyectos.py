@@ -154,10 +154,10 @@ def cambiar_estado_proyecto(request,id_proyecto):
                             return render_to_response('proyectos/cambio_estado_fallido.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
                         if cantidad<3:
                             return render_to_response('proyectos/cambio_estado_fallido.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
-                       # fases=Fase.objects.filter(proyecto_id=id_proyecto)
-                        #for fase in fases:
-                         #   fase.estado='EJE'
-                          #  fase.save()
+                        fases=Fase.objects.filter(proyecto_id=id_proyecto)
+                        for fase in fases:
+                            fase.estado='EJE'
+                            fase.save()
                         # formulario validado correctamente
                         proyecto_form.save()
                         return HttpResponseRedirect('/proyectos/register/success/')
