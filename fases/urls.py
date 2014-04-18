@@ -12,4 +12,6 @@ urlpatterns = patterns('',
         url(r'^modificar/(?P<id_fase>\d+)$', 'fases.viewsFases.editar_fase'),
         url(r'^sistema/(?P<id_proyecto>\d+)$',login_required(viewsFases.fases_sistema,'/fases/sistema','/login')),
         url(r'^importar/(?P<id_fase>\d+)-(?P<id_proyecto>\d+)$', 'fases.viewsFases.importar_fase'),
+        url(r'^asignar/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_usuario'),
+        url(r'^asignar/(?P<id_usuario>\d+)/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_rol'),
         )

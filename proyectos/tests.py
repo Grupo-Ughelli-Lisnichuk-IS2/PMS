@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from proyectos.models import Proyecto
+from usuarios.tests import PMSTestCase
 # Create your tests here.
 class PMSTestCase(TestCase):
     def test_crear_proyecto(self):

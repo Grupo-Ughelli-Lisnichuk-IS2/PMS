@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block contenido %}
+
+
+
+
+    <center><h1>Listado de Roles para {{ usuario.first_name }} {{ usuario.last_name }}</h1></center>
+
+ <br>
+
+<form id="formulario" method="post" action="">{% csrf_token %} {{ formulario }}
+<p><input type="submit" value="Asignar Rol"></p>
+</form>
+
+{% endblock %}
+ {% block busqueda %}
+    {% endblock %}

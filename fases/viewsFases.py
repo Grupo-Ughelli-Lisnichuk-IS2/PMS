@@ -1,10 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from fases.models import Fase
 from proyectos.models import Proyecto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm
+from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesForm
 from datetime import datetime
 
 
@@ -32,7 +33,7 @@ def registrar_fase(request,id_proyecto):
             for rol in roles:
                newFase.roles.add(rol)
             newFase.save()
-            return HttpResponseRedirect('/principal')
+            return HttpResponseRedirect('/fases/proyecto/'+str(id_proyecto))
     else:
         formulario = CrearFaseForm()
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -104,4 +105,30 @@ def importar_fase(request, id_fase,id_proyecto):
 
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
+def asignar_usuario(request,id_fase):
+    '''
+    vista para listar las fases de un proyecto
+    '''
 
+    usuarios=User.objects.filter(is_active=True)
+    fase=Fase.objects.get(id=id_fase)
+    return render_to_response('fases/lista_usuarios.html', {'datos': usuarios, 'fase' : fase}, context_instance=RequestContext(request))
+def asignar_rol(request,id_usuario, id_fase):
+    '''
+    vista para listar las fases de un proyecto
+    '''
+    fase=Fase.objects.get(id=id_fase)
+    usuario=User.objects.get(id=id_usuario)
+    if request.method=='POST':
+
+
+        formulario = RolesForm(request.POST, fase=fase)
+        if formulario.is_valid():
+            roles = request.POST.getlist("roles")
+            for rol in roles:
+               usuario.groups.add(rol)
+            usuario.save()
+            return HttpResponseRedirect('/fases/proyecto/'+str(fase.proyecto_id))
+    else:
+        formulario = RolesForm(fase=fase)
+    return render_to_response('fases/listar_roles.html', {'roles': formulario, 'usuario':usuario}, context_instance=RequestContext(request))

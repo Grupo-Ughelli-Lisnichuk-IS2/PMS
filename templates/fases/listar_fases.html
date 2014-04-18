@@ -40,7 +40,7 @@
 	            <th style="text-align:center">Orden</th>
 	            <th style="text-align:center">Nombre</th>
 	            <th style="text-align:center">Estado</th>
-	            <th colspan="2" style="text-align:center">Opciones</th>
+	            <th colspan="3" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -60,6 +60,7 @@
                 <td>
 
 	    <a class="btn" href="/fases/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
+        <a class="btn" href="/fases/asignar/{{dato.id}}"><li class="icon-user"></li> Asignar Usuario</a>
                 </td>
 			</tr>
             {% empty %}
@@ -75,6 +76,7 @@
             <ul class="nav nav-list">
                 <a class="btn" href="/fases/registrar/{{proyecto.id}}"><li class="icon-plus"></li> Agregar una fase</a>
                 <a class="btn" href="/fases/sistema/{{proyecto.id}}"><li class="icon-share"></li> Importar una fase</a>
+
                 <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block contenido %}
+
+
+
+    <center><h1>Lista de Usuarios</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Usuario</th>
+	            <th style="text-align:center">Nombre</th>
+	            <th style="text-align:center">Apellido</th>
+	            <th colspan="1" style="text-align:center">Asignar</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos %}
+			<tr border="2" >
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.username }}</td>
+				<td>{{ dato.first_name }}</td>
+				<td>{{ dato.last_name }}</td>
+                <td>
+                    <a class="btn"  href="/fases/asignar/{{ dato.pk }}/{{ fase.id }}"><li  class="icon-plus"></li></a>
+                    {% comment %}<form action='{% url 'usuarios.viewsUsuarios.detalle_usuario' dato.pk %}'>
+                        <input type="submit" value="Ver Detalle">
+                        </form>{% endcomment %}
+                </td>
+			</tr>
+            {% empty %}
+                <li>Aún no hay usuarios registrados</li>
+	    {% endfor %}
+
+	</table>
+    </center>
+
+</form>
+
+
+{% endblock %}
+ {% block busqueda %}
+
+    {% endblock %}
