@@ -16,13 +16,7 @@
     </style>{% endcomment %}
     {% block iconos %}
 	    <link rel='shortcut icon' href='/static/logo.png'>
-	    {% if messages %}
-		    <ul class="messages">
-		        {% for message in messages %}
-		            <li{% if message.tags %} class= "{{ message.tags }}"{% endif %}>{{ message }}</li>
-		        {% endfor %}
-		    </ul>
-	    {% endif %}
+
     {% endblock %}
 
 </head>
@@ -34,7 +28,8 @@
                     <div class="btn-group pull-right">
     <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ user.username }}</a>
     <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-    <ul class="dropdown-menu">
+
+                        <ul class="dropdown-menu">
     <li><a href="/configurar"><i class="icon-pencil"></i> Configurar Cuenta</a></li>
     <li class="divider"></li>
     <li><a href='/logout'><i class="icon-off"></i> Cerrar Sesion</a></li>
@@ -52,6 +47,13 @@
         <div class="row-fluid">
             <div class="span12">
                 <div class="hero-unit">
+                 {% if messages %}
+		    <div class="messages">
+		        {% for message in messages %}
+		            <li{% if message.tags %} class= "{{ message.tags }}"{% endif %}>{{ message }}</li>
+		        {% endfor %}
+		    </div>
+	    {% endif %}
 	                {% block contenido %}
 	                {% endblock %}
                 </div>

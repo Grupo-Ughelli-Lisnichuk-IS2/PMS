@@ -6,6 +6,9 @@ from django.views.generic import TemplateView
 from roles.formsRoles import GroupForm
 from django.shortcuts import render_to_response
 from django.db.models import Q
+from fases.models import Fase
+from django.contrib import messages
+from PMS import settings
 # Create your views here.
 def crear_rol(request):
 
@@ -70,7 +73,12 @@ def eliminar_rol(request, id_rol):
 
     #for permiso in permisos:
      #   permiso.d
-    dato.delete()
+    fases=Fase.objects.filter(groups__id=dato.id)
+    if fases.count()==0:
+        dato.delete()
+        messages.add_message(request, settings.DELETE_MESSAGE, "Rol eliminado")
+    else:
+        messages.add_message(request, settings.DELETE_MESSAGE, "El rol posee fase(s) asociada(s). No se puede eliminar")
     grupos = Group.objects.all()
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
 

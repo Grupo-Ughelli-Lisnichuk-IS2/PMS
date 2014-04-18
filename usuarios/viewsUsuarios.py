@@ -13,6 +13,7 @@ from django.db.models import Q
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib import messages
+from proyectos.models import Proyecto
 from django.template.response import TemplateResponse
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 __author__ = 'Grupo R13'
@@ -146,8 +147,18 @@ def modificar_usuario(request, id_user):
 
     dato = get_object_or_404(User, pk=id_user)
     dato.is_active = not (dato.is_active)
-    dato.save()
-    messages.add_message(request, settings.DELETE_MESSAGE, "Estado Cambiado")
+    if dato.is_active == False:
+        roles=User.objects.filter(groups__id=dato.id)
+        comite=Proyecto.objects.filter(comite__id=dato.id)
+        if comite.count()==0 and roles.count()==0:
+            dato.save()
+            messages.add_message(request, settings.DELETE_MESSAGE, "Estado Cambiado")
+
+        else:
+            messages.add_message(request, settings.DELETE_MESSAGE, "No se puede cambiar el estado del Usuario. Tiene rol(es) asociado(s)")
+    else:
+        dato.save()
+        messages.add_message(request, settings.DELETE_MESSAGE, "Estado Cambiado")
     usuarios = User.objects.all().order_by('is_active').reverse()
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
