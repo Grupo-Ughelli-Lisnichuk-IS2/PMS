@@ -11,5 +11,5 @@ urlpatterns = patterns('',
         url(r'^(?P<id_fase>\d+)$', 'fases.viewsFases.detalle_fase'),
         url(r'^modificar/(?P<id_fase>\d+)$', 'fases.viewsFases.editar_fase'),
         url(r'^sistema/(?P<id_proyecto>\d+)$',login_required(viewsFases.fases_sistema,'/fases/sistema','/login')),
-        url(r'^importar/(?P<id_fase>\d+)$', 'fases.viewsFases.importar_fase'),
+        url(r'^importar/(?P<id_fase>\d+)-(?P<id_proyecto>\d+)$', 'fases.viewsFases.importar_fase'),
         )

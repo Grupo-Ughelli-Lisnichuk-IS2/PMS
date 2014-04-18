@@ -4,30 +4,39 @@ from proyectos.models import Proyecto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from fases.formsFases import FaseForm, ModificarFaseForm
+from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm
 
 
 # Create your views here.
 
-def registrar_fase(request, id_proyecto):
+def registrar_fase(request):
     if request.method=='POST':
         formulario = FaseForm(request.POST)
         if formulario.is_valid():
             formulario.save()
             return HttpResponseRedirect('/principal')
     else:
-        formulario = FaseForm(initial={'proyecto_id': id_proyecto})
+        formulario = FaseForm()
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 
-def listar_fases(request, id_proyecto):
+def listar_fases(request,id_proyecto):
+    '''
+    vista para listar las fases de un proyecto
+    '''
+
+    fases = Fase.objects.filter(proyecto_id=id_proyecto)
+    proyecto = Proyecto.objects.get(id=id_proyecto)
+    return render_to_response('fases/listar_fases.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
+
+
+def fases_sistema(request,id_proyecto):
     '''
     vista para listar las fases del sistema
     '''
-    fases = Fase.objects.filter(proyecto_id=id_proyecto)
+    fases = Fase.objects.all()
     proyecto = Proyecto.objects.get(id=id_proyecto)
-    return render_to_response('fases/listar_fases.html', {'datos': fases, 'proyecto':proyecto}, context_instance=RequestContext(request))
-
+    return render_to_response('fases/fases_sistema.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
 
 
 def detalle_fase(request, id_fase):
@@ -56,22 +65,15 @@ def editar_fase(request,id_fase):
     return render_to_response('fases/editar_fase.html', { 'form': fase_form, 'fase': fase}, context_instance=RequestContext(request))
 
 
-def fases_sistema(request,id_proyecto):
-    '''
-    vista para listar las fases del sistema
-    '''
 
-    fases = Fase.objects.all()
-    proyecto = Proyecto.objects.get(id=id_proyecto)
-    return render_to_response('fases/fases_sistema.html', {'datos': fases, 'proyecto':proyecto}, context_instance=RequestContext(request))
-
-def importar_fase(request, id_fase):
+def importar_fase(request, id_fase,id_proyecto):
     fase= Fase.objects.get(id=id_fase)
     if request.method=='POST':
-        formulario = FaseForm(request.POST)
+        formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
             formulario.save()
             return HttpResponseRedirect('/principal')
     else:
-        formulario = FaseForm(initial={'nombre':fase.nombre, 'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio})
+        formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden})
+
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))

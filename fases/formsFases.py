@@ -6,6 +6,11 @@ class FaseForm(ModelForm):
     class Meta:
         model = Fase
 
+class CrearFaseForm(ModelForm):
+    class Meta:
+        model = Fase
+        fields = ('nombre', 'descripcion', 'maxItems', 'fInicio', 'orden', 'roles')
+
 class ModificarFaseForm(ModelForm):
     class Meta:
         model = Fase
