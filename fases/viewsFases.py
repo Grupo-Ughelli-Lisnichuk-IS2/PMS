@@ -26,6 +26,11 @@ def registrar_fase(request,id_proyecto):
             fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
             fecha=fecha.strftime('%Y-%m-%d')
             newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
+
+            newFase.save()
+            roles = request.POST.getlist("roles")
+            for rol in roles:
+               newFase.roles.add(rol)
             newFase.save()
             return HttpResponseRedirect('/principal')
     else:
@@ -88,6 +93,10 @@ def importar_fase(request, id_fase,id_proyecto):
             fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
             fecha=fecha.strftime('%Y-%m-%d')
             newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
+            newFase.save()
+            roles = request.POST.getlist("roles")
+            for rol in roles:
+               newFase.roles.add(rol)
             newFase.save()
             return HttpResponseRedirect('/principal')
     else:
