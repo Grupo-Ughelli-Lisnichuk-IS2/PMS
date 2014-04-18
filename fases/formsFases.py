@@ -6,7 +6,6 @@ class FaseForm(ModelForm):
     class Meta:
         model = Fase
 
-
 class ModificarFaseForm(ModelForm):
     class Meta:
         model = Fase

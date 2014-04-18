@@ -60,14 +60,10 @@
                 <td>
 
 	    <a class="btn" href="/fases/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
-{% comment %}
-                    <form class="ask-plain" action='{% url 'usuarios.viewsUsuarios.modificar_usuario' dato.pk %}'  >
-                        <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
-                    </form>
-{% endcomment %}                </td>
+                </td>
 			</tr>
             {% empty %}
-                <li>Aún no hay usuarios registrados</li>
+                <li>Aún no hay fases registradas</li>
 	    {% endfor %}
 
 	</table>
@@ -77,7 +73,8 @@
 
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <a class="btn" href="/fases/registrar"><li class="icon-plus"></li> Agregar una fase</a>
+                <a class="btn" href="/fases/registrar/{{proyecto.id}}"><li class="icon-plus"></li> Agregar una fase</a>
+                <a class="btn" href="/fases/sistema/{{proyecto.id}}"><li class="icon-share"></li> Importar una fase</a>
                 <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>
@@ -86,19 +83,3 @@
 
 {% endblock %}
 
-{% comment %}
-
- {% block busqueda %}
-
-        <body>
-  <h1>Buscar Fase</h1>
-  <form action='{% url 'fases.viewsFases.buscarFase' %}'>
-    <label for="q">Nombre: </label>
-    <input type="text" name="q" value="{{ query|escape }}">
-    <li class="icon-search"></li><input type="submit" value="Buscar">
-  </form>
-
-
-</body>
-    {% endblock %}
-{% endcomment %}
