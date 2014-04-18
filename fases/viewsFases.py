@@ -5,18 +5,31 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm
+from datetime import datetime
 
 
 # Create your views here.
 
-def registrar_fase(request):
+
+#newPost = Post(title = request.POST["title"], url = request.POST["url"], content = request.POST["content"])
+            #guardamos el post
+
+#.datetime.strptime('5/10/1955', '%d/%m/%Y')
+
+
+def registrar_fase(request,id_proyecto):
     if request.method=='POST':
-        formulario = FaseForm(request.POST)
+        proyecto = Proyecto.objects.get(id=id_proyecto)
+        formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
-            formulario.save()
+
+            fecha=datetime.strptime(str(request.POST["fInicio"]),'%m/%d/%y')
+            fecha=fecha.strftime('%Y-%m-%d')
+            newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
+            newFase.save()
             return HttpResponseRedirect('/principal')
     else:
-        formulario = FaseForm()
+        formulario = CrearFaseForm()
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 
