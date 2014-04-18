@@ -3,4 +3,10 @@
 	<form id='formulario' method='post' action=''>{% csrf_token %}{{formulario.as_p}}
 		<p><input type='submit' value='Confirmar'/></p>
 	</form>
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/proyectos"><li class="icon-arrow-left"></li> Regresar</a>
+
+            </ul>
+       </div>
 {% endblock %}

@@ -73,7 +73,7 @@ def eliminar_rol(request, id_rol):
 
     #for permiso in permisos:
      #   permiso.d
-    fases=Fase.objects.filter(groups__id=dato.id)
+    fases=Fase.objects.filter(roles__id=dato.id)
     if fases.count()==0:
         dato.delete()
         messages.add_message(request, settings.DELETE_MESSAGE, "Rol eliminado")
