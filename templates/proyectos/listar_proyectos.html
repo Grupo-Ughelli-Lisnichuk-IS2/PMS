@@ -39,7 +39,7 @@
 	            <th style="text-align:center">Nombre</th>
 	            <th style="text-align:center">Estado</th>
 	            <th style="text-align:center">Lider</th>
-	            <th colspan="2" style="text-align:center">Opciones</th>
+	            <th colspan="3" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -62,7 +62,11 @@
                 </td>
                 <td>
                      <a class="btn" href="/proyectos/modificar/{{ dato.pk }}"><li class="icon-eye-open"></li> Modificar</a>
-                    </form>
+
+                </td>
+                <td>
+                     <a class="btn" href="/proyectos/cambiarEstado/{{ dato.pk }}"><li class="icon-eye-open"></li> Cambiar Estado</a>
+
                 </td>
 			</tr>
             {% empty %}

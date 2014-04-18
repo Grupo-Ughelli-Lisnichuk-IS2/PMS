@@ -5,6 +5,12 @@ from proyectos.models import Proyecto
 from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ValidationError
 
+ESTADOS = (
+
+    ('PEN', 'Pendiente'),
+    ('ANU','Anulado'),
+    ('ACT', 'Activo'),
+)
 
 
 class ProyectoForm(forms.ModelForm):
@@ -15,11 +21,14 @@ class ProyectoForm(forms.ModelForm):
         lider = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True))
         observaciones = forms.CharField(label='Observaciones', widget=forms.Textarea)
         comite = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_active=True) )
+
         class Meta:
             model = Proyecto
             exclude = ['estado']
-
-class ProyectoEditable(ModelForm):
+class CambiarEstadoForm(forms.ModelForm):
+    estado=forms.CharField(max_length=3,widget=forms.Select(choices= ESTADOS))
     class Meta:
-        model= Proyecto
-        fields = ('nombre', 'descripcion', 'observaciones', 'fecha_ini', 'fecha_fin', 'lider', 'comite')
+        model = Proyecto
+        exclude = ['nombre', 'descripcion', 'fecha_ini', 'fecha_fin', 'lider', 'observaciones', 'comite']
+
+

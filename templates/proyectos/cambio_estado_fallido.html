@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>Proyecto no registrado</title>{% endblock %}
+
+
+    </head>
+    <body>
+        {% block contenido %}
+        <div class="container">
+            <h4>El proyecto no posee la cantidad suficiente, o posee un numero par de miembros del comite. Modifiquelos, por favor. <span class="glyphicon glyphicon-ok"></span></h4>
+
+        </div>
+            <a class="btn" href="/proyectos/">< Regresar al listado</a>
+            <a class="btn" href="/proyectos/modificar/{{ dato }}"><li class="icon-eye-open"></li> Modificar</a>
+        {% endblock %}
+{% comment %}
+        <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>
