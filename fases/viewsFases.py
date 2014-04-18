@@ -82,11 +82,18 @@ def editar_fase(request,id_fase):
 def importar_fase(request, id_fase,id_proyecto):
     fase= Fase.objects.get(id=id_fase)
     if request.method=='POST':
+        proyecto = Proyecto.objects.get(id=id_proyecto)
         formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
+            fecha=datetime.strptime(str(request.POST["fInicio"]),'%m/%d/%y')
+            fecha=fecha.strftime('%Y-%m-%d')
+            newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
+            newFase.save()
             formulario.save()
             return HttpResponseRedirect('/principal')
     else:
         formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden})
 
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
+
+
