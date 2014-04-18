@@ -12,18 +12,22 @@ def registrar_proyecto(request):
     '''
     Vista para registrar un nuevo proyecto con su lider
     '''
+    errors=[]
     if request.method=='POST':
         formulario = ProyectoForm(request.POST)
 
         if formulario.is_valid():
-            lider=formulario.cleaned_data['lider']
-            roles = Group.objects.get(name='Lider')
-            lider.groups.add(roles)
-            formulario.save()
-            return HttpResponseRedirect('/proyectos/register/success')
+            if formulario.cleaned_data['fecha_ini']>formulario.cleaned_data['fecha_fin']:
+                errors.append('La fecha de inicio debe ser menor a la fecha de fin')
+            else:
+                lider=formulario.cleaned_data['lider']
+                roles = Group.objects.get(name='Lider')
+                lider.groups.add(roles)
+                formulario.save()
+                return HttpResponseRedirect('/proyectos/register/success')
     else:
         formulario = ProyectoForm()
-    return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario, 'errors':errors}, context_instance=RequestContext(request))
 
 def importar_proyecto(request, id_proyecto):
     '''
