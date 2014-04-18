@@ -84,13 +84,13 @@ class PMSTestCase(TestCase):
         '''
         usuario2 = User.objects.create_user('testuser33', 'test@example.com', 'testpw')
         usuario2.is_active=False
-        resp = self.client.get('/modificar/6?')
+        resp = self.client.get('/usuarios/modificar/6?')
         self.assertEqual(resp.status_code, 200)
 
         self.assertEqual([usuario2.is_active for user in resp.context['datos']], [False])
     def test_buscar_usuarios(self):
       usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
-      resp = self.client.get('/search/?q=testuser')
+      resp = self.client.get('/usuarios/search/?q=testuser')
       self.assertEqual(resp.status_code, 200)
       self.assertEqual([usuario.username for user in resp.context['datos']], ['testuser'])
 
