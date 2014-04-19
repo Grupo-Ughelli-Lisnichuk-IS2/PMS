@@ -174,3 +174,26 @@ def cambiar_estado_proyecto(request,id_proyecto):
         # formulario inicial
         proyecto_form = CambiarEstadoForm(instance=proyecto)
         return render_to_response('proyectos/cambiar_estado_proyecto.html', { 'proyecto': proyecto_form, 'nombre':nombre}, context_instance=RequestContext(request))
+
+
+def ver_equipo(request,id_proyecto):
+    '''
+    vista para listar los proyectos del sistema del sistema junto con el nombre de su lider
+    '''
+    dato=get_object_or_404(Proyecto,pk=id_proyecto)
+    comite = User.objects.filter(comite__id=id_proyecto)
+    lider = get_object_or_404(User, pk=dato.lider_id)
+    fases=Fase.objects.filter(proyecto_id=id_proyecto)
+    nombre_roles=[]
+    usuarios=[]
+    for fase in fases:
+        roles=Group.objects.filter(fase__id=fase.id)
+        for rol in roles:
+            nombre_roles.append(rol)
+    #for nombre in nombre_roles:
+            u=User.objects.filter(groups__id=rol.id)
+
+            for user in u:
+                uu=user.first_name + " " + user.last_name  +  "  -  " + rol.name  +" en la fase   " + fase.nombre +"\n"
+                usuarios.append(uu)
+    return render_to_response('proyectos/ver_equipo.html', {'proyecto':dato,'lider': lider, 'comite':comite, 'usuarios':usuarios}, context_instance=RequestContext(request))

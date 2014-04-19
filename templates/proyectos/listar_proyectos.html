@@ -55,26 +55,24 @@
 
 
 		                <td>
+                            <center>
                 	    <a class="btn" href="/proyectos/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
                     {% comment %}<form action='{% url 'fases.viewsFases.detalle_fase' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
-                </td>
-                <td>
-                     <a class="btn" href="/proyectos/modificar/{{ dato.pk }}"><li class="icon-eye-open"></li> Modificar</a>
 
-                </td>
-                <td>
-                     <a class="btn" href="/proyectos/cambiarEstado/{{ dato.pk }}"><li class="icon-eye-open"></li> Cambiar Estado</a>
+                     <a class="btn" href="/proyectos/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
 
-                </td>
-                <td>
-                     <a class="btn" href="/proyectos/importar/{{ dato.pk }}"><li class="icon-eye-open"></li> Importar</a>
 
-                </td>
-             <td>
-                     <a class="btn" href="/fases/proyecto/{{ dato.pk }}"><li class="icon-eye-open"></li> Fases</a>
+                     <a class="btn" href="/proyectos/cambiarEstado/{{ dato.pk }}"><li class="icon-edit"></li> Cambiar Estado</a>
 
+
+                     <a class="btn" href="/proyectos/importar/{{ dato.pk }}"><li class="icon-share"></li> Importar</a>
+
+
+                     <a class="btn" href="/fases/proyecto/{{ dato.pk }}"><li class="icon-list"></li> Fases</a>
+                     <a class="btn" href="/proyectos/equipo/{{ dato.pk }}"><li class="icon-user"></li> Equipo</a>
+</center>
                 </td>
 			</tr>
             {% empty %}
