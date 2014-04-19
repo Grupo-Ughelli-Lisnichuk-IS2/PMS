@@ -17,13 +17,17 @@
 <center>
 
 
-
+        {%  if perms.auth.user %}
 	    <h2><a href="">Modulo de  Administracion</a></h2>
 
              <ul> <a href='/usuarios'>Usuarios</a></ul>
+    {% endif %}
+        {% if perms.auth.groups %}
              <ul> <a href='/roles'>Roles</a></ul>
+        {% endif %}
+          {% if perms.proyecto %}
 		     <ul> <a href='/proyectos'>Proyectos</a></ul>
-
+          {% endif %}
 
 
 	    <h2><a href="">  Modulo de  Desarrollo</a></h2>

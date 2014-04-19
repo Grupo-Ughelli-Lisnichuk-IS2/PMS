@@ -197,7 +197,7 @@ def cambiar_estado_proyecto(request,id_proyecto):
         proyecto_form = CambiarEstadoForm(instance=proyecto)
         return render_to_response('proyectos/cambiar_estado_proyecto.html', { 'proyecto': proyecto_form, 'nombre':nombre}, context_instance=RequestContext(request))
 
-
+@login_required
 def ver_equipo(request,id_proyecto):
     '''
     vista para ver todos los usuarios que forman parte de un proyecto
