@@ -72,8 +72,13 @@
                 {% endfor %}
             
                 <button class="btn btn-lg btn-primary btn-block" type="submit"> Iniciar Sesion </button>
+                  {% if next %} {# this is REDIRECT_FIELD_NAME #}
+                        <input type="hidden" name="next" value="{{ next }}" />
+                   {% endif %}
 
             </form>
+
+
 
         </div>
 

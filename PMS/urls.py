@@ -18,8 +18,9 @@ urlpatterns = patterns('',
     url(r'^fases/',include('fases.urls')),
     url(r'^proyectos/',include('proyectos.urls')),
     url(r'^principal/$',login_required(TemplateView.as_view(template_name='principal.html'), '/', '/login')),
-    url(r'^login/$', viewsUsuarios.LoginView.as_view(), name='login'),
+   # url(r'^login/$', viewsUsuarios.LoginView.as_view(), name='login'),
     url(r'^logout/$', viewsUsuarios.LogoutView.as_view(), name='logout'),
+    (r'^login/$', 'django.contrib.auth.views.login'),
     # register
     )
 

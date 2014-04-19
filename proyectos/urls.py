@@ -7,7 +7,7 @@ from proyectos import viewsProyectos
 
 urlpatterns = patterns('',
         url(r'^registrar/$','proyectos.viewsProyectos.registrar_proyecto'),
-        url(r'^$',login_required(viewsProyectos.listar_proyectos,'/proyectos','/login')),
+        url(r'^$','proyectos.viewsProyectos.listar_proyectos'),
         url(r'^(?P<id_proyecto>\d+)$', 'proyectos.viewsProyectos.detalle_proyecto'),
         url(r'^search/$',viewsProyectos.buscar_proyecto, name='buscar_proyectos'),
         url(r'^modificar/(?P<id_proyecto>\d+)$', 'proyectos.viewsProyectos.editar_proyecto'),

@@ -22,6 +22,8 @@ __version__ = '1.0'
 __text__ = 'Este modulo contiene funciones que permiten el control de administracion de usuarios'
 
 
+
+
 class LoginView(FormView):
     '''Vista para realizar el login '''
     template_name = 'registration/login.html'
