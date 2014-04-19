@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from proyectos.formsProyectos import ProyectoForm, CambiarEstadoForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -19,6 +19,7 @@ __text__ = 'Este modulo contiene funciones que permiten el control de proyectos'
 
 
 @login_required
+@permission_required('proyecto')
 def registrar_proyecto(request):
     '''
     Vista para registrar un nuevo proyecto con su lider y miembros de su comite de cambios
