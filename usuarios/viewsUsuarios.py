@@ -83,6 +83,7 @@ class RegisterView(FormView):
 
 
 class RegisterSuccessView(TemplateView):
+
     template_name = 'registration/success.html'
 
 
@@ -114,7 +115,10 @@ def cambiar_pass (request,
                     post_change_redirect=None,
                     password_change_form=PasswordChangeForm,
                     current_app=None, extra_context=None):
-     if request.method == 'POST':
+    '''
+    vista para que un usuario pueda cambiar su contrasenha
+    '''
+    if request.method == 'POST':
         # formulario enviado
         perfil_form = password_change_form(user=request.user, data= request.POST)
         if perfil_form.is_valid():
@@ -122,13 +126,16 @@ def cambiar_pass (request,
             perfil_form.save()
 
             return HttpResponseRedirect('/usuarios/register/success/')
-     else:
+    else:
         # formulario inicial
         perfil_form=password_change_form(user=request.user)
-     return render_to_response('usuarios/cambiar_pass.html', { 'perfil_form': perfil_form}, context_instance=RequestContext(request))
+    return render_to_response('usuarios/cambiar_pass.html', { 'perfil_form': perfil_form}, context_instance=RequestContext(request))
 
 def editar_perfil(request):
 
+    '''
+    Vista para que un usuario pueda modificar sus datos
+    '''
     if request.method == 'POST':
         # formulario enviado
         user_form = UserForm(request.POST, instance=request.user)
@@ -147,7 +154,7 @@ def editar_perfil(request):
 def modificar_usuario(request, id_user):
 
     '''
-    vista para modificar los usuarios del sistema
+    vista para cambiar el estado de los usuarios del sistema
     '''
 
     dato = get_object_or_404(User, pk=id_user)

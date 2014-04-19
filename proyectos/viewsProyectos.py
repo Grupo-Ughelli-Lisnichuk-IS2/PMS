@@ -1,6 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.views.generic import TemplateView
 from proyectos.formsProyectos import ProyectoForm, CambiarEstadoForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -11,14 +9,19 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from django.contrib import messages
 from PMS import settings
-from django.shortcuts import redirect
+
+__author__ = 'Grupo R13'
+__date__ = '10-04-2014'
+__version__ = '1.0'
+__text__ = 'Este modulo contiene funciones que permiten el control de proyectos'
+
 
 
 
 @login_required
 def registrar_proyecto(request):
     '''
-    Vista para registrar un nuevo proyecto con su lider
+    Vista para registrar un nuevo proyecto con su lider y miembros de su comite de cambios
     '''
 
     if request.method=='POST':
@@ -29,6 +32,7 @@ def registrar_proyecto(request):
                 messages.add_message(request, settings.DELETE_MESSAGE, "Fecha de inicio debe ser menor a la fecha de finalizacion")
             else:
                 lider=formulario.cleaned_data['lider']
+                #asigna el rol lider al usuario seleccionado
                 roles = Group.objects.get(name='Lider')
                 lider.groups.add(roles)
                 formulario.save()
@@ -38,15 +42,17 @@ def registrar_proyecto(request):
     return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 
+
 @login_required
 def importar_proyecto(request, id_proyecto):
     '''
-    Vista para registrar un nuevo proyecto con su lider
+    Vista para importar un proyecto, dado en <id_proyecto>  con su lider y miembros del comite
     '''
     proyecto=Proyecto.objects.get(id=id_proyecto)
     if request.method=='POST':
         formulario = ProyectoForm(request.POST, initial={'nombre':proyecto.nombre,'observaciones':proyecto.observaciones, 'descripcion':proyecto.descripcion, 'fecha_ini':proyecto.fecha_ini, 'fecha_fin':proyecto.fecha_fin} )
 
+        #verifica que la fecha de inicio sea menor a la de fin
         if formulario.is_valid():
             if formulario.cleaned_data['fecha_ini']>formulario.cleaned_data['fecha_fin']:
                 messages.add_message(request, settings.DELETE_MESSAGE, "Fecha de inicio debe ser menor a la fecha de finalizacion")
@@ -61,13 +67,20 @@ def importar_proyecto(request, id_proyecto):
     return render_to_response('proyectos/registrar_proyecto.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 
+
 @login_required
 def RegisterSuccessView(request):
+    '''
+    Vista llamada en caso de creacion correcta de un proyecto, redirige a un template de exito
+    '''
     return HttpResponseRedirect ('/proyectos/register/success/')
 
 
 @login_required
 def RegisterFailedView(request, id_proyecto):
+    '''
+    Vista que retorna a un template de fracaso en caso de que el proyecto no pueda cambiar de estado
+    '''
     return render_to_response('proyectos/cambio_estado_fallido.html', {'dato': id_proyecto}, context_instance=RequestContext(request))
 
 
@@ -119,6 +132,9 @@ def buscar_proyecto(request):
 
 @login_required
 def editar_proyecto(request,id_proyecto):
+    '''
+    Vista para editar un proyecto,o su lider o los miembros de su comite
+    '''
     proyecto= Proyecto.objects.get(id=id_proyecto)
     nombre= proyecto.nombre
     if request.method == 'POST':
@@ -142,6 +158,12 @@ def editar_proyecto(request,id_proyecto):
 
 @login_required
 def cambiar_estado_proyecto(request,id_proyecto):
+    '''
+    Vista para cambiar el estado de un proyecto, verificando que esto sea posible: para estar activo debe tener la cantidad
+    necesaria de miembros del comite (cantidad impar)
+    Si cambia a activo todas sus fases pasan al estado activo
+    '''
+
     proyecto= Proyecto.objects.get(id=id_proyecto)
     nombre= proyecto.nombre
     comite = User.objects.filter(comite__id=id_proyecto)
@@ -178,7 +200,7 @@ def cambiar_estado_proyecto(request,id_proyecto):
 
 def ver_equipo(request,id_proyecto):
     '''
-    vista para listar los proyectos del sistema del sistema junto con el nombre de su lider
+    vista para ver todos los usuarios que forman parte de un proyecto
     '''
     dato=get_object_or_404(Proyecto,pk=id_proyecto)
     comite = User.objects.filter(comite__id=id_proyecto)

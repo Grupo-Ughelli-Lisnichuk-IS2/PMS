@@ -9,7 +9,8 @@ from django.db.models import Q
 from fases.models import Fase
 from django.contrib import messages
 from PMS import settings
-# Create your views here.
+
+
 def crear_rol(request):
 
     if request.method == 'POST':
