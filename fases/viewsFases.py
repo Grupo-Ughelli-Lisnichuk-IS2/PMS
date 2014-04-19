@@ -108,8 +108,55 @@ def editar_fase(request,id_fase):
 
         if fase_form.is_valid():
             # formulario validado correctamente
-            fase_form.save()
-            return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
+            fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
+            fecha=fecha.strftime('%Y-%m-%d')
+            fecha1=datetime.strptime(fecha,'%Y-%m-%d')
+            proyecto=Proyecto.objects.get(id=fase.proyecto_id)
+            orden=Fase.objects.filter(proyecto_id=proyecto.id)
+            cantidad = orden.count()
+            if cantidad>1 and fase.orden != cantidad and fase.orden >1:
+                   anterior = Fase.objects.get(orden=(fase.orden)-1, proyecto_id=id_proyecto)
+                   siguiente = Fase.objects.get(orden=(fase.orden)+1, proyecto_id=id_proyecto)
+                   if fecha1<datetime.strptime(str(anterior.fInicio),'%Y-%m-%d'):
+                        messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con fase anterior")
+                   else:
+                       if fecha1>datetime.strptime(str(siguiente.fInicio),'%Y-%m-%d'):
+                        messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con fase siguiente")
+                       else:
+                            if datetime.strptime(str(proyecto.fecha_ini),'%Y-%m-%d')>=fecha1 or datetime.strptime(str(proyecto.fecha_fin),'%Y-%m-%d')<=fecha1:
+                                messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con proyecto")
+                            else:
+                                fase_form.save()
+                                return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
+
+            elif cantidad>1 and fase.orden != cantidad and fase.orden==1:
+                   siguiente = Fase.objects.get(orden=(fase.orden)+1, proyecto_id=id_proyecto)
+                   if fecha1>datetime.strptime(str(siguiente.fInicio),'%Y-%m-%d'):
+                        messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con fase siguiente")
+                   else:
+                        if datetime.strptime(str(proyecto.fecha_ini),'%Y-%m-%d')>=fecha1 or datetime.strptime(str(proyecto.fecha_fin),'%Y-%m-%d')<=fecha1:
+                            messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con proyecto")
+                        else:
+                            fase_form.save()
+                            return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
+
+            elif cantidad>1 and fase.orden == cantidad:
+                   anterior = Fase.objects.get(orden=(fase.orden)-1, proyecto_id=id_proyecto)
+                   if fecha1<datetime.strptime(str(anterior.fInicio),'%Y-%m-%d'):
+                        messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con fase anterior")
+                   else:
+                        if datetime.strptime(str(proyecto.fecha_ini),'%Y-%m-%d')>=fecha1 or datetime.strptime(str(proyecto.fecha_fin),'%Y-%m-%d')<=fecha1:
+                            messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con proyecto")
+                        else:
+                            fase_form.save()
+                            return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
+
+            else:
+                if datetime.strptime(str(proyecto.fecha_ini),'%Y-%m-%d')>=fecha1 or datetime.strptime(str(proyecto.fecha_fin),'%Y-%m-%d')<=fecha1:
+                    messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con proyecto")
+                else:
+                    fase_form.save()
+                    return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
     else:
         # formulario inicial
         fase_form = ModificarFaseForm(instance=fase)
@@ -127,7 +174,6 @@ def importar_fase(request, id_fase,id_proyecto):
             fecha=fecha.strftime('%Y-%m-%d')
             fecha1=datetime.strptime(fecha,'%Y-%m-%d')
             newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha, estado = "PEN", proyecto_id = id_proyecto)
-            aux=0
             aux=0
             orden=Fase.objects.filter(proyecto_id=id_proyecto)
             roles = request.POST.getlist("roles")
@@ -164,7 +210,7 @@ def importar_fase(request, id_fase,id_proyecto):
                                 newFase.save()
                             return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
     else:
-        formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden})
+        formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':datetime.strptime(str(fase.fInicio),'%Y-%m-%d').strftime('%d/%m/%y'), 'orden':fase.orden})
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 def asignar_usuario(request,id_fase):
