@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -102,7 +102,12 @@ def detalle_usuario(request, id_user):
     '''
 
     dato = get_object_or_404(User, pk=id_user)
-    return render_to_response('usuarios/detalle_usuario.html', {'usuario': dato}, context_instance=RequestContext(request))
+    roles = Group.objects.filter(user__id=id_user)
+    nombres=[]
+    for rol in roles:
+        nombres.append(rol.name)
+
+    return render_to_response('usuarios/detalle_usuario.html', {'usuario': dato, 'roles':nombres}, context_instance=RequestContext(request))
 
 def cambiar_pass (request,
                     template_name='registration/editar_perfil.html',

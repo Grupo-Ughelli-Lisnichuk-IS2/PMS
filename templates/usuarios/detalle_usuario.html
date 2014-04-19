@@ -21,6 +21,10 @@
 
             <div><label><b>Fecha de creacion: </b></label>{{ usuario.date_joined }}  </div>
             <div><label><b>Ultimo acceso: </b></label>{{ usuario.last_login}}  </div>
+            <div><label><b>Roles: </b></label> </div>
+            {% for rol in roles %}
+                <li>{{ rol }}</li>
+            {% endfor %}
             <center>
             <form action="/usuarios">
             <input type="submit" value="Regresar al listado">
