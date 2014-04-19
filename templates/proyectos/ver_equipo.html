@@ -9,12 +9,12 @@
           	<br>
             <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
 
-            <div><label><b>Lider: </b></label>{{ lider.first_name}} {{ lider.last_name}}</div>
-            <div><label><b>Miembros del comite: </b></label></div>
+            <div><strong>Lider: </strong>{{ lider.first_name}} {{ lider.last_name}}</div>
+            <div><strong> Miembros del comite: </strong></div>
             {% for integrante in comite %}
-                <li><b>Nombre: </b>{{ integrante.first_name}} {{ integrante.last_name}}</li>
+                <li>{{ integrante.first_name}} {{ integrante.last_name}}</li>
             {% endfor %}
-             <div><label><b>Equipo: </b></label></div>
+             <div><strong>Equipo: </strong></div>
             {% for usuario in usuarios %}
                 <li><b>Nombre: </b>{{ usuario}}</li>
             {% endfor %}
@@ -24,5 +24,6 @@
             </form>
             </center>
 </div>
-{% endblock %}
 </html>
+{% endblock %}
+

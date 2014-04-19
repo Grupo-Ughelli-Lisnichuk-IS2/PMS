@@ -10,15 +10,15 @@
             <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
 
 
-            <div><label><b>Id: </b></label>{{ proyecto.id }}</div>
-            <div><label><b>Nombre: </b></label>{{ proyecto.nombre }}</div>
-            <div><label><b>Descripción: </b></label>{{ proyecto.descripcion }}</div>
-            <div><label><b>Observaciones: </b></label>{{ proyecto.observaciones }}</div>
-            <div><label><b>Estado: </b></label>{{ proyecto.estado }}</div>
-            <div><label><b>Fecha de Inicio: </b></label>{{ proyecto.fecha_ini }}</div>
-            <div><label><b>Fecha de Finalizacion: </b></label>{{ proyecto.fecha_fin}}</div>
-            <div><label><b>Lider: </b></label>{{ lider.first_name}} {{ lider.last_name}}</div>
-            <div><label><b>Miembros del comite: </b></label></div>
+            <div><strong>Id: </strong>{{ proyecto.id }}</div>
+            <div><strong>Nombre: </strong>{{ proyecto.nombre }}</div>
+            <div><strong>Descripción: </strong>{{ proyecto.descripcion }}</div>
+            <div><strong>Observaciones: </strong>{{ proyecto.observaciones }}</div>
+            <div><strong>Estado: </strong>{{ proyecto.estado }}</div>
+            <div><strong>Fecha de Inicio: </strong>{{ proyecto.fecha_ini }}</div>
+            <div><strong>Fecha de Finalizacion: </strong>{{ proyecto.fecha_fin}}</div>
+            <div><strong>Lider: </strong>{{ lider.first_name}} {{ lider.last_name}}</div>
+            <h2><strong>Miembros del comite: </strong></h2>
             {% for integrante in comite %}
                 <li><b>Nombre: </b>{{ integrante.first_name}} {{ integrante.last_name}}</li>
             {% endfor %}
