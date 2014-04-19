@@ -1,0 +1,770 @@
+[
+{
+    "pk": 11, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Lider", 
+        "permissions": [
+
+        ]
+    }
+},
+{
+    "pk": 12, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Tendota", 
+        "permissions": [
+
+        ]
+    }
+},
+{
+    "pk": 13, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Administrador", 
+        "permissions": []
+    }
+},
+{
+    "pk": 14, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista", 
+        "permissions": []
+    }
+},
+{
+    "pk": 15, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Salvador", 
+        "permissions": []
+    }
+},
+{
+    "pk": 16, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Matador", 
+        "permissions": []
+    }
+},
+{
+    "pk": 17, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Pepe", 
+        "permissions": []
+    }
+},
+{
+    "pk": 18, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Santo", 
+        "permissions": []
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "Yohanna", 
+        "last_name": "Lisnichuk", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-04-19T22:21:23.713Z", 
+        "groups": [
+            11
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$wdR41s61gLny$ITxra2/V9ACQwvkF/qIzLDxRFBj3kvav4we6EWepWtE=", 
+        "email": "yolile_3000@hotmail.com", 
+        "date_joined": "2014-03-25T13:50:36.656Z"
+    }
+},
+{
+    "pk": 10, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "dani", 
+        "first_name": "Dani", 
+        "last_name": "Ughelli", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-03-27T18:28:04.334Z", 
+        "groups": [
+            11, 
+            17
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$bqFjURr6GOyT$xp0AnOSeOLjn5jge8ALWlN713OTsQ2G29LDBXAaWBe8=", 
+        "email": "dani@dani.com", 
+        "date_joined": "2014-03-27T18:23:02.146Z"
+    }
+},
+{
+    "pk": 13, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "usuario", 
+        "first_name": "Jorge", 
+        "last_name": "Perez", 
+        "is_active": false, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-03-29T23:50:07.246Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$uxLjfrknbz1i$i4YU5iDMCuoCIncqvx3zS48FPOCk6i+O3OxzzmwIeiQ=", 
+        "email": "jperez@gmail.com", 
+        "date_joined": "2014-03-29T23:50:07.246Z"
+    }
+},
+{
+    "pk": 18, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "susana", 
+        "first_name": "Susana", 
+        "last_name": "Gonzales", 
+        "is_active": false, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-11T19:10:49.273Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$g8fnvYxqqFw1$LCpM3ffuopHfLtuYndIicxOZnOqGc2rSxbeDkxHKd1M=", 
+        "email": "sdfdf@hotmail.com", 
+        "date_joined": "2014-04-11T19:10:49.273Z"
+    }
+},
+{
+    "pk": 19, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "jperez", 
+        "first_name": "Juan", 
+        "last_name": "Perez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-12T02:08:05.287Z", 
+        "groups": [
+            11
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$WNJ3LWu4dk9O$g8Ci3O7FiksR8Oo9QQ7Y0mFb2+OaZvE0pVfv+qqmbf0=", 
+        "email": "jperez@gmail.com", 
+        "date_joined": "2014-04-12T02:08:05.287Z"
+    }
+},
+{
+    "pk": 20, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "mlopez", 
+        "first_name": "Maria Eugenia", 
+        "last_name": "Lopez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-19T19:25:34.764Z", 
+        "groups": [
+            17
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$ogFpmFMdXLri$iYdjOS+QgSFSIVGdEz96J4y2RYystVowF6sGHvy9EXU=", 
+        "email": "mlopez@hotmail.com", 
+        "date_joined": "2014-04-12T02:09:17.784Z"
+    }
+},
+{
+    "pk": 21, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "carol", 
+        "first_name": "Carolina", 
+        "last_name": "Arguello", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-12T13:46:35.287Z", 
+        "groups": [
+            11
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$t7T0xPomZHl6$63LffKLgwmr28/m7pkOMyVB8+EWsxnztLw927l+HKf0=", 
+        "email": "carolina@hotmail.com", 
+        "date_joined": "2014-04-12T13:43:23.602Z"
+    }
+},
+{
+    "pk": 22, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "john", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-19T19:44:14.029Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$nJrKdByfcByS$kvpP+TQyzI3y/CQWEdg3QkNsn5CKMPtJTNw2a9EXVT4=", 
+        "email": "lennon@thebeatles.com", 
+        "date_joined": "2014-04-19T19:44:14.029Z"
+    }
+},
+{
+    "pk": "6q2586yff06hqzt8w1s3apy2avufzcob", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T16:41:12.336Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "9d97rojxvlu2g8uqa30jguia8uxbcle1", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T23:04:16.627Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "bb23tpso8tfhmjvsdoy6i52gbic4avpi", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T22:14:57.866Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "bkfopue7k7asp2g01cqteu0457am4794", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T03:26:28.335Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "f6t9xtnc0uro0hnjladrxgqixcm97dy2", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T22:51:23.725Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "fdz2ax07mcflhdnv8ncepqixt9sxsza3", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T18:21:29.585Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "h4igpg5b209hx6bbgg7sdq5vd5mkmzdq", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T20:47:44.523Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "itnynlk8b3bdnfpzruh7u103xz1a4bme", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-08T18:29:59.992Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "jr13cva2n6mrjd4jyw1b7r0mj3tn9wmb", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T04:23:45.700Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "jscfk9yu4j0i75pykuks5l8d8ah59j6w", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T00:39:11.667Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "jx5dvgbzr9eo7an8mgbxcrzq0jrftt3a", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T20:24:52.577Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "ketjlgl4qp7n5vlf3r6w6ol8dmlj1puc", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T20:17:27.727Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "mou25jrcf4h7byh76gcsx25qyra57x90", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-08T16:07:55.053Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "mt6g0r9h1cikozy7eejdi02uh3ydfg6k", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T21:26:01.797Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "nkh6xeozpesdi3rrgi29qc8pv9m1ws0j", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T17:18:08.499Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "pqyajy71xj53j2o1sg8lz2xhixd69sul", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T02:54:59.963Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "r41urlrovo43dte2uxpoz22wsv9rtpu3", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T23:53:46.822Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "r6ys9j6qq1l3rdo487ix35fqen9qd2ci", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T21:07:05.662Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "t4mnozk4ocail0eqnqwvkzju29tnthkc", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T22:21:07.799Z", 
+        "session_data": "ZGUzNTFmZjcwYmFkZjlmYzljODY3NmJlNDU3YWI1YTUxZWI4OTAzYzp7Il9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0="
+    }
+},
+{
+    "pk": "to8eppi6jpojk2v4vurpdt4qqf959910", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-09T16:02:10.747Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "zeikwp8slunc73cyvftk1xx7h746p087", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-18T18:14:08.792Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "zpr86a33bvxul3fniiwcbr6dt1oigrb4", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-19T01:31:40.049Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": 1, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            11
+        ], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 4, 
+        "proyecto": 1, 
+        "descripcion": "esta fase....", 
+        "nombre": "Planificacion", 
+        "estado": "EJE"
+    }
+},
+{
+    "pk": 2, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 1, 
+        "descripcion": "dfdsfdsd", 
+        "nombre": "Fase1", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 3, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            14
+        ], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 1, 
+        "descripcion": "sdassdas", 
+        "nombre": "Planificacion1", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 4, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            13, 
+            11, 
+            12
+        ], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 1, 
+        "descripcion": "sdfsdfds", 
+        "nombre": "Prueba", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 5, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            14
+        ], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "Primera fase", 
+        "nombre": "Fase 1", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 6, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 2, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "dfsfd", 
+        "nombre": "PMS", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 7, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 3, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "sdasdas", 
+        "nombre": "Proyecto2", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 8, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 4, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "sdasdas", 
+        "nombre": "Proyecto3", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 9, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 5, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "sdsfdsfd", 
+        "nombre": "dfsfdfsd", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 10, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 6, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "sdasdas", 
+        "nombre": "Proyecto4", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 11, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 7, 
+        "roles": [], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "sdasdas", 
+        "nombre": "Proyecto44", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 12, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 8, 
+        "roles": [
+            15
+        ], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "dsfsd", 
+        "nombre": "Planificacionnn", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 13, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 9, 
+        "roles": [
+            16
+        ], 
+        "fCreacion": "2014-04-18", 
+        "fInicio": "2014-02-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "sdfs", 
+        "nombre": "dsdfdsfdsfs", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 14, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 10, 
+        "roles": [
+            17
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2014-02-13", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "Planificacion1", 
+        "nombre": "dddddddddddddddd", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 15, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 11, 
+        "roles": [
+            18
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2014-03-12", 
+        "maxItems": 1, 
+        "proyecto": 6, 
+        "descripcion": "dfdsfdsd", 
+        "nombre": "Pruebas", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 1, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": ":D", 
+        "fecha_fin": "2015-01-20", 
+        "lider": 10, 
+        "fecha_ini": "2014-01-20", 
+        "descripcion": "es un proyecto", 
+        "nombre": "PMS", 
+        "comite": [
+            1, 
+            10, 
+            19
+        ], 
+        "estado": "ACT"
+    }
+},
+{
+    "pk": 2, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "sdsdsa", 
+        "fecha_fin": "2015-01-20", 
+        "lider": 21, 
+        "fecha_ini": "2014-01-20", 
+        "descripcion": "sdasdas", 
+        "nombre": "Proyecto2", 
+        "comite": [
+            10, 
+            1, 
+            21
+        ], 
+        "estado": "ACT"
+    }
+},
+{
+    "pk": 3, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": ":D", 
+        "fecha_fin": "2015-01-20", 
+        "lider": 19, 
+        "fecha_ini": "2014-01-20", 
+        "descripcion": "es un proyecto", 
+        "nombre": "PMS33", 
+        "comite": [
+            10, 
+            1, 
+            21
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 4, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": ":D", 
+        "fecha_fin": "2015-01-20", 
+        "lider": 19, 
+        "fecha_ini": "2014-01-20", 
+        "descripcion": "es un proyecto", 
+        "nombre": "PMS22", 
+        "comite": [
+            10, 
+            1, 
+            21
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 5, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "fdfsd", 
+        "fecha_fin": "2015-01-20", 
+        "lider": 1, 
+        "fecha_ini": "2014-01-20", 
+        "descripcion": "sdfsd", 
+        "nombre": "Proyecto numero 1", 
+        "comite": [
+            10, 
+            1, 
+            19
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 6, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Por favoooooor", 
+        "fecha_fin": "2014-10-12", 
+        "lider": 10, 
+        "fecha_ini": "2013-10-12", 
+        "descripcion": "Proyecto de prueba de asignacion de roles a fases", 
+        "nombre": "Proyecto X", 
+        "comite": [
+            10, 
+            19, 
+            21
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 7, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "dsfsdf", 
+        "fecha_fin": "2015-01-20", 
+        "lider": 10, 
+        "fecha_ini": "2013-10-12", 
+        "descripcion": "dsfsd", 
+        "nombre": "Proyecto numero 2", 
+        "comite": [
+            19, 
+            21, 
+            20
+        ], 
+        "estado": "PEN"
+    }
+}
+]

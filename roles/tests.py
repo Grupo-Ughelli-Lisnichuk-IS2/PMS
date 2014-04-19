@@ -15,22 +15,11 @@ class PMSTestCase(TestCase):
         '''
          Test para crear un usuario y ver si lo lista correctamente
         '''
-        def login(self, password='testpw'):
-            response = self.client.post('/login/', {
-            'username': 'testuser',
-            'password': password,
-            })
-            self.assertTrue(SESSION_KEY in self.client.session)
-            return response
-        usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
-        self.login('testpw')
-        resp = self.client.get('/roles/')
+
+        User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        c = Client()
+        c.login(username='john', password='johnpassword')
+        resp = c.get('/roles/')
         self.assertEqual(resp.status_code, 200)
-    def login(self, password='testpw'):
-            response = self.client.post('/login/', {
-            'username': 'testuser',
-            'password': password,
-            })
-            self.assertTrue(SESSION_KEY in self.client.session)
-            return response
+
 

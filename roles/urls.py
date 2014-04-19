@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^crear/$', 'roles.viewsRoles.crear_rol'),
-    url(r'^$',login_required(viewsRoles.lista_roles,'/usuarios','/login')),
+    url(r'^$','roles.viewsRoles.lista_roles'),
     url(r'^(?P<id_rol>\d+)$', 'roles.viewsRoles.detalle_rol'),
     url(r'^eliminar/(?P<id_rol>\d+)$', 'roles.viewsRoles.eliminar_rol'),
     url(r'^modificar/(?P<id_rol>\d+)$', 'roles.viewsRoles.editar_rol'),

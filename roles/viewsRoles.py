@@ -95,7 +95,7 @@ def editar_rol(request,id_rol):
         if rol_form.is_valid():
             # formulario validado correctamente
             rol_form.save()
-            return HttpResponseRedirect('/register/success/')
+            return HttpResponseRedirect('/roles/register/success/')
 
     else:
         # formulario inicial
