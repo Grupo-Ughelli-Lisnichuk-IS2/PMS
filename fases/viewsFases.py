@@ -56,7 +56,7 @@ def registrar_fase(request,id_proyecto):
                             for rol in roles:
                                 newFase.roles.add(rol)
                                 newFase.save()
-                            return HttpResponseRedirect('/fases/proyecto/'+str(id_proyecto))
+                            return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
     else:
         formulario = CrearFaseForm()
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -93,6 +93,7 @@ def detalle_fase(request, id_fase):
 
 def editar_fase(request,id_fase):
     fase= Fase.objects.get(id=id_fase)
+    id_proyecto= fase.proyecto_id
     if request.method == 'POST':
         # formulario enviado
         fase_form = ModificarFaseForm(request.POST, instance=fase)
@@ -100,7 +101,7 @@ def editar_fase(request,id_fase):
         if fase_form.is_valid():
             # formulario validado correctamente
             fase_form.save()
-            return HttpResponseRedirect('/register/success/')
+            return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
     else:
         # formulario inicial
         fase_form = ModificarFaseForm(instance=fase)
@@ -131,7 +132,7 @@ def importar_fase(request, id_fase,id_proyecto):
                 for rol in roles:
                    newFase.roles.add(rol)
                 newFase.save()
-                return HttpResponseRedirect('/principal')
+                return render_to_response('fases/creacion_correcta.html',{'id_proyecto':id_proyecto}, context_instance=RequestContext(request))
     else:
         formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden})
 
@@ -160,4 +161,24 @@ def asociar(request,id_rol,id_usuario):
     rol = Group.objects.get(id=id_rol)
     usuario.groups.add(rol)
     usuario.save()
-    return HttpResponseRedirect('/principal')
+    return HttpResponseRedirect('/proyectos')
+
+def des(request,id_fase):
+    roles=Group.objects.filter(fase__id=id_fase)
+    usuarios=[]
+    for rol in roles:
+        p=User.objects.filter(groups__id=rol.id)
+        for pp in p:
+            usuarios.append(pp)
+    return render_to_response('fases/lista_usuarios_d.html', {'datos': usuarios,"fase":id_fase}, context_instance=RequestContext(request))
+
+def desasociar(request,id_usuario, id_fase):
+    '''
+    vista para listar las fases de un proyecto
+    '''
+    usuario=User.objects.get(id=id_usuario)
+    roles=Group.objects.filter(fase__id=id_fase)
+    for rol in roles:
+        usuario.groups.remove(rol)
+        usuario.save()
+    return HttpResponseRedirect('/proyectos')

@@ -29,7 +29,7 @@
 				<td>{{ dato.first_name }}</td>
 				<td>{{ dato.last_name }}</td>
                 <td>
-                    <a class="btn"  href="/fases/desasignar/{{ dato.pk }}/{{ fase.id }}"><li  class="icon-minus"></li></a>
+                    <a class="btn"  href="/fases/desasignar/{{ dato.pk }}/{{ fase }}"><li  class="icon-minus"></li></a>
                     {% comment %}<form action='{% url 'usuarios.viewsUsuarios.detalle_usuario' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
