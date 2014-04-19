@@ -98,7 +98,7 @@
  {% block busqueda %}
 
         <body>
-  <h1>Buscar Proyectos</h1>
+  <h2>Buscar Proyectos</h2>
   <form action='{% url 'proyectos.viewsProyectos.buscar_proyecto' %}'>
     <label for="q">Nombre: </label>
     <input type="text" name="q" value="{{ query|escape }}">

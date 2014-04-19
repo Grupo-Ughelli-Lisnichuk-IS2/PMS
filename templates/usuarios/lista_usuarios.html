@@ -60,15 +60,19 @@
                     <td> Inactivo </td>
                 {% endifequal %}
                 <td>
+                    <center>
                     <a class="btn" href="/usuarios/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
                     {% comment %}<form action='{% url 'usuarios.viewsUsuarios.detalle_usuario' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
+                    </center>
                 </td>
                 <td>
+                    <center>
                     <form class="ask-plain" action='{% url 'usuarios.viewsUsuarios.modificar_usuario' dato.pk %}'  >
                         <input class="btn" type="submit" value="Cambiar Estado" ><li class="icon-pencil"></li>
                     </form>
+                        </center>
                 </td>
 			</tr>
             {% empty %}
@@ -93,7 +97,7 @@
  {% block busqueda %}
 
         <body>
-  <h1>Buscar Usuarios</h1>
+  <h2>Buscar Usuarios</h2>
   <form action='{% url 'usuarios.viewsUsuarios.buscarUsuario' %}'>
     <label for="q">Nombre: </label>
     <input type="text" name="q" value="{{ query|escape }}">

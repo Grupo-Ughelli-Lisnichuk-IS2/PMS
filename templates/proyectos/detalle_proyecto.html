@@ -20,7 +20,7 @@
             <div><strong>Lider: </strong>{{ lider.first_name}} {{ lider.last_name}}</div>
             <h2><strong>Miembros del comite: </strong></h2>
             {% for integrante in comite %}
-                <li><b>Nombre: </b>{{ integrante.first_name}} {{ integrante.last_name}}</li>
+                <li>{{ integrante.first_name}} {{ integrante.last_name}}</li>
             {% endfor %}
             <center>
             <form action="/proyectos">
