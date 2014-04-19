@@ -240,17 +240,18 @@ def asignar_rol(request,id_usuario, id_fase):
     fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
     roles=Group.objects.filter(fase__id=id_fase)
-    return render_to_response('fases/listar_roles.html', {'roles': roles, 'usuario':usuario}, context_instance=RequestContext(request))
+    return render_to_response('fases/listar_roles.html', {'roles': roles, 'usuario':usuario, 'fase':id_fase}, context_instance=RequestContext(request))
 
-def asociar(request,id_rol,id_usuario):
+def asociar(request,id_rol,id_usuario,id_fase):
     '''
     vista para asociar un rol perteneciente a una face a un usuario, asociandolo de esta manera a la fase, y al proyecto
     '''
+    fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
     rol = Group.objects.get(id=id_rol)
     usuario.groups.add(rol)
     usuario.save()
-    return HttpResponseRedirect('/proyectos')
+    return HttpResponseRedirect('/fases/proyecto/'+str(fase.proyecto_id))
 
 def des(request,id_fase):
     '''
@@ -268,9 +269,11 @@ def desasociar(request,id_usuario, id_fase):
     '''
     vista para remover un rol al usuario, desasociandolo asi de una fase
     '''
+    fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
     roles=Group.objects.filter(fase__id=id_fase)
     for rol in roles:
         usuario.groups.remove(rol)
         usuario.save()
-    return HttpResponseRedirect('/proyectos')
+
+    return HttpResponseRedirect('/fases/proyecto/'+str(fase.proyecto_id))

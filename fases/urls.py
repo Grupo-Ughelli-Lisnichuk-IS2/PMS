@@ -15,6 +15,6 @@ urlpatterns = patterns('',
         url(r'^asignar/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_usuario'),
         url(r'^asignar/(?P<id_usuario>\d+)/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_rol'),
         url(r'^desasignar/(?P<id_usuario>\d+)/(?P<id_fase>\d+)$', 'fases.viewsFases.desasociar'),
-        url(r'^asociar/(?P<id_rol>\d+)-(?P<id_usuario>\d+)$', 'fases.viewsFases.asociar'),
+        url(r'^asociar/(?P<id_rol>\d+)-(?P<id_usuario>\d+)-(?P<id_fase>\d+)$', 'fases.viewsFases.asociar'),
         url(r'^des/(?P<id_fase>\d+)$', 'fases.viewsFases.des'),
         )
