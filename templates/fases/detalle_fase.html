@@ -18,12 +18,13 @@
             <div><strong>Estado: </strong>{{ datos.estado }}</div>
             <div><strong>Fecha de Inicio: </strong>{{ datos.fInicio }}</div>
             <div><strong>Fecha de Creación: </strong>{{ datos.fCreacion }}</div>
-            <div><strong>Fecha de Modificación: </strong>{{ datos.fmodificacion }}</div>
             <center>
             <form action="/fases">
             <input type="submit" value="Regresar al listado">
             </form>
             </center>
+            <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>
+
 </div>
 {% endblock %}
 </html>

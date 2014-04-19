@@ -24,12 +24,6 @@ class Fase(models.Model):
     roles = models.ManyToManyField(Group)
     proyecto = models.ForeignKey(Proyecto)
 
-#    def save(self, *args, **kwargs):
-#    ''' On save, update timestamps '''
-#        if not self.id:
-#            self.created = datetime.datetime.today()
-#        self.modified = datetime.datetime.today()
-#        return super(User, self).save(*args, **kwargs)
 
 
 
