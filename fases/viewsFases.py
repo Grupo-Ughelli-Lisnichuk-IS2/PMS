@@ -74,7 +74,7 @@ def listar_fases(request,id_proyecto):
     vista para listar las fases pertenecientes a un proyecto
     '''
 
-    fases = Fase.objects.filter(proyecto_id=id_proyecto)
+    fases = Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
     proyecto = Proyecto.objects.get(id=id_proyecto)
     return render_to_response('fases/listar_fases.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
 
