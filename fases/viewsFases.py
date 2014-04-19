@@ -11,21 +11,18 @@ from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesFo
 from datetime import datetime
 
 
-# Create your views here.
-
-
-#newPost = Post(title = request.POST["title"], url = request.POST["url"], content = request.POST["content"])
-            #guardamos el post
-
-#.datetime.strptime('5/10/1955', '%d/%m/%Y')
-
 
 def registrar_fase(request,id_proyecto):
+    '''
+        Vista para registrar una nueva fase dentro de un proyecto. Asigna automaticamente el orden,
+        realiza las comprobaciones necesarias con respecto a la fecha de inicio y comprueba tambien que los roles
+        asociados no pertenezcan a otra fase.
+    '''
     if request.method=='POST':
         proyecto = Proyecto.objects.get(id=id_proyecto)
         formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
-            if len(str(request.POST["fInicio"])) != 10 :
+            if len(str(request.POST["fInicio"])) != 10 : #Comprobacion de formato de fecha
                 messages.add_message(request, settings.DELETE_MESSAGE, "Error: El formato de Fecha es: DD/MM/AAAA")
             else:
                 fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%Y')
@@ -39,12 +36,12 @@ def registrar_fase(request,id_proyecto):
                    fase=Fase.objects.filter(roles__id=rol)
                    if(fase.count()>0):
                      aux=1
-                if aux>0:
+                if aux>0:#comprobacion de pertenencia de roles
                     messages.add_message(request, settings.DELETE_MESSAGE, "Error: El Rol ya ha sido asignado a otra fase")
                 else:
                     proyecto=Proyecto.objects.get(id=id_proyecto)
                     cantidad = orden.count()
-                    if cantidad>0:
+                    if cantidad>0:#comprobaciones de fecha
                        anterior = Fase.objects.get(orden=cantidad, proyecto_id=id_proyecto)
                        if fecha1<datetime.strptime(str(anterior.fInicio),'%Y-%m-%d'):
                             messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con fase anterior")
@@ -53,7 +50,7 @@ def registrar_fase(request,id_proyecto):
                                 messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con proyecto")
                             else:
                                 roles = request.POST.getlist("roles")
-                                newFase.orden=orden.count()+1
+                                newFase.orden=orden.count()+1 #Calculo del orden de la fase a crear
                                 newFase.save()
                                 for rol in roles:
                                     newFase.roles.add(rol)
@@ -74,7 +71,7 @@ def registrar_fase(request,id_proyecto):
 
 def listar_fases(request,id_proyecto):
     '''
-    vista para listar las fases de un proyecto
+    vista para listar las fases pertenecientes a un proyecto
     '''
 
     fases = Fase.objects.filter(proyecto_id=id_proyecto)
@@ -102,6 +99,10 @@ def detalle_fase(request, id_fase):
 
 
 def editar_fase(request,id_fase):
+    '''
+        Vista para modificar la descripcion, cantidad maxima de items y fecha de Inicio de una fase.
+        Realiza las comprobaciones necesarias con respecto a la fecha de inicio.
+    '''
     fase= Fase.objects.get(id=id_fase)
     id_proyecto= fase.proyecto_id
     if request.method == 'POST':
@@ -109,8 +110,7 @@ def editar_fase(request,id_fase):
         fase_form = ModificarFaseForm(request.POST, instance=fase)
 
         if fase_form.is_valid():
-            # formulario validado correctamente
-            if len(str(request.POST["fInicio"])) != 10 :
+            if len(str(request.POST["fInicio"])) != 10 : #comprobacion de formato de fecha
                 messages.add_message(request, settings.DELETE_MESSAGE, "Error: El formato de Fecha es: DD/MM/AAAA")
             else:
                 fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%Y')
@@ -119,7 +119,7 @@ def editar_fase(request,id_fase):
                 proyecto=Proyecto.objects.get(id=fase.proyecto_id)
                 orden=Fase.objects.filter(proyecto_id=proyecto.id)
                 cantidad = orden.count()
-                if cantidad>1 and fase.orden != cantidad and fase.orden >1:
+                if cantidad>1 and fase.orden != cantidad and fase.orden >1: #comprobaciones de fechas
                        anterior = Fase.objects.get(orden=(fase.orden)-1, proyecto_id=id_proyecto)
                        siguiente = Fase.objects.get(orden=(fase.orden)+1, proyecto_id=id_proyecto)
                        if fecha1<datetime.strptime(str(anterior.fInicio),'%Y-%m-%d'):
@@ -167,6 +167,12 @@ def editar_fase(request,id_fase):
 
 
 def importar_fase(request, id_fase,id_proyecto):
+
+    '''
+        Vista para importar los datos de una fase existente para su utilizacion en la creacion de una nueva.
+        Realiza las comprobaciones necesarias con respecto a la fecha de inicio y orden de fase.
+    '''
+
     fase= Fase.objects.get(id=id_fase)
     if request.method=='POST':
         proyecto = Proyecto.objects.get(id=id_proyecto)
@@ -220,7 +226,7 @@ def importar_fase(request, id_fase,id_proyecto):
 
 def asignar_usuario(request,id_fase):
     '''
-    vista para listar las fases de un proyecto
+    vista auxiliar para obtener un listado de usuarios para asociar a la fase
     '''
 
     usuarios=User.objects.filter(is_active=True)
@@ -229,7 +235,7 @@ def asignar_usuario(request,id_fase):
 
 def asignar_rol(request,id_usuario, id_fase):
     '''
-    vista para listar las fases de un proyecto
+    vista auxiliar para obtener el listado de roles asociados a una fase para asociarlos a un usuario
     '''
     fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
@@ -237,6 +243,9 @@ def asignar_rol(request,id_usuario, id_fase):
     return render_to_response('fases/listar_roles.html', {'roles': roles, 'usuario':usuario}, context_instance=RequestContext(request))
 
 def asociar(request,id_rol,id_usuario):
+    '''
+    vista para asociar un rol perteneciente a una face a un usuario, asociandolo de esta manera a la fase, y al proyecto
+    '''
     usuario=User.objects.get(id=id_usuario)
     rol = Group.objects.get(id=id_rol)
     usuario.groups.add(rol)
@@ -244,6 +253,9 @@ def asociar(request,id_rol,id_usuario):
     return HttpResponseRedirect('/proyectos')
 
 def des(request,id_fase):
+    '''
+    vista para listar a los usuario de una fase, para poder desasociarlos
+    '''
     roles=Group.objects.filter(fase__id=id_fase)
     usuarios=[]
     for rol in roles:
@@ -254,7 +266,7 @@ def des(request,id_fase):
 
 def desasociar(request,id_usuario, id_fase):
     '''
-    vista para listar las fases de un proyecto
+    vista para remover un rol al usuario, desasociandolo asi de una fase
     '''
     usuario=User.objects.get(id=id_usuario)
     roles=Group.objects.filter(fase__id=id_fase)
