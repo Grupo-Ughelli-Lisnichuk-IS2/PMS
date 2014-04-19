@@ -14,4 +14,6 @@ urlpatterns = patterns('',
         url(r'^importar/(?P<id_fase>\d+)-(?P<id_proyecto>\d+)$', 'fases.viewsFases.importar_fase'),
         url(r'^asignar/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_usuario'),
         url(r'^asignar/(?P<id_usuario>\d+)/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_rol'),
+        url(r'^desasignar/(?P<id_usuario>\d+)/(?P<id_fase>\d+)$', 'fases.viewsFases.asignar_rol'),
+        url(r'^asociar/(?P<id_rol>\d+)-(?P<id_usuario>\d+)$', 'fases.viewsFases.asociar'),
         )

@@ -1,11 +1,13 @@
+from django.contrib import messages
 from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from PMS import settings
 from fases.models import Fase
 from proyectos.models import Proyecto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
-from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesForm, AsignarForm
+from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesForm
 from datetime import datetime
 
 
@@ -26,14 +28,35 @@ def registrar_fase(request,id_proyecto):
 
             fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
             fecha=fecha.strftime('%Y-%m-%d')
-            newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
-
-            newFase.save()
+            fecha1=datetime.strptime(fecha,'%Y-%m-%d')
+            newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,estado = "PEN", proyecto_id = id_proyecto)
+            aux=0
+            orden=Fase.objects.filter(proyecto_id=id_proyecto)
             roles = request.POST.getlist("roles")
             for rol in roles:
-               newFase.roles.add(rol)
-            newFase.save()
-            return HttpResponseRedirect('/fases/proyecto/'+str(id_proyecto))
+               fase=Fase.objects.filter(roles__id=rol)
+               if(fase.count()>0):
+                 aux=1
+            if aux>0:
+                messages.add_message(request, settings.DELETE_MESSAGE, "Error: El Rol ya ha sido asignado a otra fase")
+            else:
+                proyecto=Proyecto.objects.get(id=id_proyecto)
+                cantidad = orden.count()
+                if cantidad>0:
+                   anterior = Fase.objects.get(orden=cantidad)
+                   if fecha1<datetime.strptime(str(anterior.fInicio),'%Y-%m-%d'):
+                        messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con fase anterior")
+                   else:
+                        if datetime.strptime(str(proyecto.fecha_ini),'%Y-%m-%d')>=fecha1 or datetime.strptime(str(proyecto.fecha_fin),'%Y-%m-%d')<=fecha1:
+                            messages.add_message(request, settings.DELETE_MESSAGE, "Error: Fecha de inicio no concuerda con proyecto")
+                        else:
+                            roles = request.POST.getlist("roles")
+                            newFase.orden=orden.count()+1
+                            newFase.save()
+                            for rol in roles:
+                                newFase.roles.add(rol)
+                                newFase.save()
+                            return HttpResponseRedirect('/fases/proyecto/'+str(id_proyecto))
     else:
         formulario = CrearFaseForm()
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
@@ -94,12 +117,21 @@ def importar_fase(request, id_fase,id_proyecto):
             fecha=datetime.strptime(str(request.POST["fInicio"]),'%d/%m/%y')
             fecha=fecha.strftime('%Y-%m-%d')
             newFase = Fase(nombre = request.POST["nombre"],descripcion = request.POST["descripcion"],maxItems = request.POST["maxItems"],fInicio = fecha,orden = request.POST["orden"],estado = "PEN", proyecto_id = id_proyecto)
-            newFase.save()
+            aux=0
             roles = request.POST.getlist("roles")
             for rol in roles:
-               newFase.roles.add(rol)
-            newFase.save()
-            return HttpResponseRedirect('/principal')
+               fase=Fase.objects.filter(roles__id=rol)
+               if(fase.count()>0):
+                 aux=1
+            if aux>0:
+                messages.add_message(request, settings.DELETE_MESSAGE, "Error. El Rol ya ha sido asignado a otra fase")
+            else:
+                newFase.save()
+                roles = request.POST.getlist("roles")
+                for rol in roles:
+                   newFase.roles.add(rol)
+                newFase.save()
+                return HttpResponseRedirect('/principal')
     else:
         formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden})
 
@@ -120,16 +152,12 @@ def asignar_rol(request,id_usuario, id_fase):
     '''
     fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
-    if request.method=='POST':
+    roles=Group.objects.filter(fase__id=id_fase)
+    return render_to_response('fases/listar_roles.html', {'roles': roles, 'usuario':usuario}, context_instance=RequestContext(request))
 
-
-        formulario = RolesForm(request.POST, fase=id_fase)
-        if formulario.is_valid():
-            roles = request.POST.getlist("roles")
-            for rol in roles:
-               usuario.groups.add(rol)
-            usuario.save()
-            return HttpResponseRedirect('/fases/proyecto/'+str(fase.proyecto_id))
-    else:
-        formulario = RolesForm(fase=id_fase)
-    return render_to_response('fases/listar_roles.html', {'roles': formulario, 'usuario':usuario}, context_instance=RequestContext(request))
+def asociar(request,id_rol,id_usuario):
+    usuario=User.objects.get(id=id_usuario)
+    rol = Group.objects.get(id=id_rol)
+    usuario.groups.add(rol)
+    usuario.save()
+    return HttpResponseRedirect('/principal')

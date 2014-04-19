@@ -8,9 +8,12 @@
 
  <br>
 
-<form id="formulario" method="post" action="">{% csrf_token %} {{ formulario.as_p }}
-<p><input type="submit" value="Asignar Rol"></p>
-</form>
+    {% for dato in roles %}
+        <br>
+    {{ dato.name }}<a class="btn" href="/fases/asociar/{{ dato.pk }}-{{ usuario.pk }}"><li class="icon-plus-sign"></li></a>
+
+    {% endfor %}
+
 
 {% endblock %}
  {% block busqueda %}

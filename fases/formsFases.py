@@ -1,5 +1,7 @@
+from django.contrib.admin.widgets import AdminDateWidget
 from django.forms import ModelForm
 from django import forms
+from PMS import settings
 from fases.models import Fase
 from django.contrib.auth.models import Group
 class FaseForm(ModelForm):
@@ -7,9 +9,11 @@ class FaseForm(ModelForm):
         model = Fase
 
 class CrearFaseForm(ModelForm):
+    roles = forms.ModelMultipleChoiceField(queryset=Group.objects.all().exclude(name='Lider') )
+
     class Meta:
         model = Fase
-        fields = ('nombre', 'descripcion', 'maxItems', 'fInicio', 'orden', 'roles')
+        fields = ('nombre', 'descripcion', 'maxItems', 'fInicio', 'roles')
 
 class ModificarFaseForm(ModelForm):
     class Meta:
