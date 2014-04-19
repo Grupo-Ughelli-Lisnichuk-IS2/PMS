@@ -50,7 +50,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'test_utils',
     'usuarios',
     'fases',
     'proyectos',
