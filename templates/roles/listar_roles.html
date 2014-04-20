@@ -55,15 +55,17 @@
                 </td>
 
                 <td>
+
                     <form class="ask-plain" action='{% url 'roles.viewsRoles.eliminar_rol' dato.pk %}'  >
                         <input class="btn" type="submit" value="Eliminar Rol" ><li class="icon-minus"></li>
                     </form>
 
                 </td>
               <td>
-                    <form class="btn" action='{% url 'roles.viewsRoles.editar_rol' dato.pk %}'  >
+                  <a class="btn" href="/roles/modificar/{{ dato.pk }}?"><li class="icon-pencil"></li> Modificar Rol</a>
+            {% comment %}        <form class="btn" action='{% url 'roles.viewsRoles.editar_rol' dato.pk %}'  >
                         <input class="btn" type="submit" value="Modificar Rol" ><li class="icon-pencil"></li>
-                    </form>
+                    </form>{% endcomment %}
 
                 </td>
 
