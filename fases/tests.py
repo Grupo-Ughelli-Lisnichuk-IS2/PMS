@@ -49,7 +49,20 @@ class PMSTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['datos'].pk, 15)
         self.assertEqual(resp.context['datos'].nombre, 'Pruebas')
-        resp._post
 
+
+
+    def test_modficar_proyecto(self):
+        '''
+         Test para ver si modifica correctamente una fase
+        '''
+        c = Client()
+        c.login(username='admin', password='admin')
+        #test para verificar que si no modifica nada, no guarda
+        resp = c.post('/fases/modificar/1')
+        self.assertEqual(resp.status_code, 200)
+
+        resp = c.post('/fases/modificar/1',{'descripcion':'hola','maxItems':'2','fInicio':'12/12/2000'})
+        self.assertEqual(resp.status_code, 200)
 
 
