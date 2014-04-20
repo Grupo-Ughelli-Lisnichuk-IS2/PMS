@@ -98,6 +98,6 @@ def editar_rol(request,id_rol):
     else:
         # formulario inicial
         rol_form = GroupForm(instance=rol)
-    return render_to_response('roles/editar_rol.html', { 'rol': rol_form}, context_instance=RequestContext(request))
+    return render_to_response('roles/editar_rol.html', { 'rol': rol_form, 'dato':rol}, context_instance=RequestContext(request))
 
 
