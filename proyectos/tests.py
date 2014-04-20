@@ -82,7 +82,7 @@ class PMSTestCase(TestCase):
         c.login(username='admin', password='admin')
         #si cambia el estado se redirige a la pagina de confirmacion
         resp = c.post('/proyectos/cambiarEstado/1',{'estado':'ACT'},follow=True)
-        
+
         self.assertEqual(resp.status_code, 200)
         self.assertRedirects(resp, 'http://testserver/proyectos/register/success/')
 
