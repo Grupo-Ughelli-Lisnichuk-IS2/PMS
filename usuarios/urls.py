@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^configurar/$', 'usuarios.viewsUsuarios.editar_perfil'),
     url(r'^cambiarPass/$', 'usuarios.viewsUsuarios.cambiar_pass'),
     url(r'^search/$',viewsUsuarios.buscarUsuario, name='buscar_usuarios'),
-    url(r'^register/$', viewsUsuarios.RegisterView.as_view()),
+    url(r'^register/$', viewsUsuarios.RegisterView.as_view(),name='register'),
     url(r'^register/success/$',
         viewsUsuarios.RegisterSuccessView.as_view(
         ), name='register-success'),

@@ -88,7 +88,7 @@ class RegisterSuccessView(TemplateView):
 
     template_name = 'registration/success.html'
 
-
+@login_required
 def lista_usuarios(request):
     '''
     vista para listar los usuarios del sistema
@@ -97,7 +97,7 @@ def lista_usuarios(request):
     usuarios = User.objects.all().order_by('is_active').reverse()
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
-
+@login_required
 def detalle_usuario(request, id_user):
 
     '''
@@ -112,6 +112,8 @@ def detalle_usuario(request, id_user):
 
     return render_to_response('usuarios/detalle_usuario.html', {'usuario': dato, 'roles':nombres}, context_instance=RequestContext(request))
 
+
+@login_required
 def cambiar_pass (request,
                     template_name='registration/editar_perfil.html',
                     post_change_redirect=None,
@@ -133,6 +135,8 @@ def cambiar_pass (request,
         perfil_form=password_change_form(user=request.user)
     return render_to_response('usuarios/cambiar_pass.html', { 'perfil_form': perfil_form}, context_instance=RequestContext(request))
 
+
+@login_required
 def editar_perfil(request):
 
     '''
@@ -153,6 +157,7 @@ def editar_perfil(request):
     return render_to_response('usuarios/editar_perfil.html', { 'user_form': user_form}, context_instance=RequestContext(request))
 
 
+@login_required
 def modificar_usuario(request, id_user):
 
     '''
@@ -177,6 +182,7 @@ def modificar_usuario(request, id_user):
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
 
+@login_required
 def buscarUsuario(request):
     '''
     vista para buscar los usuarios del sistema

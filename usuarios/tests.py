@@ -10,6 +10,7 @@ class PMSTestCase(TestCase):
         Test para la creacion de un usuario con contrasenha
         '''
         u = User.objects.create_user('testuser', 'test@example.com', 'testpw')
+
         self.assertTrue(u.has_usable_password())
         self.assertFalse(u.check_password('bad'))
         self.assertTrue(u.check_password('testpw'))
@@ -49,48 +50,52 @@ class PMSTestCase(TestCase):
             })
         self.assertTrue(SESSION_KEY in self.client.session)
         return response
+
     def test_listar_usuarios(self):
         '''
          Test para crear un usuario y ver si lo lista correctamente
         '''
-        def login(self, password='testpw'):
-            response = self.client.post('/login/', {
-            'username': 'testuser',
-            'password': password,
-            })
-            self.assertTrue(SESSION_KEY in self.client.session)
-            return response
+
         usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
-        self.login('testpw')
-        resp = self.client.get('/usuarios/')
+        c = Client()
+        c.login(username='testuser', password='testpw')
+        resp = c.get('/usuarios/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('datos' in resp.context)
         self.assertEqual([usuario.pk for user in resp.context['datos']], [5])
         usuario1 = resp.context['datos'][0]
         self.assertEqual(usuario1.username, 'testuser')
         self.assertEqual(usuario1.email, 'test@example.com')
+
     def test_detalle_usuarios(self):
         '''
         Test para visualizar los detalles de un usuario
         '''
         usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
-        resp = self.client.get('/usuarios/4?')
+        c = Client()
+        c.login(username='testuser', password='testpw')
+        resp = c.get('/usuarios/4?')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['usuario'].pk, 4)
         self.assertEqual(resp.context['usuario'].username, 'testuser')
+
     def test_modificar_usuarios(self):
         '''
         Test para cambiar el estado de un usuario
         '''
         usuario2 = User.objects.create_user('testuser33', 'test@example.com', 'testpw')
-        usuario2.is_active=False
-        resp = self.client.get('/usuarios/modificar/6?')
-        self.assertEqual(resp.status_code, 200)
 
-        self.assertEqual([usuario2.is_active for user in resp.context['datos']], [False])
+        c = Client()
+        c.login(username='testuser33', password='testpw')
+        resp = self.client.post('/usuarios/modificar/6?')
+        self.assertEqual(resp.status_code, 302)
+        
+
     def test_buscar_usuarios(self):
-      usuario=User.objects.get(id=1)
-      resp = self.client.get('/usuarios/search/?q=admin')
+      usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
+      c = Client()
+      c.login(username='testuser', password='testpw')
+      resp = c.get('/usuarios/search/?q=testuser')
       self.assertEqual(resp.status_code, 200)
       self.assertEqual([usuario.username for user in resp.context['datos']], ['testuser'])
 
@@ -98,7 +103,10 @@ class PMSTestCase(TestCase):
         '''
         Test para el logout
         '''
-        response = self.client.get('/logout/')
+        usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
+        c = Client()
+        c.login(username='tesuser', password='testpw')
+        response = c.get('/logout/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(SESSION_KEY not in self.client.session)
 

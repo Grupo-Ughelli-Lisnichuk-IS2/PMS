@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import Group, Permission
 from django.http import HttpResponse, HttpResponseRedirect, request
@@ -10,7 +11,12 @@ from fases.models import Fase
 from django.contrib import messages
 from PMS import settings
 
+__author__ = 'Grupo R13'
+__date__ = '10-04-2014'
+__version__ = '1.0'
+__text__ = 'Este modulo contiene funciones que permiten el control de roles'
 
+@login_required
 def crear_rol(request):
     '''
     vista para crear un rol, que consta de un nombre y una lista de permisos
@@ -30,6 +36,7 @@ def crear_rol(request):
     return render_to_response('roles/crear_rol.html', { 'group_form': group_form}, context_instance=RequestContext(request))
 
 
+@login_required
 def lista_roles(request):
     '''
     vista para listar los roles exitentes en el sistema
@@ -37,6 +44,8 @@ def lista_roles(request):
 
     grupos = Group.objects.all()
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
+
+@login_required
 def buscarRol(request):
     '''
     vista para buscar un rol entre todos los registrados en el sistema
@@ -51,6 +60,7 @@ def buscarRol(request):
         results = []
     return render_to_response('roles/listar_roles.html', {'datos': results}, context_instance=RequestContext(request))
 
+@login_required
 def detalle_rol(request, id_rol):
 
     '''
@@ -61,7 +71,7 @@ def detalle_rol(request, id_rol):
     permisos = Permission.objects.filter(group__id=id_rol)
     return render_to_response('roles/detalle_rol.html', {'rol': dato, 'permisos': permisos}, context_instance=RequestContext(request))
 
-
+@login_required
 def eliminar_rol(request, id_rol):
 
     '''
@@ -78,9 +88,11 @@ def eliminar_rol(request, id_rol):
     grupos = Group.objects.all()
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
 
+
 class RegisterSuccessView(TemplateView):
     template_name = 'roles/creacion_correcta.html'
 
+@login_required
 def editar_rol(request,id_rol):
     '''
     vista para cambiar el nombre del rol o su lista de permisos.
