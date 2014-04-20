@@ -1,12 +1,40 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from usuarios.tests import PMSTestCase
 from fases.models import Fase
 from proyectos.models import Proyecto
+from django.contrib.auth.models import User
+
 
 class PMSTestCase(TestCase):
+
+    fixtures = ["proyectos_testmaker"]
+
+    def test_listar_fases(self):
+        '''
+         Test para ver si lista correctamente un proyecto
+        '''
+
+        c = Client()
+        c.login(username='admin', password='admin')
+        resp = c.get('/fases/proyecto/1')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual([fase.pk for fase in resp.context['datos']], [4, 3, 2, 1])
+
+
+    def test_fases_sistema(self):
+        '''
+         Test para ver si lista correctamente un proyecto
+        '''
+
+        c = Client()
+        c.login(username='admin', password='admin')
+        resp = c.get('/fases/sistema/1')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual([fase.pk for fase in resp.context['datos']], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+
     def test_crear_fase(self):
-        proyecto= Proyecto.objects.create(id=1, nombre='pruebaProyecto',descripcion='prueba',observaciones='prueba',fecha_ini='2012-12-01',fecha_fin='2013-12-01',lider_id=1)
-        fase= Fase.objects.create(id=1, nombre='pruebaFase',descripcion='prueba', maxItems=1,fInicio='2012-12-01',orden =1, proyecto=proyecto)
+        proyecto=Proyecto.objects.get(id=1)
+        fase= Fase.objects.create(id=16, nombre='pruebaFase',descripcion='prueba', maxItems=1,fInicio='2012-12-01',orden =1, proyecto=proyecto)
         self.assertEqual(fase.nombre,'pruebaFase')
 
 
@@ -14,25 +42,14 @@ class PMSTestCase(TestCase):
         '''
         Test para visualizar los detalles de una fase
         '''
-        proyecto= Proyecto.objects.create(id=1, nombre='pruebaProyecto',descripcion='prueba',observaciones='prueba',fecha_ini='2012-12-01',fecha_fin='2013-12-01',lider_id=1)
-        fase= Fase.objects.create(id=1, nombre='pruebaFase',descripcion='prueba', maxItems=1,fInicio='2012-12-01',orden =1, proyecto=proyecto)
-        resp = self.client.get('/fases/1')
+
+        proyecto=Proyecto.objects.get(id=6)
+        fase=Fase.objects.get(id=15)
+        resp = self.client.get('/fases/15')
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.context['datos'].pk, 1)
-        self.assertEqual(resp.context['datos'].nombre, 'pruebaFase')
+        self.assertEqual(resp.context['datos'].pk, 15)
+        self.assertEqual(resp.context['datos'].nombre, 'Pruebas')
+        resp._post
 
 
-def test_valid_form(self):
-    proyecto= Proyecto.objects.create(id=1, nombre='pruebaProyecto',descripcion='prueba',observaciones='prueba',fecha_ini='2012-12-01',fecha_fin='2013-12-01',lider_id=1)
-    fase= Fase.objects.create(id=1, nombre='pruebaFase',descripcion='prueba', maxItems=1,fInicio='2012-12-01',orden =1, proyecto=proyecto)
-
-    data = {'title': w.title, 'body': w.body,}
-    form = WhateverForm(data=data)
-    self.assertTrue(form.is_valid())
-
-def test_invalid_form(self):
-    w = Whatever.objects.create(title='Foo', body='')
-    data = {'title': w.title, 'body': w.body,}
-    form = WhateverForm(data=data)
-    self.assertFalse(form.is_valid())
 
