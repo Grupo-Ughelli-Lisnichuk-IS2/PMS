@@ -12,7 +12,9 @@ from PMS import settings
 
 
 def crear_rol(request):
-
+    '''
+    vista para crear un rol, que consta de un nombre y una lista de permisos
+    '''
     if request.method == 'POST':
         # formulario enviado
         group_form = GroupForm(request.POST)
@@ -30,14 +32,14 @@ def crear_rol(request):
 
 def lista_roles(request):
     '''
-    vista para listar los usuarios del sistema
+    vista para listar los roles exitentes en el sistema
     '''
 
     grupos = Group.objects.all()
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
 def buscarRol(request):
     '''
-    vista para buscar los usuarios del sistema
+    vista para buscar un rol entre todos los registrados en el sistema
     '''
     query = request.GET.get('q', '')
     if query:
@@ -52,7 +54,7 @@ def buscarRol(request):
 def detalle_rol(request, id_rol):
 
     '''
-    vista para ver los detalles del usuario <id_user> del sistema
+    vista para ver los detalles del rol <id_rol> del sistema
     '''
 
     dato = get_object_or_404(Group, pk=id_rol)
@@ -63,17 +65,10 @@ def detalle_rol(request, id_rol):
 def eliminar_rol(request, id_rol):
 
     '''
-    vista para ver los detalles del usuario <id_user> del sistema
+    vista para eliminar el rol <id_rol>. Se comprueba que dicho rol no tenga fases asociadas.
     '''
 
     dato = get_object_or_404(Group, pk=id_rol)
-    #permisos = Permission.objects.filter(group__id=id_rol)
-
-    #permisos.delete()
-
-
-    #for permiso in permisos:
-     #   permiso.d
     fases=Fase.objects.filter(roles__id=dato.id)
     if fases.count()==0:
         dato.delete()
@@ -87,6 +82,9 @@ class RegisterSuccessView(TemplateView):
     template_name = 'roles/creacion_correcta.html'
 
 def editar_rol(request,id_rol):
+    '''
+    vista para cambiar el nombre del rol o su lista de permisos.
+    '''
     rol= Group.objects.get(id=id_rol)
     if request.method == 'POST':
         # formulario enviado
