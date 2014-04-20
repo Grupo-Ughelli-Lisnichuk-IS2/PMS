@@ -74,7 +74,7 @@ def RegisterSuccessView(request):
     '''
     Vista llamada en caso de creacion correcta de un proyecto, redirige a un template de exito
     '''
-    return HttpResponseRedirect ('/proyectos/register/success/')
+    return render_to_response('proyectos/creacion_correcta.html', context_instance=RequestContext(request))
 
 
 @login_required

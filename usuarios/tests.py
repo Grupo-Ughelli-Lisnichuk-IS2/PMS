@@ -89,8 +89,8 @@ class PMSTestCase(TestCase):
 
         self.assertEqual([usuario2.is_active for user in resp.context['datos']], [False])
     def test_buscar_usuarios(self):
-      usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
-      resp = self.client.get('/usuarios/search/?q=testuser')
+      usuario=User.objects.get(id=1)
+      resp = self.client.get('/usuarios/search/?q=admin')
       self.assertEqual(resp.status_code, 200)
       self.assertEqual([usuario.username for user in resp.context['datos']], ['testuser'])
 
