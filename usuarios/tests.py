@@ -89,7 +89,7 @@ class PMSTestCase(TestCase):
         c.login(username='testuser33', password='testpw')
         resp = self.client.post('/usuarios/modificar/6?')
         self.assertEqual(resp.status_code, 302)
-        
+
 
     def test_buscar_usuarios(self):
       usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')

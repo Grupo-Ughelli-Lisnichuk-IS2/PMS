@@ -80,11 +80,14 @@ def eliminar_rol(request, id_rol):
 
     dato = get_object_or_404(Group, pk=id_rol)
     fases=Fase.objects.filter(roles__id=dato.id)
-    if fases.count()==0:
-        dato.delete()
-        messages.add_message(request, settings.DELETE_MESSAGE, "Rol eliminado")
+    if dato.name=='Lider':
+        messages.add_message(request, settings.DELETE_MESSAGE, "El rol lider no se puede eliminar")
     else:
-        messages.add_message(request, settings.DELETE_MESSAGE, "El rol posee fase(s) asociada(s). No se puede eliminar")
+        if fases.count()==0:
+            dato.delete()
+            messages.add_message(request, settings.DELETE_MESSAGE, "Rol eliminado")
+        else:
+            messages.add_message(request, settings.DELETE_MESSAGE, "El rol posee fase(s) asociada(s). No se puede eliminar")
     grupos = Group.objects.all()
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
 
