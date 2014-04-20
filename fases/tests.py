@@ -33,9 +33,28 @@ class PMSTestCase(TestCase):
         self.assertEqual([fase.pk for fase in resp.context['datos']], [1, 2, 3])
 
     def test_crear_fase(self):
-        proyecto=Proyecto.objects.get(id=1)
-        fase= Fase.objects.create(id=16, nombre='pruebaFase',descripcion='prueba', maxItems=1,fInicio='2012-12-01',orden =1, proyecto=proyecto)
-        self.assertEqual(fase.nombre,'pruebaFase')
+
+
+        c = Client()
+        c.login(username='admin', password='admin1')
+        #prueba crear una fase y asignarle como nombre un nombre ya existente. Retorna un mensaje de nivel 20,
+        #informando que ya existe una fase con ese nombre
+        resp = c.post('/fases/registrar/2',{'nombre':'Fase 1 del proyecto 2'})
+
+        self.assertEqual(resp.status_code, 200)
+
+        self.assertEqual(resp.context['messages'].level, 20)
+
+        #registra correctamente
+        resp = c.post('/fases/registrar/2',{'nombre':'Fase nuevo', 'descripcion':'ds','maxItems':'1','fInicio':'20/02/2014'},follow=True)
+        self.assertEqual(resp.status_code, 200)
+
+        #no registra correctamente ya que la fecha de inicio anterior a la fecha de inicio del Proyecto
+        resp = c.post('/fases/registrar/2',{'nombre':'Fase nuevo', 'descripcion':'ds','maxItems':'1','fInicio':'20/02/1999'},follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['messages'].level, 20)
+
+
 
 
     def test_detalle_fases(self):
@@ -78,6 +97,7 @@ class PMSTestCase(TestCase):
 
         c = Client()
         c.login(username='admin', password='admin1')
+
         #prueba importar una fase y asignarle como nombre un nombre ya existente. Retorna un mensaje de nivel 20,
         #informando que ya existe una fase con ese nombre
         resp = c.post('http://127.0.0.1:8000/fases/importar/1-1',{'nombre':'Fase 1'})
@@ -115,14 +135,18 @@ class PMSTestCase(TestCase):
         '''
         c = Client()
         c.login(username='admin', password='admin1')
+
+        #se asocia el rol al usuario
         resp = c.get('/fases/asociar/8-3-3')
+
+        #se comprueba que el rol ha sido asignado correctamente y que pertenece el mismo ya pertenece al proyecto
         resp = c.get('/proyectos/equipo/2')
         self.assertEqual(resp.context['usuarios'][1], u'Yohanna Lisnichuk  -  Analista de la Fase 3 en la fase   Fase 1 del proyecto 2\n')
 
 
     def test_des(self):
         '''
-        Test para comprobar que se lista correctamente a los usuario de una fase, para poder desasociarlos
+        Test para comprobar que se lista correctamente a los usuarios de una fase, para poder desasociarlos
         '''
         c = Client()
         c.login(username='admin', password='admin1')
@@ -137,7 +161,16 @@ class PMSTestCase(TestCase):
         '''
         c = Client()
         c.login(username='admin', password='admin1')
+
+        #se comprueba que el usuario pertenece a la fase
+        resp = c.get('/fases/des/3')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual([usuario.pk for usuario in resp.context['datos']], [2])
+
+        #se remueve el rol
         resp = c.get('/fases/desasignar/2/3')
+
+        #se comprueba que el usuario ya no pertenece a la fase
         resp = c.get('/fases/des/3')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual([usuario.pk for usuario in resp.context['datos']], [])
