@@ -5,6 +5,8 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 class PMSTestCase(TestCase):
 
+    fixtures = ["usuarios_testmaker"]
+
     def test_crear_usuario(self):
         '''
         Test para la creacion de un usuario con contrasenha
@@ -58,12 +60,12 @@ class PMSTestCase(TestCase):
 
         usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
         c = Client()
-        c.login(username='testuser', password='testpw')
+        c.login(username='admin', password='admin1')
         resp = c.get('/usuarios/')
         self.assertEqual(resp.status_code, 200)
         self.assertTrue('datos' in resp.context)
-        self.assertEqual([usuario.pk for user in resp.context['datos']], [5])
-        usuario1 = resp.context['datos'][0]
+        self.assertEqual([usu.pk for usu in resp.context['datos']], [2,3,4,1])
+        usuario1 = resp.context['datos'][2]
         self.assertEqual(usuario1.username, 'testuser')
         self.assertEqual(usuario1.email, 'test@example.com')
 
@@ -73,11 +75,11 @@ class PMSTestCase(TestCase):
         '''
         usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
         c = Client()
-        c.login(username='testuser', password='testpw')
-        resp = c.get('/usuarios/4?')
+        c.login(username='admin', password='admin1')
+        resp = c.get('/usuarios/1?')
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.context['usuario'].pk, 4)
-        self.assertEqual(resp.context['usuario'].username, 'testuser')
+        self.assertEqual(resp.context['usuario'].pk, 1)
+        self.assertEqual(resp.context['usuario'].username, 'admin')
 
     def test_modificar_usuarios(self):
         '''
@@ -94,7 +96,7 @@ class PMSTestCase(TestCase):
     def test_buscar_usuarios(self):
       usuario = User.objects.create_user('testuser', 'test@example.com', 'testpw')
       c = Client()
-      c.login(username='testuser', password='testpw')
+      c.login(username='admin', password='admin1')
       resp = c.get('/usuarios/search/?q=testuser')
       self.assertEqual(resp.status_code, 200)
       self.assertEqual([usuario.username for user in resp.context['datos']], ['testuser'])

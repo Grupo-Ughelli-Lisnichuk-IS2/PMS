@@ -61,10 +61,12 @@ class PMSTestCase(TestCase):
         '''
         Test para visualizar los detalles de una fase
         '''
+        c = Client()
+        c.login(username='admin', password='admin1')
 
         proyecto=Proyecto.objects.get(id=1)
         fase=Fase.objects.get(id=1)
-        resp = self.client.get('/fases/1')
+        resp = c.get('/fases/1')
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['datos'].pk, 1)
         self.assertEqual(resp.context['datos'].nombre, 'Fase 1')

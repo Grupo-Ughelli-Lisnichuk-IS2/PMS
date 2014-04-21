@@ -45,6 +45,7 @@ def registrar_proyecto(request):
 
 
 @login_required
+@permission_required('proyecto')
 def importar_proyecto(request, id_proyecto):
     '''
     Vista para importar un proyecto, dado en <id_proyecto>  con su lider y miembros del comite
@@ -70,6 +71,7 @@ def importar_proyecto(request, id_proyecto):
 
 
 @login_required
+@permission_required('proyecto')
 def RegisterSuccessView(request):
     '''
     Vista llamada en caso de creacion correcta de un proyecto, redirige a un template de exito
@@ -78,6 +80,7 @@ def RegisterSuccessView(request):
 
 
 @login_required
+@permission_required('proyecto')
 def RegisterFailedView(request, id_proyecto):
     '''
     Vista que retorna a un template de fracaso en caso de que el proyecto no pueda cambiar de estado
@@ -86,6 +89,7 @@ def RegisterFailedView(request, id_proyecto):
 
 
 @login_required
+@permission_required('proyecto')
 def detalle_proyecto(request, id_proyecto):
 
     '''
@@ -99,6 +103,7 @@ def detalle_proyecto(request, id_proyecto):
 
 
 @login_required
+@permission_required('proyecto')
 def listar_proyectos(request):
 
     '''
@@ -112,6 +117,7 @@ def listar_proyectos(request):
 
 
 @login_required
+@permission_required('proyecto')
 def buscar_proyecto(request):
     '''
     vista para buscar los proyectos del sistema
@@ -132,6 +138,7 @@ def buscar_proyecto(request):
 
 
 @login_required
+@permission_required('proyecto')
 def editar_proyecto(request,id_proyecto):
     '''
     Vista para editar un proyecto,o su lider o los miembros de su comite
@@ -158,6 +165,7 @@ def editar_proyecto(request,id_proyecto):
 
 
 @login_required
+@permission_required('proyecto')
 def cambiar_estado_proyecto(request,id_proyecto):
     '''
     Vista para cambiar el estado de un proyecto, verificando que esto sea posible: para estar activo debe tener la cantidad
@@ -201,6 +209,7 @@ def cambiar_estado_proyecto(request,id_proyecto):
         return render_to_response('proyectos/cambiar_estado_proyecto.html', { 'proyecto': proyecto_form, 'nombre':nombre}, context_instance=RequestContext(request))
 
 @login_required
+@permission_required('proyecto')
 def ver_equipo(request,id_proyecto):
     '''
     vista para ver todos los usuarios que forman parte de un proyecto

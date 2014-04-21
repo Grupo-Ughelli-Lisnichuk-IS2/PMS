@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import Group, Permission
 from django.http import HttpResponse, HttpResponseRedirect, request
@@ -17,6 +17,7 @@ __version__ = '1.0'
 __text__ = 'Este modulo contiene funciones que permiten el control de roles'
 
 @login_required
+@permission_required('group')
 def crear_rol(request):
     '''
     vista para crear un rol, que consta de un nombre y una lista de permisos
@@ -37,6 +38,7 @@ def crear_rol(request):
 
 
 @login_required
+@permission_required('group')
 def lista_roles(request):
     '''
     vista para listar los roles exitentes en el sistema
@@ -46,6 +48,7 @@ def lista_roles(request):
     return render_to_response('roles/listar_roles.html', {'datos': grupos}, context_instance=RequestContext(request))
 
 @login_required
+@permission_required('group')
 def buscarRol(request):
     '''
     vista para buscar un rol entre todos los registrados en el sistema
@@ -61,6 +64,7 @@ def buscarRol(request):
     return render_to_response('roles/listar_roles.html', {'datos': results}, context_instance=RequestContext(request))
 
 @login_required
+@permission_required('group')
 def detalle_rol(request, id_rol):
 
     '''
@@ -72,6 +76,7 @@ def detalle_rol(request, id_rol):
     return render_to_response('roles/detalle_rol.html', {'rol': dato, 'permisos': permisos}, context_instance=RequestContext(request))
 
 @login_required
+@permission_required('group')
 def eliminar_rol(request, id_rol):
 
     '''
@@ -96,6 +101,7 @@ class RegisterSuccessView(TemplateView):
     template_name = 'roles/creacion_correcta.html'
 
 @login_required
+@permission_required('group')
 def editar_rol(request,id_rol):
     '''
     vista para cambiar el nombre del rol o su lista de permisos.

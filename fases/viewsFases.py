@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
@@ -11,7 +12,8 @@ from fases.formsFases import FaseForm, ModificarFaseForm, CrearFaseForm, RolesFo
 from datetime import datetime
 
 
-
+@login_required
+@permission_required('fase')
 def registrar_fase(request,id_proyecto):
     '''
         Vista para registrar una nueva fase dentro de un proyecto. Asigna automaticamente el orden,
@@ -69,6 +71,8 @@ def registrar_fase(request,id_proyecto):
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
 
+@login_required
+@permission_required('fase')
 def listar_fases(request,id_proyecto):
     '''
     vista para listar las fases pertenecientes a un proyecto
@@ -79,6 +83,8 @@ def listar_fases(request,id_proyecto):
     return render_to_response('fases/listar_fases.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
 
 
+@login_required
+@permission_required('fase')
 def fases_sistema(request,id_proyecto):
     '''
     vista para listar las fases del sistema
@@ -88,6 +94,8 @@ def fases_sistema(request,id_proyecto):
     return render_to_response('fases/fases_sistema.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
 
 
+@login_required
+@permission_required('fase')
 def detalle_fase(request, id_fase):
 
     '''
@@ -98,6 +106,8 @@ def detalle_fase(request, id_fase):
     return render_to_response('fases/detalle_fase.html', {'datos': dato}, context_instance=RequestContext(request))
 
 
+@login_required
+@permission_required('fase')
 def editar_fase(request,id_fase):
     '''
         Vista para modificar la descripcion, cantidad maxima de items y fecha de Inicio de una fase.
@@ -165,7 +175,8 @@ def editar_fase(request,id_fase):
     return render_to_response('fases/editar_fase.html', { 'form': fase_form, 'fase': fase}, context_instance=RequestContext(request))
 
 
-
+@login_required
+@permission_required('fase')
 def importar_fase(request, id_fase,id_proyecto):
 
     '''
@@ -224,6 +235,9 @@ def importar_fase(request, id_fase,id_proyecto):
         formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden}) #'fInicio':datetime.strptime(str(fase.fInicio),'%Y-%m-%d').strftime('%d/%m/%y')
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
 
+
+@login_required
+@permission_required('fase')
 def asignar_usuario(request,id_fase):
     '''
     vista auxiliar para obtener un listado de usuarios para asociar a la fase
@@ -233,6 +247,9 @@ def asignar_usuario(request,id_fase):
     fase=Fase.objects.get(id=id_fase)
     return render_to_response('fases/lista_usuarios.html', {'datos': usuarios, 'fase' : fase}, context_instance=RequestContext(request))
 
+
+@login_required
+@permission_required('fase')
 def asignar_rol(request,id_usuario, id_fase):
     '''
     vista auxiliar para obtener el listado de roles asociados a una fase para asociarlos a un usuario
@@ -242,6 +259,9 @@ def asignar_rol(request,id_usuario, id_fase):
     roles=Group.objects.filter(fase__id=id_fase)
     return render_to_response('fases/listar_roles.html', {'roles': roles, 'usuario':usuario, 'fase':id_fase}, context_instance=RequestContext(request))
 
+
+@login_required
+@permission_required('fase')
 def asociar(request,id_rol,id_usuario,id_fase):
     '''
     vista para asociar un rol perteneciente a una face a un usuario, asociandolo de esta manera a la fase, y al proyecto
@@ -253,6 +273,9 @@ def asociar(request,id_rol,id_usuario,id_fase):
     usuario.save()
     return HttpResponseRedirect('/fases/proyecto/'+str(fase.proyecto_id))
 
+
+@login_required
+@permission_required('fase')
 def des(request,id_fase):
     '''
     vista para listar a los usuario de una fase, para poder desasociarlos
@@ -265,6 +288,8 @@ def des(request,id_fase):
             usuarios.append(pp)
     return render_to_response('fases/lista_usuarios_d.html', {'datos': usuarios,"fase":id_fase}, context_instance=RequestContext(request))
 
+@login_required
+@permission_required('fase')
 def desasociar(request,id_usuario, id_fase):
     '''
     vista para remover un rol al usuario, desasociandolo asi de una fase

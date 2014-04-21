@@ -1,0 +1,266 @@
+[
+{
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Administrador de Fase 1", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de la Fase 1", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista de la Fase 1", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Administrador de Fase 2", 
+        "permissions": []
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de la Fase 2", 
+        "permissions": [
+            1, 
+            2, 
+            3, 
+            7
+        ]
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista de la Fase 2", 
+        "permissions": [
+            1, 
+            2, 
+            3, 
+            7
+        ]
+    }
+},
+{
+    "pk": 7, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Lider", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista de la Fase 3", 
+        "permissions": [
+            3
+        ]
+    }
+},
+{
+    "pk": 9, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de la fase 4", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "Admi", 
+        "last_name": "Nistrador", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-04-20T02:20:07.100Z", 
+        "groups": [
+            1, 
+            7
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$5QZf5QNSEimt$V6H1nbxfjqwfE5pxCPDnlNEdKH9qk/OqYrcj6naR140=", 
+        "email": "admin@admin.com", 
+        "date_joined": "2014-04-20T02:19:13.458Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "viktor992", 
+        "first_name": "Victor", 
+        "last_name": "Ughelli", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-20T02:26:47.112Z", 
+        "groups": [
+            2, 
+            8
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$FKnb6OgWxt0N$ZyQ2e80AT5cmVMII7fkAJcjOOKx6FC+nnT9aw9qK9G4=", 
+        "email": "viktor992@hotmail.com", 
+        "date_joined": "2014-04-20T02:26:47.112Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "yolile_3000", 
+        "first_name": "Yohanna", 
+        "last_name": "Lisnichuk", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-20T02:32:27.584Z", 
+        "groups": [
+            3, 
+            7
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$REFZGIM6WZSF$2CWRA23XA0kGRWOuKFWdtxONRP/KUR/Od1/dgUX8sjA=", 
+        "email": "yolile_3000@hotmail.com", 
+        "date_joined": "2014-04-20T02:32:27.584Z"
+    }
+},
+{
+    "pk": "14zv0iet9a9dzrv1xpe102hhlskv9obl", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T02:50:07.172Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": 1, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            1, 
+            2, 
+            3
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2012-01-01", 
+        "maxItems": 2, 
+        "proyecto": 1, 
+        "descripcion": "Esta es la primera fase de prueba.", 
+        "nombre": "Fase 1", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 2, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 2, 
+        "roles": [
+            4, 
+            5, 
+            6
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2012-01-03", 
+        "maxItems": 5, 
+        "proyecto": 1, 
+        "descripcion": "Otra fase de Prueba.", 
+        "nombre": "Fase 2", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 3, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            8
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2006-01-10", 
+        "maxItems": 4, 
+        "proyecto": 2, 
+        "descripcion": "Probamos en otro proyecto.", 
+        "nombre": "Fase 1 del proyecto 2", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 1, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Esto es una prueba.", 
+        "fecha_fin": "2018-01-01", 
+        "lider": 3, 
+        "fecha_ini": "2012-01-01", 
+        "descripcion": "Sistema Gerenciador de Proyectos", 
+        "nombre": "PMS", 
+        "comite": [
+            3, 
+            1, 
+            2
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 2, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Es otra prueba.", 
+        "fecha_fin": "2020-01-01", 
+        "lider": 1, 
+        "fecha_ini": "2006-01-01", 
+        "descripcion": "Una computadora por nino.", 
+        "nombre": "OLPC", 
+        "comite": [
+            2
+        ], 
+        "estado": "PEN"
+    }
+}
+]

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic import View, TemplateView, ListView
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
@@ -20,7 +20,6 @@ __author__ = 'Grupo R13'
 __date__ = '04-04-2014'
 __version__ = '1.0'
 __text__ = 'Este modulo contiene funciones que permiten el control de administracion de usuarios'
-
 
 
 
@@ -89,6 +88,7 @@ class RegisterSuccessView(TemplateView):
     template_name = 'registration/success.html'
 
 @login_required
+@permission_required('user')
 def lista_usuarios(request):
     '''
     vista para listar los usuarios del sistema
@@ -98,6 +98,7 @@ def lista_usuarios(request):
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
 @login_required
+@permission_required('user')
 def detalle_usuario(request, id_user):
 
     '''
@@ -114,6 +115,7 @@ def detalle_usuario(request, id_user):
 
 
 @login_required
+@permission_required('user')
 def cambiar_pass (request,
                     template_name='registration/editar_perfil.html',
                     post_change_redirect=None,
@@ -137,6 +139,7 @@ def cambiar_pass (request,
 
 
 @login_required
+@permission_required('user')
 def editar_perfil(request):
 
     '''
@@ -158,6 +161,7 @@ def editar_perfil(request):
 
 
 @login_required
+@permission_required('user')
 def modificar_usuario(request, id_user):
 
     '''
@@ -169,7 +173,7 @@ def modificar_usuario(request, id_user):
     if dato.is_active == False:
         roles=User.objects.filter(groups__id=dato.id)
         comite=Proyecto.objects.filter(comite__id=dato.id)
-        if comite.count()==0 and roles.count():
+        if comite.count()==0 and roles.count()==0:
             dato.save()
             messages.add_message(request, settings.DELETE_MESSAGE, "Estado Cambiado")
 
@@ -183,6 +187,7 @@ def modificar_usuario(request, id_user):
 
 
 @login_required
+@permission_required('user')
 def buscarUsuario(request):
     '''
     vista para buscar los usuarios del sistema
