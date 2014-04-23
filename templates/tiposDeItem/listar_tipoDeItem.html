@@ -28,7 +28,7 @@
 </head>
 
 
-    <center><h1>Administracion de Fases del proyecto {{ proyecto.nombre }}</h1></center>
+    <center><h1>Administracion de Tipos de Item de la fase {{ fase.nombre }}</h1></center>
 
  <br>
     <center>
@@ -37,10 +37,8 @@
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
 	            <th style="text-align:center">Id</th>
-	            <th style="text-align:center">Orden</th>
 	            <th style="text-align:center">Nombre</th>
-	            <th style="text-align:center">Estado</th>
-	            <th colspan="4" style="text-align:center">Opciones</th>
+	            <th colspan="3" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -48,26 +46,23 @@
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
 				<td>{{ dato.id }}</td>
-				<td>{{ dato.orden }}</td>
 				<td>{{ dato.nombre }}</td>
-				<td>{{ dato.estado }}</td>
+
 		                <td>
-                              <center>
-                	    <a class="btn" href="/fases/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
+                            <center>
+                	    <a class="btn"  href="/fases/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
                     {% comment %}<form action='{% url 'fases.viewsFases.detalle_fase' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
 
 
 	    <a class="btn" href="/fases/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
-        <a class="btn" href="/fases/asignar/{{dato.id}}"><li class="icon-user"></li> Asignar Usuario</a>
-        <a class="btn" href="/fases/des/{{dato.id}}"><li class="icon-user"></li> Desasignar Usuario</a>
-        <a class="btn" href="/tiposDeItem/fase/{{dato.id}}"><li class="icon-indent-left"></li> Tipos de Item</a>
-               </center>
+        <a class="btn ask-plain" href="/fases/asignar/{{dato.id}}"><li class="icon-minus-sign"></li> Eliminar</a>
+        </center>
                 </td>
 			</tr>
             {% empty %}
-                <li>Aún no hay fases registradas</li>
+                <li>Aún no hay Tipos de Item registrados</li>
 	    {% endfor %}
 
 	</table>
@@ -77,10 +72,10 @@
 
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <a class="btn" href="/fases/registrar/{{proyecto.id}}"><li class="icon-plus"></li> Agregar una fase</a>
-                <a class="btn" href="/fases/sistema/{{proyecto.id}}"><li class="icon-share"></li> Importar una fase</a>
+                <a class="btn" href="/tiposDeItem/registrar/{{fase.id}}"><li class="icon-plus"></li> Agregar un Tipo de Item</a>
+                <a class="btn" href="/fases/sistema/{{proyecto.id}}"><li class="icon-share"></li> Importar un Tipo de Item</a>
 
-                <a class="btn" href="/proyectos"><li class="icon-arrow-left"></li> Regresar</a>
+                <a class="btn" href="/fases/proyecto/{{ fase.proyecto_id }}"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>
 
