@@ -19,3 +19,8 @@ class Atributo(models.Model):
     tipo=models.CharField(max_length=3,choices=TIPOS, default='TEX' )
     valorDefecto=models.CharField(max_length=140)
     tipoItem=models.ForeignKey(TipoItem, related_name='tipoItem')
+
+#class AtributoItem(models.Model):
+#    id_item=models.SmallIntegerField(null=False);
+#    id_atributo=models.SmallIntegerField(null=False);
+#    valor=models.CharField(max_length=256);
