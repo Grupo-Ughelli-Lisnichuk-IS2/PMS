@@ -190,6 +190,33 @@ def cambiar_estado_proyecto(request,id_proyecto):
                         if cantidad<3:
                             return render_to_response('proyectos/cambio_estado_fallido.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
                         fases=Fase.objects.filter(proyecto_id=id_proyecto)
+                        #obtener todos los roles del proyecto
+                        roles=[]
+                        contador=0
+                        flag=0
+                        for fase in fases:
+                            rol=Group.objects.filter(fase__id=fase.id)
+                            for a in rol:
+                                roles.append(a)
+                        for usuarios in comite:
+                            flag=0
+                            g=Group.objects.filter(user__id=usuarios.id)
+
+                            for gg in g:
+
+                                for rr in roles:
+
+                                    if gg.id==rr.id:
+                                        flag=1
+                                        break
+                                if flag==1:
+                                    contador+=1
+                                    flag=0
+                                    break
+
+                        if contador != comite.count():
+                            return render_to_response('proyectos/cambio_estado_fallido_nofases.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
+
                         if (fases.count()==0):
                             return render_to_response('proyectos/cambio_estado_fallido_nofases.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
                         for fase in fases:

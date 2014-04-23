@@ -15,5 +15,5 @@ urlpatterns = patterns('',
     url(r'^search/$',viewsRoles.buscarRol, name='buscar_roles'),
     url(r'^register/success/$',
         viewsRoles.RegisterSuccessView.as_view(
-        ), name='register-success'),
+        )),
     )
