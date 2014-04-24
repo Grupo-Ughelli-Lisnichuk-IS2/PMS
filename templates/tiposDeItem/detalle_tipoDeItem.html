@@ -13,6 +13,17 @@
             <div><strong>Id: </strong>{{ datos.id }}</div>
             <div><strong>Nombre: </strong>{{ datos.nombre }}</div>
             <div><strong>Descripción: </strong>{{ datos.descripcion }}</div>
+            <div>
+                <strong>Tipos de Atributo: </strong>
+                {% for atributo in atributos %}
+
+                    <li>{{ atributo.nombre }} </li>
+                    <ul>Tipo: {{ atributo.tipo }}</ul>
+                    <ul>Valor por defecto: {{ atributo.valorDefecto }}</ul>
+
+                {% endfor %}
+
+            </div>
             <center>
 
             <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>

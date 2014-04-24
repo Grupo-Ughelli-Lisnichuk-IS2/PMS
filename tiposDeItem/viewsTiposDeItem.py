@@ -49,7 +49,8 @@ def detalle_tipoItem(request, id_tipoItem):
     '''
 
     dato = get_object_or_404(TipoItem, pk=id_tipoItem)
-    return render_to_response('tiposDeItem/detalle_tipoDeItem.html', {'datos': dato}, context_instance=RequestContext(request))
+    atributos = Atributo.objects.filter(tipoItem_id=id_tipoItem)
+    return render_to_response('tiposDeItem/detalle_tipoDeItem.html', {'datos': dato, 'atributos': atributos}, context_instance=RequestContext(request))
 
 
 def crear_atributo(request, id_tipoItem):
