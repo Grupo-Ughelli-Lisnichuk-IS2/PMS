@@ -215,7 +215,7 @@ def cambiar_estado_proyecto(request,id_proyecto):
                                     break
 
                         if contador != comite.count():
-                            return render_to_response('proyectos/cambio_estado_fallido_nofases.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
+                            return render_to_response('proyectos/cambio_estado_fallido_nocomite.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
 
                         if (fases.count()==0):
                             return render_to_response('proyectos/cambio_estado_fallido_nofases.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
