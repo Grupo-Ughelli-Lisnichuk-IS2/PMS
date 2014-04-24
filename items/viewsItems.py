@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.shortcuts import render, render_to_response
 
 # Create your views here.
@@ -40,7 +40,7 @@ def listar_fases(request, id_proyecto):
     '''
     vista para listar las fases asignadas a un usuario de un proyecto especifico
     '''
-    fasesProyecto=Fase.objects.filter(proyecto_id=id_proyecto)
+    fasesProyecto=Fase.objects.filter(proyecto_id=id_proyecto, estado='EJE')
     usuario = request.user
     proyecto=Proyecto.objects.get(id=id_proyecto)
     fases=[]
@@ -57,15 +57,36 @@ def listar_fases(request, id_proyecto):
     return render_to_response('items/abrir_fase.html', {'datos': fases}, context_instance=RequestContext(request))
 
 
+def es_miembro(id_usuario, id_fase):
+    fase=Fase.objects.get(id=id_fase)
+    usuario=User.objects.get(id=id_usuario)
+    proyecto=Proyecto.objects.get(id=fase.proyecto_id)
+    if fase.estado!='EJE':
+        return False
+    if usuario.id==proyecto.lider_id:
+        return True
+    roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
+    roles_fase=Group.objects.filter(fase__id=fase.id)
+    for rol in roles:
+        for r in roles_fase:
+            if rol.id==r.id:
+                return True
+    return False
+
+
 def listar_tiposDeItem(request, id_fase):
 
     '''
     vista para listar las fases asignadas a un usuario de un proyecto especifico
     '''
+    flag=es_miembro(request.user.id, id_fase)
 
-
-    tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
-    fase = Fase.objects.get(id=id_fase)
+    fase=Fase.objects.get(id=id_fase)
+    if flag==True:
+        tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
+    else:
+        tiposItem=[]
+        fase=""
 
 
     return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
