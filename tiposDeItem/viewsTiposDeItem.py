@@ -88,14 +88,14 @@ def eliminar_atributo(request, id_atributo, id_tipoItem):
 
     atributo = get_object_or_404(Atributo, pk=id_atributo)
     tipoItem = get_object_or_404(TipoItem, pk=id_tipoItem)
-    fase = tipoItem.fase_id
+    fase = tipoItem.fase
 
     tipoItem.atributo_set.remove(atributo)
     if(atributo.tipoItem.count() == 0):
         atributo.delete()
 
     messages.add_message(request, settings.DELETE_MESSAGE, "Atributo eliminado")
-    tiposItem = TipoItem.objects.filter(fase_id=fase).order_by('nombre')
+    tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
     return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))
 
 
