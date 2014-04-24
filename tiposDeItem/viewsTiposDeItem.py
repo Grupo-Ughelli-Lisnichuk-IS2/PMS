@@ -89,7 +89,6 @@ def eliminar_atributo(request, id_atributo, id_tipoItem):
     atributo = get_object_or_404(Atributo, pk=id_atributo)
     tipoItem = get_object_or_404(TipoItem, pk=id_tipoItem)
     fase = tipoItem.fase
-
     tipoItem.atributo_set.remove(atributo)
     if(atributo.tipoItem.count() == 0):
         atributo.delete()
@@ -119,3 +118,30 @@ def editar_TipoItem(request,id_tipoItem):
         # formulario inicial
         tipoItem_form = TipoItemModForm(instance=tipoItem)
     return render_to_response('tiposDeItem/editar_tipoItem.html', { 'tipoItem': tipoItem_form, 'dato':tipoItem, 'id_fase':id_fase}, context_instance=RequestContext(request))
+
+
+def importar_tipoItem(request, id_tipoItem):
+    '''
+    Vista para importar un tipo de Item, dado en <id_tipoItem>
+    '''
+    tipoItem=TipoItem.objects.get(id=id_tipoItem)
+    if request.method=='POST':
+        formulario = TipoItemForm(request.POST, initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )
+
+        if formulario.is_valid():
+                tipo = formulario.save()
+                tipo.fase_id= tipoItem.fase_id
+
+                for atributo in tipoItem.atributo_set.all():
+                    tipo.atributo_set.add(atributo)
+                tipo.save()
+#                tipo = formulario.save()
+ #               for atributo in tipoItem.atributo_set.all():
+  #                  tipo.atributo_set.add(atributo)
+   #             tipo.id_fase= tipoItem.fase_id
+    #            tipo.save()
+                return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':tipoItem.fase_id}, context_instance=RequestContext(request))
+    else:
+        formulario = TipoItemForm(initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )
+    return render_to_response('tiposDeItem/crear_tipoDeItem.html', { 'tipoItem_form': formulario}, context_instance=RequestContext(request))
+

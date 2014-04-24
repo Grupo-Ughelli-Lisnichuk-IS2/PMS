@@ -12,5 +12,6 @@ urlpatterns = patterns('',
         url(r'^(?P<id_tipoItem>\d+)$', 'tiposDeItem.viewsTiposDeItem.detalle_tipoItem'),
         url(r'^(?P<id_tipoItem>\d+)/crear_atributo$', 'tiposDeItem.viewsTiposDeItem.crear_atributo'),
         url(r'^modificar/(?P<id_tipoItem>\d+)$', 'tiposDeItem.viewsTiposDeItem.editar_TipoItem'),
+        url(r'^importar/(?P<id_tipoItem>\d+)$','tiposDeItem.viewsTiposDeItem.importar_tipoItem'),
         )
 
