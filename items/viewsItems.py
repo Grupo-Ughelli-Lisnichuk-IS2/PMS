@@ -6,6 +6,7 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from fases.models import Fase
 from proyectos.models import Proyecto
+from tiposDeItem.models import TipoItem
 
 
 @login_required
@@ -55,3 +56,16 @@ def listar_fases(request, id_proyecto):
 
     return render_to_response('items/abrir_fase.html', {'datos': fases}, context_instance=RequestContext(request))
 
+
+def listar_tiposDeItem(request, id_fase):
+
+    '''
+    vista para listar las fases asignadas a un usuario de un proyecto especifico
+    '''
+
+
+    tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
+    fase = Fase.objects.get(id=id_fase)
+
+
+    return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
