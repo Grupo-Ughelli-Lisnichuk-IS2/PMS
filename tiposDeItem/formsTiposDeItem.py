@@ -12,3 +12,8 @@ class AtributoForm(forms.ModelForm):
         model = Atributo
         exclude = ('tipoItem',)
 
+
+class TipoItemModForm(forms.ModelForm):
+    class Meta:
+        model = TipoItem
+        fields = ['descripcion']

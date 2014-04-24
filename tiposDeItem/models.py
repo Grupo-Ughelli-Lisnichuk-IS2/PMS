@@ -18,7 +18,8 @@ class Atributo(models.Model):
     nombre=models.CharField(max_length=100, null=Fase, verbose_name="Nombre")
     tipo=models.CharField(max_length=3,choices=TIPOS, default='TEX', verbose_name="Tipo de Dato" )
     valorDefecto=models.CharField(max_length=140, verbose_name="Valor por defecto")
-    tipoItem=models.ForeignKey(TipoItem, related_name='tipoItem', verbose_name="Tipo de Item")
+#    tipoItem=models.ForeignKey(TipoItem, related_name='tipoItem', verbose_name="Tipo de Item")
+    tipoItem=models.ManyToManyField(TipoItem)
 
 #class AtributoItem(models.Model):
 #    id_item=models.SmallIntegerField(null=False);

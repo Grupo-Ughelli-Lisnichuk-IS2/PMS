@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.template import RequestContext
 from PMS import settings
 from fases.models import Fase
-from tiposDeItem.formsTiposDeItem import TipoItemForm, AtributoForm
+from tiposDeItem.formsTiposDeItem import TipoItemForm, AtributoForm, TipoItemModForm
 from tiposDeItem.models import TipoItem, Atributo
 
 
@@ -51,7 +51,7 @@ def detalle_tipoItem(request, id_tipoItem):
     '''
 
     dato = get_object_or_404(TipoItem, pk=id_tipoItem)
-    atributos = Atributo.objects.filter(tipoItem_id=id_tipoItem)
+    atributos = Atributo.objects.filter(tipoItem__id=id_tipoItem)
     return render_to_response('tiposDeItem/detalle_tipoDeItem.html', {'datos': dato, 'atributos': atributos}, context_instance=RequestContext(request))
 
 
@@ -66,10 +66,13 @@ def crear_atributo(request, id_tipoItem):
         atributo_form = AtributoForm(request.POST)
 
         if atributo_form.is_valid():
-            tipoItem = TipoItem.objects.get(id=id_tipoItem)
-            atributo= Atributo(nombre = request.POST["nombre"], tipo = request.POST["tipo"], valorDefecto = request.POST["valorDefecto"], tipoItem = tipoItem)
+            tipoItem = TipoItem.objects.filter(id=id_tipoItem)#uso filter y no get porque atributo.tipoItem=tipoItem requiere que tipoItem sea Iterable
+            atributo= Atributo(nombre = request.POST["nombre"], tipo = request.POST["tipo"], valorDefecto = request.POST["valorDefecto"])
             atributo.save()
-            id_fase = tipoItem.fase_id
+            atributo.tipoItem=tipoItem
+            atributo.save()
+            tipoItem2 = TipoItem.objects.get(id=id_tipoItem)
+            id_fase = tipoItem2.fase_id
             return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
     else:
         # formulario inicial
@@ -77,18 +80,42 @@ def crear_atributo(request, id_tipoItem):
     return render_to_response('tiposDeItem/crear_atributo.html', { 'atributo_form': atributo_form}, context_instance=RequestContext(request))
 
 
-def eliminar_atributo(request, id_atributo):
+def eliminar_atributo(request, id_atributo, id_tipoItem):
 
     '''
     vista para eliminar el atributo <id_atributo>.
     '''
 
-    dato = get_object_or_404(Atributo, pk=id_atributo)
-    tipoItem=dato.tipoItem
-    fase=tipoItem.fase
-    dato.delete()
+    atributo = get_object_or_404(Atributo, pk=id_atributo)
+    tipoItem = get_object_or_404(TipoItem, pk=id_tipoItem)
+    fase = tipoItem.fase_id
+
+    tipoItem.atributo_set.remove(atributo)
+    if(atributo.tipoItem.count() == 0):
+        atributo.delete()
+
     messages.add_message(request, settings.DELETE_MESSAGE, "Atributo eliminado")
-    tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
+    tiposItem = TipoItem.objects.filter(fase_id=fase).order_by('nombre')
     return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))
 
 
+
+def editar_TipoItem(request,id_tipoItem):
+    '''
+    vista para cambiar el nombre del rol o su lista de permisos.
+    '''
+    tipoItem= TipoItem.objects.get(id=id_tipoItem)
+    id_fase=tipoItem.fase_id
+    if request.method == 'POST':
+        # formulario enviado
+        tipoItem_form = TipoItemModForm(request.POST, instance=tipoItem)
+
+        if tipoItem_form.is_valid():
+            # formulario validado correctamente
+            tipoItem_form.save()
+            return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+
+    else:
+        # formulario inicial
+        tipoItem_form = TipoItemModForm(instance=tipoItem)
+    return render_to_response('tiposDeItem/editar_tipoItem.html', { 'tipoItem': tipoItem_form, 'dato':tipoItem, 'id_fase':id_fase}, context_instance=RequestContext(request))
