@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
+from django.contrib import messages
 
 # Create your views here.
 from django.template import RequestContext
+from PMS import settings
 from fases.models import Fase
 from tiposDeItem.formsTiposDeItem import TipoItemForm, AtributoForm
 from tiposDeItem.models import TipoItem, Atributo
@@ -73,3 +75,20 @@ def crear_atributo(request, id_tipoItem):
         # formulario inicial
         atributo_form = AtributoForm()
     return render_to_response('tiposDeItem/crear_atributo.html', { 'atributo_form': atributo_form}, context_instance=RequestContext(request))
+
+
+def eliminar_atributo(request, id_atributo):
+
+    '''
+    vista para eliminar el atributo <id_atributo>.
+    '''
+
+    dato = get_object_or_404(Atributo, pk=id_atributo)
+    tipoItem=dato.tipoItem
+    fase=tipoItem.fase
+    dato.delete()
+    messages.add_message(request, settings.DELETE_MESSAGE, "Atributo eliminado")
+    tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
+    return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))
+
+
