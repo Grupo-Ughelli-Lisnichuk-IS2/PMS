@@ -2,7 +2,8 @@
 
 {% block contenido %}
 
-    <center><h1>Proyectos del usuario {{ user.username }}</h1></center>
+
+    <center><h1>Fases del proyecto {{ proyecto.nombre }}</h1></center>
 
  <br>
     <center>
@@ -10,35 +11,32 @@
         <theader>
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Id</th>
+	            <th style="text-align:center">Orden</th>
 	            <th style="text-align:center">Nombre</th>
 	            <th style="text-align:center">Estado</th>
-	            <th style="text-align:center">Lider</th>
-	            <th colspan="1" style="text-align:center">Abrir</th>
+	            <th colspan="1" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
-	    {% for dato in datos  %}
-
+	    {% for dato in datos %}
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.id }}</td>
+				<td>{{ dato.orden }}</td>
 				<td>{{ dato.nombre }}</td>
 				<td>{{ dato.estado }}</td>
-                <td>{{ dato.lider }}</td>
-
-
 		                <td>
-                            <center>
-                	    <a class="btn" href="/desarrollo/proyectos/fases/{{ dato.pk }}"><li class="icon-folder-open"></li> Abrir </a>
+                              <center>
+                	    <a class="btn" href="/desarrollo/fases/tiposDeItem/{{ dato.pk }}"><li class="icon-folder-open"></li> Abrir Fase</a>
 
-
-                        </center>
+               </center>
                 </td>
 			</tr>
-
             {% empty %}
-                <li>Usted aun no tiene proyectos asignados</li>
+                <li>No tiene fases asignadas en este proyecto</li>
+	    {% endfor %}
 
-{% endfor %}
 	</table>
     </center>
 
@@ -46,15 +44,13 @@
 
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+
+
+                <a class="btn" href="/desarrollo/proyectos"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>
 
 	<br>
 
 {% endblock %}
-
- {% block busqueda %}
-
-    {% endblock %}
 
