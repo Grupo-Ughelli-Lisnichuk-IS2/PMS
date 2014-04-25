@@ -53,6 +53,8 @@ def listar_fases(request, id_proyecto):
                 ff=Fase.objects.filter(id=f.id,roles__id=rol.id)
                 for fff in ff:
                     fases.append(fff)
+    if fases.count()==0:
+        return render_to_response('403.html')
 
     return render_to_response('items/abrir_fase.html', {'datos': fases}, context_instance=RequestContext(request))
 
@@ -85,8 +87,7 @@ def listar_tiposDeItem(request, id_fase):
     if flag==True:
         tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
     else:
-        tiposItem=[]
-        fase=""
+        return render_to_response('403.html')
 
 
     return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
