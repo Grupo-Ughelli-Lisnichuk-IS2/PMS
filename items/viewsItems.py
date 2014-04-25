@@ -40,12 +40,15 @@ def listar_fases(request, id_proyecto):
     '''
     vista para listar las fases asignadas a un usuario de un proyecto especifico
     '''
+    #busca todas las fases del proyecto
     fasesProyecto=Fase.objects.filter(proyecto_id=id_proyecto, estado='EJE')
     usuario = request.user
     proyecto=Proyecto.objects.get(id=id_proyecto)
     fases=[]
+    #si es lider pertenece a todas las fases
     if usuario.id==proyecto.lider_id:
         fases=fasesProyecto
+    #si no, busca todas las fases en las que tiene algun rol asignado
     else:
         roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
         for rol in roles:
@@ -53,6 +56,8 @@ def listar_fases(request, id_proyecto):
                 ff=Fase.objects.filter(id=f.id,roles__id=rol.id)
                 for fff in ff:
                     fases.append(fff)
+    #si no encuentra ninguna fase, significa que alguien que no tiene permisos esta tratando de ver
+    #fases que no le correponden, se redirige al template de prohibido
     if len(fases)==0:
         return render_to_response('403.html')
 
@@ -60,6 +65,11 @@ def listar_fases(request, id_proyecto):
 
 
 def es_miembro(id_usuario, id_fase):
+    '''
+    funcion que recibe el id de un usuario y de una fase y devuelve true si el usuario tiene alguna fase asignada
+    o false si no tiene ningun rol en esa fase
+    Ademas verifica que el estado de la fase se EJE
+    '''
     fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
     proyecto=Proyecto.objects.get(id=fase.proyecto_id)
@@ -79,8 +89,9 @@ def es_miembro(id_usuario, id_fase):
 def listar_tiposDeItem(request, id_fase):
 
     '''
-    vista para listar las fases asignadas a un usuario de un proyecto especifico
+    vista para listar los tipos de item de las fases asignadas a un usuario de un proyecto especifico
     '''
+    #se comprueba que el usuario sea miembro de esa fase, si no es alguien sin permisos
     flag=es_miembro(request.user.id, id_fase)
 
     fase=Fase.objects.get(id=id_fase)
