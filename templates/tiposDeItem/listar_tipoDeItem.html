@@ -59,7 +59,7 @@
                 <td>
 	    <a class="btn" href="/tiposDeItem/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a></td>
         <td><form class="ask-plain" action='{% url 'tiposDeItem.viewsTiposDeItem.eliminar_tipoItem' dato.pk %}' > <input class="btn" type="submit" value="Eliminar" ><li class="icon-minus-sign"></li></form></td>
-        <td><a class="btn" href="/tiposDeItem/{{ dato.pk }}"><li class="icon-plus-sign"></li> Agregar Atributo</a></td>
+        <td><a class="btn" href="/tiposDeItem/{{ dato.pk }}/crear_atributo"><li class="icon-plus-sign"></li> Agregar Atributo</a></td>
 
                 </td>
 			</tr>
