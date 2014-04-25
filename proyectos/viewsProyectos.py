@@ -9,6 +9,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from django.contrib import messages
 from PMS import settings
+from tiposDeItem.models import TipoItem
 
 __author__ = 'Grupo R13'
 __date__ = '10-04-2014'
@@ -219,6 +220,11 @@ def cambiar_estado_proyecto(request,id_proyecto):
 
                         if (fases.count()==0):
                             return render_to_response('proyectos/cambio_estado_fallido_nofases.html', { 'dato': id_proyecto}, context_instance=RequestContext(request))
+                        for fase in fases:
+                            tipoItem=TipoItem.objects.filter(fase_id=fase.id)
+                            if tipoItem.count()==0:
+                                return render_to_response('proyectos/cambio_estado_fallido_notipositem.html', { 'dato': id_proyecto, 'fase':fase}, context_instance=RequestContext(request))
+
                         for fase in fases:
                             fase.estado='EJE'
                             fase.save()
