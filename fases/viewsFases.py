@@ -80,7 +80,10 @@ def listar_fases(request,id_proyecto):
 
     fases = Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
     proyecto = Proyecto.objects.get(id=id_proyecto)
-    return render_to_response('fases/listar_fases.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
+    else:
+        return render_to_response('fases/listar_fases.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -103,6 +106,9 @@ def detalle_fase(request, id_fase):
     '''
 
     dato = get_object_or_404(Fase, pk=id_fase)
+    proyecto = Proyecto.objects.get(id=dato.proyecto_id)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     return render_to_response('fases/detalle_fase.html', {'datos': dato}, context_instance=RequestContext(request))
 
 
@@ -115,6 +121,9 @@ def editar_fase(request,id_fase):
     '''
     fase= Fase.objects.get(id=id_fase)
     id_proyecto= fase.proyecto_id
+    proyecto = Proyecto.objects.get(id=id_proyecto)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     if request.method == 'POST':
         # formulario enviado
         fase_form = ModificarFaseForm(request.POST, instance=fase)
@@ -245,6 +254,9 @@ def asignar_usuario(request,id_fase):
 
     usuarios=User.objects.filter(is_active=True)
     fase=Fase.objects.get(id=id_fase)
+    proyecto = Proyecto.objects.get(id=fase.proyecto_id)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     return render_to_response('fases/lista_usuarios.html', {'datos': usuarios, 'fase' : fase}, context_instance=RequestContext(request))
 
 
@@ -257,6 +269,9 @@ def asignar_rol(request,id_usuario, id_fase):
     fase=Fase.objects.get(id=id_fase)
     usuario=User.objects.get(id=id_usuario)
     roles=Group.objects.filter(fase__id=id_fase)
+    proyecto = Proyecto.objects.get(id=fase.proyecto_id)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     return render_to_response('fases/listar_roles.html', {'roles': roles, 'usuario':usuario, 'fase':id_fase}, context_instance=RequestContext(request))
 
 
@@ -280,6 +295,10 @@ def des(request,id_fase):
     '''
     vista para listar a los usuario de una fase, para poder desasociarlos
     '''
+    fase=Fase.objects.get(id=id_fase)
+    proyecto = Proyecto.objects.get(id=fase.proyecto_id)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     roles=Group.objects.filter(fase__id=id_fase)
     usuarios=[]
     for rol in roles:
@@ -295,6 +314,9 @@ def desasociar(request,id_usuario, id_fase):
     vista para remover un rol al usuario, desasociandolo asi de una fase
     '''
     fase=Fase.objects.get(id=id_fase)
+    proyecto = Proyecto.objects.get(id=fase.proyecto_id)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     usuario=User.objects.get(id=id_usuario)
     roles=Group.objects.filter(fase__id=id_fase)
     for rol in roles:

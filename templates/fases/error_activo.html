@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>Error</title>{% endblock %}
+
+
+    </head>
+    <body>
+        {% block contenido %}
+        <div class="container">
+            <h4>El proyecto seleccionado no se puede modificar ya que se encuentra Activo. <span class="glyphicon glyphicon-ok"></span></h4>
+
+        </div>
+
+        {% endblock %}
+{% comment %}
+        <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>
