@@ -120,7 +120,7 @@ def editar_TipoItem(request,id_tipoItem):
     return render_to_response('tiposDeItem/editar_tipoItem.html', { 'tipoItem': tipoItem_form, 'dato':tipoItem, 'id_fase':id_fase}, context_instance=RequestContext(request))
 
 
-def importar_tipoItem(request, id_tipoItem):
+def importar_tipoItem(request, id_tipoItem,id_fase):
     '''
     Vista para importar un tipo de Item, dado en <id_tipoItem>
     '''
@@ -130,13 +130,13 @@ def importar_tipoItem(request, id_tipoItem):
 
         if formulario.is_valid():
                 tipo = formulario.save()
-                tipo.fase_id= tipoItem.fase_id
+                tipo.fase_id= id_fase
 
                 for atributo in tipoItem.atributo_set.all():
                     tipo.atributo_set.add(atributo)
                 tipo.save()
 
-                return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':tipoItem.fase_id}, context_instance=RequestContext(request))
+                return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
     else:
         formulario = TipoItemForm(initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )
     return render_to_response('tiposDeItem/crear_tipoDeItem.html', { 'tipoItem_form': formulario}, context_instance=RequestContext(request))
@@ -155,3 +155,17 @@ def eliminar_tipoItem(request, id_tipoItem):
     tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
     return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem}, context_instance=RequestContext(request))
 
+
+def listar_tiposItemProyecto(request,id_fase):
+    '''
+    vista para listar las fases pertenecientes a un proyecto
+    '''
+    fase = Fase.objects.get(id=id_fase)
+    proyecto_id = fase.proyecto_id
+    fases = Fase.objects.filter(proyecto_id=proyecto_id)
+    tiposItem = TipoItem.objects.all()
+#    tiposItem = []
+#    for f in fases:
+#        tiposItem.append(TipoItem.objects.filter(fase=f))
+
+    return render_to_response('tiposDeItem/importar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))

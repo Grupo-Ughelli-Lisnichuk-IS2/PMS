@@ -1,0 +1,577 @@
+[
+{
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Administrador de Fase 1", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de la Fase 1", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista de la Fase 1", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Administrador de Fase 2", 
+        "permissions": []
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de la Fase 2", 
+        "permissions": [
+            1, 
+            2, 
+            3, 
+            7
+        ]
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista de la Fase 2", 
+        "permissions": [
+            1, 
+            2, 
+            3, 
+            7
+        ]
+    }
+},
+{
+    "pk": 8, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista de la Fase 3", 
+        "permissions": [
+            3
+        ]
+    }
+},
+{
+    "pk": 9, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de la fase 4", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 10, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Lider", 
+        "permissions": [
+            1, 
+            2, 
+            3
+        ]
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "Admi", 
+        "last_name": "Nistrador", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-04-24T16:03:00.600Z", 
+        "groups": [
+            1
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$5QZf5QNSEimt$V6H1nbxfjqwfE5pxCPDnlNEdKH9qk/OqYrcj6naR140=", 
+        "email": "admin@admin.com", 
+        "date_joined": "2014-04-20T02:19:13.458Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "viktor992", 
+        "first_name": "Victor", 
+        "last_name": "Ughelli", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-24T16:05:06.700Z", 
+        "groups": [
+            2, 
+            6, 
+            8, 
+            10
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$FKnb6OgWxt0N$ZyQ2e80AT5cmVMII7fkAJcjOOKx6FC+nnT9aw9qK9G4=", 
+        "email": "viktor992@hotmail.com", 
+        "date_joined": "2014-04-20T02:26:47.112Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "yolile_3000", 
+        "first_name": "Yohanna", 
+        "last_name": "Lisnichuk", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-20T02:32:27.584Z", 
+        "groups": [
+            3, 
+            8
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$REFZGIM6WZSF$2CWRA23XA0kGRWOuKFWdtxONRP/KUR/Od1/dgUX8sjA=", 
+        "email": "yolile_3000@hotmail.com", 
+        "date_joined": "2014-04-20T02:32:27.584Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "pepe", 
+        "first_name": "Pepe", 
+        "last_name": "Gonzalez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-21T14:32:44.832Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$McBbex2MbBMn$9W44paQfOpXBqOULqehfTCMc+swJUsKypPd2kGm3Yz0=", 
+        "email": "pepe@pepe.com", 
+        "date_joined": "2014-04-21T14:32:44.832Z"
+    }
+},
+{
+    "pk": "0ush87mhfasib0nyp0b2wy8gew0b8lgu", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-23T23:08:15.510Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "0wjb82w5t8r1vk7vg0n8s2vxt01fgj1f", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T01:46:25.357Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "14zv0iet9a9dzrv1xpe102hhlskv9obl", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T02:50:07.172Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "4cz8za0rhpoz3r5y7p1zv2a28eqbcu72", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-23T23:38:35.394Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "5bdsdxje8qltbh9vc07jwid79m2t73o4", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T11:33:29.655Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "6i9b8ive7utb5r0n0vo9rely24s5bq92", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T14:12:14.372Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "bj6d21rjxovhjn79mcpss857713h4ucw", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T04:00:49.397Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "fckcgp4dyqf5wc305tv3vlnkqus56sfu", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-21T15:01:22.712Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "fojtdr9nuhc84z97dqkhz2wa14dw3pev", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T11:01:37.060Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "golu8hvkvo66fex1xkneqwcrhvfqy337", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T05:03:20.965Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "ikn7b5gnjuqbdyxxlvzj8obycy5h6wcu", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T04:31:49.483Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "ilmg96gbx17aebip7p0m58mpyugyv408", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-21T18:57:09.640Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "iznujy33q3qjfqs05i8iucsssg2assaw", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T12:17:35.834Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "k9wmmfuv85fgu084xs977yewaxmkecth", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T16:35:06.738Z", 
+        "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
+    "pk": "lgmgwunridxkh15ioi831ami7i1qepnn", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T00:10:50.399Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "mqfeg844ub2woa9ufv0dhgjsk4n3kbr5", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T03:27:38.758Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "rh7tz258rpz5co2q7nxs8pqxr1faeyi7", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-21T13:37:57.551Z", 
+        "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
+    "pk": "s5bojoa9xrruqwy00xvuf2xa2lku7n1h", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T01:13:06.714Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "v0594jblycfxfetnk0ztg559slc8gzxf", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-22T01:06:50.123Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "xuvv9dejtw5v4nfgwakau58wmn4v7qcd", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T15:12:30.424Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "z6685am7iiazzgo9h1yk5uxgrsuvcs4b", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-20T23:20:44.686Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "zkuen16ixmowlh0k73ek0ygqztngm17n", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T13:12:18.885Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": 1, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            1, 
+            2, 
+            3
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2012-01-01", 
+        "maxItems": 2, 
+        "proyecto": 1, 
+        "descripcion": "Esta es la primera fase de prueba.", 
+        "nombre": "Fase 1", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 2, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 2, 
+        "roles": [
+            4, 
+            5, 
+            6
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2012-01-03", 
+        "maxItems": 5, 
+        "proyecto": 1, 
+        "descripcion": "Otra fase de Prueba.", 
+        "nombre": "Fase 2", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 3, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            8
+        ], 
+        "fCreacion": "2014-04-19", 
+        "fInicio": "2006-01-10", 
+        "maxItems": 4, 
+        "proyecto": 2, 
+        "descripcion": "Probamos en otro proyecto.", 
+        "nombre": "Fase 1 del proyecto 2", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 4, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 2, 
+        "roles": [
+            9
+        ], 
+        "fCreacion": "2014-04-20", 
+        "fInicio": "2007-12-12", 
+        "maxItems": 2, 
+        "proyecto": 2, 
+        "descripcion": "Una prueba mas..", 
+        "nombre": "Fase 2 del Proyecto 2", 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 1, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Esto es una prueba.", 
+        "fecha_fin": "2018-01-01", 
+        "lider": 3, 
+        "fecha_ini": "2012-01-01", 
+        "descripcion": "Sistema Gerenciador de Proyectos", 
+        "nombre": "PMS", 
+        "comite": [
+            1, 
+            2, 
+            3
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 2, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Es otra prueba.", 
+        "fecha_fin": "2020-01-01", 
+        "lider": 2, 
+        "fecha_ini": "2006-01-01", 
+        "descripcion": "Una computadora por nino.", 
+        "nombre": "OLPC", 
+        "comite": [
+            2
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 3, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "hola", 
+        "fecha_fin": "2002-01-01", 
+        "lider": 2, 
+        "fecha_ini": "2001-01-01", 
+        "descripcion": "Proyecto Semaforo", 
+        "nombre": "Mutex", 
+        "comite": [
+            2, 
+            3
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 4, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Hola que tal?", 
+        "fecha_fin": "2092-04-20", 
+        "lider": 2, 
+        "fecha_ini": "2012-12-12", 
+        "descripcion": "proyecto nuevo de prueba", 
+        "nombre": "Nuevo", 
+        "comite": [
+            3
+        ], 
+        "estado": "PEN"
+    }
+},
+{
+    "pk": 3, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": "Contiene los nuevos valores de...", 
+        "nombre": "Nota2", 
+        "fase": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": "Contiene los 3 nuevos valores de...", 
+        "nombre": "Nota3", 
+        "fase": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": "Contiene los 4 nuevos valores de... eee Funcionaaa!", 
+        "nombre": "Nota4", 
+        "fase": 1
+    }
+},
+{
+    "pk": 6, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": "contiene los datos de", 
+        "nombre": "Planilla", 
+        "fase": 2
+    }
+},
+{
+    "pk": 1, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "Parrafo", 
+        "valorDefecto": "9", 
+        "tipo": "TEX", 
+        "tipoItem": [
+            3, 
+            4, 
+            5
+        ]
+    }
+},
+{
+    "pk": 3, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "Sangria", 
+        "valorDefecto": "8 espacios", 
+        "tipo": "TEX", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 5, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "celda", 
+        "valorDefecto": "0", 
+        "tipo": "TEX", 
+        "tipoItem": [
+            6
+        ]
+    }
+}
+]

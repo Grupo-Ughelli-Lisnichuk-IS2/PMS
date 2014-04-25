@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+
+    <center><h1>Importacion de Tipos de Item</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Id</th>
+	            <th style="text-align:center">Nombre</th>
+
+
+	            <th colspan="2" style="text-align:center">Opciones</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos %}
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.id }}</td>
+				<td>{{ dato.nombre }}</td>
+		                <td>
+                        <a class="btn"  href="/tiposDeItem/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
+                </td>
+                <td>
+
+	    <a class="btn" href="/tiposDeItem/importar/{{ dato.pk }}-{{ fase.id }}"><li class="icon-share"></li> Importar</a>
+                </td>
+			</tr>
+            {% empty %}
+                <li>Aún no hay Tipos de Item registrados</li>
+	    {% endfor %}
+
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
