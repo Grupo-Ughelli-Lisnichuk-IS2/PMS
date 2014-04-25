@@ -10,10 +10,18 @@
 
     <input type="submit" value="Guardar cambios">
 </form>
+    <h3>Atributos </h3>
+     {% for atributo in atributos %}
+
+    {{ atributo.nombre }}           <a class="btn" href="/tiposDeItem/eliminar/tipo_atributo/{{ atributo.pk }}-{{ dato.id }}"><li class="icon-minus-sign"></li>   Eliminar</a>
+
+    {% endfor %}
+    <br>
+    <br>
       <div class="well sidebar-nav">
             <ul class="nav nav-list">
                 <a class="btn" href="/tiposDeItem/fase/{{ id_fase }}"><li class="icon-arrow-left"></li> Regresar</a>
-
+                <a class="btn" href="/tiposDeItem/{{ dato.id }}/crear_atributo"><li class="icon-plus-sign"></li> Agregar Atributo</a>
 
             </ul>
        </div>

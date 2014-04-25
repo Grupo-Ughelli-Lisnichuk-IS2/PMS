@@ -32,13 +32,13 @@
 
  <br>
     <center>
-	<table class='table table-hover' width="80%" border="2">
+	<table class='table table-hover' width="70%" border="2">
         <theader>
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
 	            <th style="text-align:center">Id</th>
 	            <th style="text-align:center">Nombre</th>
-	            <th colspan="4" style="text-align:center">Opciones</th>
+	            <th colspan="2" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -49,19 +49,18 @@
 				<td>{{ dato.nombre }}</td>
 
 		                <td>
-
+            <center>
                 	    <a class="btn"  href="/tiposDeItem/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
                     {% comment %}<form action='{% url 'fases.viewsFases.detalle_fase' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
 
-                        </td>
-                <td>
-	    <a class="btn" href="/tiposDeItem/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a></td>
-        <td><form class="ask-plain" action='{% url 'tiposDeItem.viewsTiposDeItem.eliminar_tipoItem' dato.pk %}' > <input class="btn" type="submit" value="Eliminar" ><li class="icon-minus-sign"></li></form></td>
-        <td><a class="btn" href="/tiposDeItem/{{ dato.pk }}/crear_atributo"><li class="icon-plus-sign"></li> Agregar Atributo</a></td>
 
+	    <a class="btn" href="/tiposDeItem/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a>
+
+            </center>
                 </td>
+
 			</tr>
             {% empty %}
                 <li>Aún no hay Tipos de Item registrados</li>

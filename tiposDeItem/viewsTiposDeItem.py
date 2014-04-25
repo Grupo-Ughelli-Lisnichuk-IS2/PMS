@@ -73,7 +73,7 @@ def crear_atributo(request, id_tipoItem):
             atributo.save()
             tipoItem2 = TipoItem.objects.get(id=id_tipoItem)
             id_fase = tipoItem2.fase_id
-            return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+            return HttpResponseRedirect('/tiposDeItem/modificar/'+str(id_tipoItem))
     else:
         # formulario inicial
         atributo_form = AtributoForm()
@@ -95,7 +95,8 @@ def eliminar_atributo(request, id_atributo, id_tipoItem):
 
     messages.add_message(request, settings.DELETE_MESSAGE, "Atributo eliminado")
     tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
-    return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))
+
+    return HttpResponseRedirect('/tiposDeItem/modificar/'+str(id_tipoItem))
 
 
 
@@ -104,6 +105,7 @@ def editar_TipoItem(request,id_tipoItem):
     vista para cambiar el nombre del rol o su lista de permisos.
     '''
     tipoItem= TipoItem.objects.get(id=id_tipoItem)
+    atributos=Atributo.objects.filter(tipoItem__id=id_tipoItem)
     id_fase=tipoItem.fase_id
     if request.method == 'POST':
         # formulario enviado
@@ -117,7 +119,7 @@ def editar_TipoItem(request,id_tipoItem):
     else:
         # formulario inicial
         tipoItem_form = TipoItemModForm(instance=tipoItem)
-    return render_to_response('tiposDeItem/editar_tipoItem.html', { 'tipoItem': tipoItem_form, 'dato':tipoItem, 'id_fase':id_fase}, context_instance=RequestContext(request))
+    return render_to_response('tiposDeItem/editar_tipoItem.html', { 'atributos': atributos, 'tipoItem': tipoItem_form, 'dato':tipoItem, 'id_fase':id_fase}, context_instance=RequestContext(request))
 
 
 def importar_tipoItem(request, id_tipoItem,id_fase):
