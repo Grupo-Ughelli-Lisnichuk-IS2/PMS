@@ -11,7 +11,7 @@ class PMSTestCase(TestCase):
 
     def test_crear_tipoItem(self):
         '''
-        Test para la creacion de un rol
+        Test para la creacion de un tipo de item
         '''
         c = Client()
         c.login(username='admin', password='admin1')
@@ -40,7 +40,7 @@ class PMSTestCase(TestCase):
 
     def test_detalle(self):
         '''
-         Test para crear un rol y ver si lo lista correctamente
+         Test para comprobar que se despliega correctamente la lista de tipos de item de una fase
         '''
 
         c = Client()
@@ -61,7 +61,7 @@ class PMSTestCase(TestCase):
 
     def test_crear_atributo(self):
         '''
-        Test de un atributo dentro de un tipo de item
+        Test de la creacion un atributo dentro de un tipo de item
         '''
         c = Client()
         c.login(username='admin', password='admin1')
@@ -113,14 +113,14 @@ class PMSTestCase(TestCase):
 
     def test_importar(self):
         '''
-         Test para ver si importa correctamente una fase
+         Test para ver si se importa correctamente un tipo de item dentro de una fase
         '''
 
         c = Client()
         c.login(username='admin', password='admin1')
 
-        #prueba importar una fase y asignarle como nombre un nombre ya existente. Retorna un mensaje de nivel 20,
-        #informando que ya existe una fase con ese nombre
+        #prueba importar un tipo de item y asignarle como nombre un nombre ya existente. Retorna un mensaje de nivel 20,
+        #informando que ya existe un tipo de item con ese nombre
         resp = c.post('/tiposDeItem/importar/3-3',{'nombre':'tipo 1'})
 
         self.assertEqual(resp.status_code, 200)
@@ -133,7 +133,7 @@ class PMSTestCase(TestCase):
 
     def test_eliminar(self):
         '''
-         Test para crear un rol y ver si lo lista correctamente
+         Test para eliminar un tipo de item.
         '''
 
         c = Client()
