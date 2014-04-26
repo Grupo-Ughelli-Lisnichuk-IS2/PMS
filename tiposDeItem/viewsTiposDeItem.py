@@ -15,7 +15,7 @@ from tiposDeItem.models import TipoItem, Atributo
 @permission_required('tipoItem')
 def crear_tipoItem(request, id_fase):
     '''
-    vista para crear un tipo, que consta de un nombre y una lista de permisos
+    vista para crear un tipo de Item, que consta de un nombre y una descripcion
     '''
     if request.method == 'POST':
         # formulario enviado
@@ -35,7 +35,7 @@ def crear_tipoItem(request, id_fase):
 
 def listar_tiposItem(request,id_fase):
     '''
-    vista para listar las fases pertenecientes a un proyecto
+    vista para listar los tipos de Item pertenecientes a una fase dada
     '''
 
     tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
@@ -83,7 +83,8 @@ def crear_atributo(request, id_tipoItem):
 def eliminar_atributo(request, id_atributo, id_tipoItem):
 
     '''
-    vista para eliminar el atributo <id_atributo>.
+    vista para eliminar el atributo <id_atributo>, si ningun otro tipo de Item esta relacionado a este atributo, el mismo
+    es eliminado completamente.
     '''
 
     atributo = get_object_or_404(Atributo, pk=id_atributo)
@@ -102,7 +103,7 @@ def eliminar_atributo(request, id_atributo, id_tipoItem):
 
 def editar_TipoItem(request,id_tipoItem):
     '''
-    vista para cambiar el nombre del rol o su lista de permisos.
+    vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
     '''
     tipoItem= TipoItem.objects.get(id=id_tipoItem)
     atributos=Atributo.objects.filter(tipoItem__id=id_tipoItem)
@@ -124,7 +125,7 @@ def editar_TipoItem(request,id_tipoItem):
 
 def importar_tipoItem(request, id_tipoItem,id_fase):
     '''
-    Vista para importar un tipo de Item, dado en <id_tipoItem>
+    Vista para importar un tipo de Item, dado en <id_fase>
     '''
     tipoItem=TipoItem.objects.get(id=id_tipoItem)
     if request.method=='POST':
@@ -145,7 +146,9 @@ def importar_tipoItem(request, id_tipoItem,id_fase):
 
 
 def eliminar_tipoItem(request, id_tipoItem):
-
+    '''
+    Vista para eliminar un tipo de Item. Tambien se encarga de la eliminacion de atributos no referenciados
+    '''
     tipoItem = get_object_or_404(TipoItem, pk=id_tipoItem)
     fase = tipoItem.fase
     for atributo in tipoItem.atributo_set.all():
