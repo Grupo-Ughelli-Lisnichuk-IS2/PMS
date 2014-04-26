@@ -32,7 +32,8 @@ def crear_tipoItem(request, id_fase):
         tipoItem_form = TipoItemForm()
     return render_to_response('tiposDeItem/crear_tipoDeItem.html', { 'tipoItem_form': tipoItem_form}, context_instance=RequestContext(request))
 
-
+@login_required
+@permission_required('tipoItem')
 def listar_tiposItem(request,id_fase):
     '''
     vista para listar los tipos de Item pertenecientes a una fase dada
@@ -43,7 +44,8 @@ def listar_tiposItem(request,id_fase):
     return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))
 
 
-
+@login_required
+@permission_required('tipoItem')
 def detalle_tipoItem(request, id_tipoItem):
 
     '''
@@ -54,7 +56,8 @@ def detalle_tipoItem(request, id_tipoItem):
     atributos = Atributo.objects.filter(tipoItem__id=id_tipoItem)
     return render_to_response('tiposDeItem/detalle_tipoDeItem.html', {'datos': dato, 'atributos': atributos}, context_instance=RequestContext(request))
 
-
+@login_required
+@permission_required('tipoItem')
 def crear_atributo(request, id_tipoItem):
     '''
     vista para crear un tipo de atributo, que consta de un nombre, un tipo, un valor por defecto
@@ -79,7 +82,8 @@ def crear_atributo(request, id_tipoItem):
         atributo_form = AtributoForm()
     return render_to_response('tiposDeItem/crear_atributo.html', { 'atributo_form': atributo_form}, context_instance=RequestContext(request))
 
-
+@login_required
+@permission_required('tipoItem')
 def eliminar_atributo(request, id_atributo, id_tipoItem):
 
     '''
@@ -100,7 +104,8 @@ def eliminar_atributo(request, id_atributo, id_tipoItem):
     return HttpResponseRedirect('/tiposDeItem/modificar/'+str(id_tipoItem))
 
 
-
+@login_required
+@permission_required('tipoItem')
 def editar_TipoItem(request,id_tipoItem):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
@@ -122,7 +127,8 @@ def editar_TipoItem(request,id_tipoItem):
         tipoItem_form = TipoItemModForm(instance=tipoItem)
     return render_to_response('tiposDeItem/editar_tipoItem.html', { 'atributos': atributos, 'tipoItem': tipoItem_form, 'dato':tipoItem, 'id_fase':id_fase}, context_instance=RequestContext(request))
 
-
+@login_required
+@permission_required('tipoItem')
 def importar_tipoItem(request, id_tipoItem,id_fase):
     '''
     Vista para importar un tipo de Item, dado en <id_fase>
@@ -144,7 +150,8 @@ def importar_tipoItem(request, id_tipoItem,id_fase):
         formulario = TipoItemForm(initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )
     return render_to_response('tiposDeItem/crear_tipoDeItem.html', { 'tipoItem_form': formulario}, context_instance=RequestContext(request))
 
-
+@login_required
+@permission_required('tipoItem')
 def eliminar_tipoItem(request, id_tipoItem):
     '''
     Vista para eliminar un tipo de Item. Tambien se encarga de la eliminacion de atributos no referenciados
@@ -160,7 +167,8 @@ def eliminar_tipoItem(request, id_tipoItem):
     tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
     return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem}, context_instance=RequestContext(request))
 
-
+@login_required
+@permission_required('tipoItem')
 def listar_tiposItemProyecto(request,id_fase):
     '''
     vista para listar las fases pertenecientes a un proyecto
