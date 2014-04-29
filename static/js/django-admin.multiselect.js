@@ -484,7 +484,7 @@ var SelectFilter = {
         // <div class="selector-available">
         var selector_available = quickElement('div', selector_div, '');
         selector_available.className = 'selector-available';
-        quickElement('h2', selector_available, interpolate(gettext('Disponibles %s'), [field_name]));
+        quickElement('h2', selector_available, interpolate(gettext ( '%s'),[field_name],('disponibles')));
         var filter_p = quickElement('p', selector_available, '');
         filter_p.className = 'selector-filter';
         quickElement('img', filter_p, '', 'src', admin_media_prefix + 'img/admin/selector-search.gif');

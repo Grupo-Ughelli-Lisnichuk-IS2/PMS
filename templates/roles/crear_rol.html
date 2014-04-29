@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block contenido %}
-    {% comment %}
+
 <script type="text/javascript" src="/static/js/django-admin.multiselect.js">
 
 
@@ -15,7 +15,7 @@
             });
             }
                 </script>
-{% endcomment %}
+
 <form id="formulario" method="post" action="">{% csrf_token %} {{ group_form }}
 <p><input type="submit" value="Crear Rol"></p>
 </form>
