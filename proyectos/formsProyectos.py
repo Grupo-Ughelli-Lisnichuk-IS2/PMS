@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 from proyectos.models import Proyecto
-from django.contrib.admin.widgets import AdminDateWidget
+from django.contrib.admin.widgets import AdminDateWidget, FilteredSelectMultiple
 from django.core.exceptions import ValidationError
 
 ESTADOS = (
@@ -20,7 +20,8 @@ class ProyectoForm(forms.ModelForm):
         fecha_fin=forms.DateField(widget = AdminDateWidget, label='Fecha de finalizacion')
         lider = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True))
         observaciones = forms.CharField(label='Observaciones', widget=forms.Textarea)
-        comite = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_active=True) )
+
+        comite = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_active=True), widget=FilteredSelectMultiple("Comite", is_stacked=False))
 
         class Meta:
             model = Proyecto
