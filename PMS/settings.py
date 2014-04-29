@@ -16,6 +16,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,'templates'),
 )
@@ -126,4 +127,4 @@ STATIC_URL = '/static/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1800
 
-
+MEDIA_ROOT = '/home/yolile/archivos/'

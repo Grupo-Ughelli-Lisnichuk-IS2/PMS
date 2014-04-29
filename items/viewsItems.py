@@ -2,10 +2,11 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.forms.models import modelformset_factory
 from django.shortcuts import render, render_to_response
-
+from datetime import datetime
 # Create your views here.
 from django.template import RequestContext
 from fases.models import Fase
+from items.models import Item, Archivo
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
 from items.formsItems import PrimeraFaseForm, ArchivoForm
@@ -105,29 +106,56 @@ def listar_tiposDeItem(request, id_fase):
 
     return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
 
+
+
+
+
 @login_required
-@permission_required('Puede agregar item')
+#@permission_required('Puede agregar item')
 def crear_item(request,id_tipoItem):
     '''
     Vista para crear un item y asignarlo a un tipo de item
     '''
     id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase)
-    ItemFormSet = modelformset_factory(Atributo, exclude=('tipoItem',))
+    #ItemFormSet = modelformset_factory(Atributo, exclude=('tipoItem',))
+    atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+    fase=Fase.objects.get(id=id_fase)
+    proyecto=fase.proyecto_id
+    items=[]
+    tipoitem=[]
+    fase_anterior=Fase.objects.filter(proyecto_id=proyecto, orden=((fase.orden)-1))
+    if len(fase_anterior)==0:
+        items=[]
+    else:
+        for fase in fase_anterior:
+            titem=TipoItem.objects.filter(fase_id=fase.id)
+            for i in titem:
+                items.append(Item.objects.get(tipoItem_id=i.id, estado='FIN'))
+
     if flag==True:
         if request.method=='POST':
-            formset = ItemFormSet(request.POST)
+            #formset = ItemFormSet(request.POST)
             formulario = PrimeraFaseForm(request.POST)
-            formularioArchivo=ArchivoForm(request.POST)
+            formularioArchivo=ArchivoForm(request.POST, request.FILES)
             if formulario.is_valid():
-                tipo = formulario.save()
-                tipo.fase_id= id_fase
+                today = datetime.now() #fecha actual
+                dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+                item_nombre=request.POST.get('entradalista')
 
-
+                if item_nombre!=None:
+                    item=Item.objects.get(nombre=item_nombre).id
+                    cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item, tipo='Antecesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+                else:
+                    cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1,tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+                newItem.save()
+                archivo=Archivo(archivo=request.POST['archivo'], id_item_id=cod.id)
+                archivo.save()
                 return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+        else:
+            #formset = ItemFormSet(queryset = Atributo.objects.filter(tipoItem__id=id_tipoItem))
+            formulario = PrimeraFaseForm()
+            formularioArchivo=ArchivoForm()
+            return render_to_response('items/crear_item.html', { 'formulario': formulario, 'formularioA':formularioArchivo, 'atributos':atributos, 'items':items}, context_instance=RequestContext(request))
     else:
-        formset = ItemFormSet(queryset = Atributo.objects.filter(tipoItem__id=id_tipoItem))
-        formulario = PrimeraFaseForm()
-        formularioArchivo=ArchivoForm()
-    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'formularioA':formularioArchivo, 'formset':formset}, context_instance=RequestContext(request))
-
+        return render_to_response('403.html')

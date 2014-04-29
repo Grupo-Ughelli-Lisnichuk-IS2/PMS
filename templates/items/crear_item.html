@@ -2,7 +2,34 @@
 {% block contenido %}
 	<form id='formulario' method='post' action=''>{% csrf_token %}{{formulario.as_p}}
         {{formularioA.as_p}}
-        {{ formset.as_p }}
+Antecesor:
+<select name="entradalista">
+    {% for item in items %}
+    <option>{{ item.nombre}}</option>
+    {% endfor %}
+
+</select>
+        		<H4>Atributos</H4>
+	            	<div style="height:150px;width:430px;overflow:auto;">
+	            	<table width="50%" border="1">
+					<tr>
+					<th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+					<th scope="col">Valor</th>
+					</tr>
+					{% for atributo in atributos %}
+							<tr>
+								<td>{{ atributo.nombre }}</td>
+                                <td>{{ atributo.tipo }}</td>
+								<td><input type='text' name={{ atributo.nombre }} value="{{ atributo.valorDefecto }}"/></td>
+
+							</tr>
+
+					{% endfor %}
+					</table>
+				    <br>
+            </div>
+    <br>
 		<p><input type='submit' value='Confirmar'/></p>
 	</form>
 {% endblock %}

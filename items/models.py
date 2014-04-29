@@ -45,7 +45,7 @@ class VersionItem(models.Model):
     tipo_item=models.ForeignKey(TipoItem)
 
 class Archivo(models.Model):
-    archivo=models.FileField(upload_to='/archivos')
+    archivo=models.FileField(upload_to='archivos')
     id_item=models.ForeignKey(Item)
     nombre=models.CharField(max_length=100)
 
