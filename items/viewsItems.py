@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
+from django.forms.models import modelformset_factory
 from django.shortcuts import render, render_to_response
 
 # Create your views here.
 from django.template import RequestContext
 from fases.models import Fase
 from proyectos.models import Proyecto
-from tiposDeItem.models import TipoItem
+from tiposDeItem.models import TipoItem, Atributo
 from items.formsItems import PrimeraFaseForm, ArchivoForm
 
 
@@ -112,8 +113,10 @@ def crear_item(request,id_tipoItem):
     '''
     id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase)
+    ItemFormSet = modelformset_factory(Atributo, exclude=('tipoItem',))
     if flag==True:
         if request.method=='POST':
+            formset = ItemFormSet(request.POST)
             formulario = PrimeraFaseForm(request.POST)
             formularioArchivo=ArchivoForm(request.POST)
             if formulario.is_valid():
@@ -123,7 +126,8 @@ def crear_item(request,id_tipoItem):
 
                 return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
     else:
+        formset = ItemFormSet(queryset = Atributo.objects.filter(tipoItem__id=id_tipoItem))
         formulario = PrimeraFaseForm()
         formularioArchivo=ArchivoForm()
-    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'formularioA':formularioArchivo}, context_instance=RequestContext(request))
+    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'formularioA':formularioArchivo, 'formset':formset}, context_instance=RequestContext(request))
 

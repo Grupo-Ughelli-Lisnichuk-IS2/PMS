@@ -2,6 +2,7 @@
 {% block contenido %}
 	<form id='formulario' method='post' action=''>{% csrf_token %}{{formulario.as_p}}
         {{formularioA.as_p}}
+        {{ formset.as_p }}
 		<p><input type='submit' value='Confirmar'/></p>
 	</form>
 {% endblock %}
