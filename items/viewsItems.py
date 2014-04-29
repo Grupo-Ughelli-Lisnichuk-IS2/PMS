@@ -7,7 +7,7 @@ from django.template import RequestContext
 from fases.models import Fase
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem
-from items.formsItems import PrimeraFaseForm
+from items.formsItems import PrimeraFaseForm, ArchivoForm
 
 
 @login_required
@@ -115,7 +115,7 @@ def crear_item(request,id_tipoItem):
     if flag==True:
         if request.method=='POST':
             formulario = PrimeraFaseForm(request.POST)
-
+            formularioArchivo=ArchivoForm(request.POST)
             if formulario.is_valid():
                 tipo = formulario.save()
                 tipo.fase_id= id_fase
@@ -124,5 +124,6 @@ def crear_item(request,id_tipoItem):
                 return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
     else:
         formulario = PrimeraFaseForm()
-    return render_to_response('items/crear_item.html', { 'formulario': formulario}, context_instance=RequestContext(request))
+        formularioArchivo=ArchivoForm()
+    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'formularioA':formularioArchivo}, context_instance=RequestContext(request))
 
