@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.shortcuts import render, render_to_response
 
@@ -7,6 +7,7 @@ from django.template import RequestContext
 from fases.models import Fase
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem
+from items.formsItems import PrimeraFaseForm
 
 
 @login_required
@@ -102,3 +103,26 @@ def listar_tiposDeItem(request, id_fase):
 
 
     return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
+
+@login_required
+@permission_required('Puede agregar item')
+def crear_item(request,id_tipoItem):
+    '''
+    Vista para crear un item y asignarlo a un tipo de item
+    '''
+    id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
+    flag=es_miembro(request.user.id,id_fase)
+    if flag==True:
+        if request.method=='POST':
+            formulario = PrimeraFaseForm(request.POST)
+
+            if formulario.is_valid():
+                tipo = formulario.save()
+                tipo.fase_id= id_fase
+
+
+                return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+    else:
+        formulario = PrimeraFaseForm()
+    return render_to_response('items/crear_item.html', { 'formulario': formulario}, context_instance=RequestContext(request))
+
