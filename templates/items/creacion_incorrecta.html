@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>No se puede registrar Items</title>{% endblock %}
+
+
+    </head>
+    <body>
+        {% block contenido %}
+        <div class="container">
+            <h4>Ya no se pueden registrar Items ya que se ha alcanzado el maximo numero de items permitidos para esta fase. <span class="glyphicon glyphicon-ok"></span></h4>
+
+        </div>
+            <button> <a href= '/tiposDeItem/fase/{{id_fase}}' > Regresar al listado </a> </button>
+        {% endblock %}
+{% comment %}
+        <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>

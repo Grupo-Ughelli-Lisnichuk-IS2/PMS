@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% block contenido %}
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
-
-
-
-
         <br>
 Antecesor:
 <select name="entradalista">
@@ -13,7 +9,7 @@ Antecesor:
     {% endfor %}
 
 </select>
-        		<H4>Atributos</H4>
+Atributos
 	            	<div style="height:150px;width:430px;overflow:auto;">
 	            	<table width="50%" border="1">
 					<tr>
@@ -35,6 +31,7 @@ Antecesor:
             </div>
     <br>
         <input type="file" name="file" id="id_file" />
-		<p><input type='submit' value='Confirmar'/></p>
+	<br>
+        <p><input type='submit' value='Confirmar'/></p>
 	</form>
 {% endblock %}
