@@ -127,4 +127,4 @@ STATIC_URL = '/static/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1800
 
-MEDIA_ROOT = '/home/archivosPMS/'
+MEDIA_ROOT = '/home/yolile/archivosPMS/'

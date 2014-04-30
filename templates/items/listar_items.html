@@ -28,7 +28,7 @@
                 <td>{{ dato.version }}</td>
                 <td>{{ dato.estado }}</td>
 		                <td><center><a class="btn"  href="/desarrollo/item/detalle/{{ dato.id }}"><li class="icon-eye-open"></li> Ver Detalle</a></center> </td>
-                        <td><center><a class="btn" href="/tiposDeItem/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a></center></td>
+                        <td><center><a class="btn" href="/desarrollo/item/crear/hijo/{{ dato.pk }}"><li class="icon-pencil"></li> Crear Item hijo</a></center></td>
                         <td><center> <form class="btn ask-plain" action='{% url 'tiposDeItem.viewsTiposDeItem.eliminar_tipoItem' dato.pk %}'>
                         <input type="submit" value="Eliminar">
                         </form></center> </td>

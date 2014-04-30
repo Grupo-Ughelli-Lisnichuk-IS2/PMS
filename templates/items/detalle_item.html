@@ -18,7 +18,7 @@
             <div><strong>Version: </strong>{{ datos.version }}</div>
             <div><strong>Estado: </strong>{{ datos.estado }}</div>
             {% if datos.relacion != None %}
-            <div><strong>Relacionado con: </strong>{{ datos.relacion }}</div>
+            <div><strong>Relacionado con: </strong>{{ datos.relacion.nombre }}</div>
             <div><strong>Tipo de relacion: </strong>{{ datos.tipo }}</div>
             {% else %}
             <div><strong>Relacionado con: </strong>Nadie</div>

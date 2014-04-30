@@ -2,6 +2,7 @@
 {% block contenido %}
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
         <br>
+{% if items.is_defined %}
 Antecesor:
 <select name="entradalista">
     {% for item in items %}
@@ -9,6 +10,7 @@ Antecesor:
     {% endfor %}
 
 </select>
+{% endif %}
 Atributos
 	            	<div style="height:150px;width:430px;overflow:auto;">
 	            	<table width="50%" border="1">

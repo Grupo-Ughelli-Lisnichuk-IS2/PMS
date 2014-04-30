@@ -236,3 +236,51 @@ def detalle_item(request, id_item):
     dato = get_object_or_404(Item, pk=id_item)
 
     return render_to_response('items/detalle_item.html', {'datos': dato, 'atributos': atributos}, context_instance=RequestContext(request))
+
+def crear_item_hijo(request,id_item):
+    '''
+    Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
+    archivo al item, y de completar todos los atributos de su tipo de item
+    '''
+    id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
+    if cantidad_items(id_tipoItem):
+        id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
+        flag=es_miembro(request.user.id,id_fase)
+        atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+        fase=Fase.objects.get(id=id_fase)
+        proyecto=fase.proyecto_id
+        if flag==True:
+            if request.method=='POST':
+                #formset = ItemFormSet(request.POST)
+                formulario = PrimeraFaseForm(request.POST)
+
+                if formulario.is_valid():
+                    today = datetime.now() #fecha actual
+                    dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+                    #obtener item con el cual relacionar
+
+                    cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=id_item, tipo='Hijo',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+
+                    newItem.save()
+                #guardar archivo
+                    if request.FILES.get('file')!=None:
+                        archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=cod.id)
+                        archivo.save()
+                #guardar atributos
+                    for atributo in atributos:
+
+                        a=request.POST[atributo.nombre]
+                        #validar atributos antes de guardarlos
+                        if validarAtributo(request,atributo.tipo,a):
+                            aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                            aa.save()
+                    return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+            else:
+
+                formulario = PrimeraFaseForm()
+
+                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos}, context_instance=RequestContext(request))
+        else:
+            return render_to_response('403.html')
+    else:
+        return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
