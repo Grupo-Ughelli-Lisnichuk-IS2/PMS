@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.forms.models import modelformset_factory
@@ -5,12 +6,13 @@ from django.shortcuts import render, render_to_response
 from datetime import datetime
 # Create your views here.
 from django.template import RequestContext
+from PMS import settings
 from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
 from items.formsItems import PrimeraFaseForm
-
+from tiposDeItem.viewsTiposDeItem import validarAtributo
 
 @login_required
 def listar_proyectos(request):
@@ -121,10 +123,11 @@ def cantidad_items(id_tipoItem):
         return False
 
 @login_required
-#@permission_required('Puede agregar item')
+#@permission_required('items.agregar_item')
 def crear_item(request,id_tipoItem):
     '''
-    Vista para crear un item y asignarlo a un tipo de item
+    Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
+    archivo al item, y de completar todos los atributos de su tipo de item
     '''
 
     if cantidad_items(id_tipoItem):
@@ -166,9 +169,12 @@ def crear_item(request,id_tipoItem):
                         archivo.save()
                 #guardar atributos
                     for atributo in atributos:
+
                         a=request.POST[atributo.nombre]
-                        aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
-                        aa.save()
+                        #validar atributos antes de guardarlos
+                        if validarAtributo(request,atributo.tipo,a):
+                            aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                            aa.save()
                     return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
             else:
 
@@ -179,3 +185,42 @@ def crear_item(request,id_tipoItem):
             return render_to_response('403.html')
     else:
         return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
+
+
+def puede_add_items(id_fase):
+    '''
+    Funcion que verifica que ya se pueden agregar items a una fase. Si es la primera fase, se puede
+    Si no, se verifica que la fase anterior tenga items en una linea base para poder agregar items a la
+    fase siguiente.
+    '''
+    fase=Fase.objects.get(id=id_fase)
+    if fase.orden==1:
+        return True
+    else:
+        fase_anterior=Fase.objects.get(orden=fase.orden-1,proyecto=fase.proyecto)
+        tipoitem=TipoItem.objects.filter(fase=fase_anterior)
+        for ti in tipoitem:
+            item=Item.objects.filter(id_tipo_item_id=ti.id)
+            for i in item:
+                if i.estado=='FIN':
+                    return True
+    return False
+
+@login_required
+#@permission_required('item')
+def listar_items(request,id_tipo_item):
+    '''
+    vista para listar los items pertenecientes a un tipo de item
+    '''
+    titem=TipoItem.objects.get(id=id_tipo_item)
+    fase=titem.fase_id
+    if es_miembro(request.user.id,fase):
+        items=Item.objects.filter(tipo_item_id=id_tipo_item)
+        if puede_add_items(fase):
+            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem}, context_instance=RequestContext(request))
+        else:
+            messages.add_message(request, settings.DELETE_MESSAGE, "No se pueden agregar Items a esta fase. La fase anterior aun no tiene items finalizados")
+
+    else:
+        return render_to_response('403.html')
+

@@ -4,7 +4,7 @@
 
 
 
-    <center><h1>Administracion de Tipos de Item de la fase {{ fase.nombre }}</h1></center>
+    <center><h1>Tipos de Item de la fase {{ fase.nombre }}</h1></center>
 
  <br>
     <center>
@@ -26,7 +26,7 @@
 
 		                <td>
                             <center>
-                	    <a class="btn"  href="/tiposDeItem/{{ dato.pk }}"><li class="icon-list"></li> Items</a>
+                	    <a class="btn"  href="/desarrollo/item/listar/{{ dato.pk }}"><li class="icon-list"></li> Items</a>
                     {% comment %}<form action='{% url 'fases.viewsFases.detalle_fase' dato.pk %}'>
                         <input type="submit" value="Ver Detalle">
                         </form>{% endcomment %}
