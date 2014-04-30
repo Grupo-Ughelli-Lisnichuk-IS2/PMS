@@ -224,7 +224,8 @@ def listar_items(request,id_tipo_item):
         items=Item.objects.filter(tipo_item_id=id_tipo_item)
         if puede_add_items(fase):
             nivel = 3
-            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel}, context_instance=RequestContext(request))
+            id_proyecto=Fase.objects.get(id=fase).proyecto_id
+            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto}, context_instance=RequestContext(request))
         else:
             return HttpResponse("<h1>No se pueden administrar los Items de esta fase. La fase anterior aun no tiene items finalizados<h1>")
 
