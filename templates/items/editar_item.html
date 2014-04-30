@@ -14,7 +14,14 @@
     <br>
       <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <a class="btn" href="/tiposDeItem/fase/{{ id_fase }}"><li class="icon-arrow-left"></li> Regresar</a>
+                <a class="btn" href="/desarrollo/item/listar/{{ titem }}"><li class="icon-backward"></li> Regresar</a>
+
+
+                <a class="btn" href="/desarrollo/item/archivos/{{ item.id }}"><li class="icon-file"></li> Administrar Archivos</a>
+
+                <a class="btn" href="/desarrollo/item/padre/{{ item.id }}"><li class="icon-arrow-up"></li> Cambiar Padre</a>
+                <a class="btn" href="/desarrollo/item/antecesor/{{ item.id }}"><li class="icon-arrow-left"></li> Cambiar Antecesor</a>
+                <a class="btn" href="/desarrollo/item/atributos/{{ item.id }}"><li class="icon-wrench"></li> Cambiar atributos</a>
 
             </ul>
        </div>

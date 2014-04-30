@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.forms.models import modelformset_factory
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse, StreamingHttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
 from datetime import datetime
 # Create your views here.
@@ -114,6 +114,8 @@ def listar_tiposDeItem(request, id_fase):
 def cantidad_items(id_tipoItem):
     titem=TipoItem.objects.get(id=id_tipoItem)
     fase=Fase.objects.get(id=titem.fase_id)
+    if fase.estado=='FIN':
+        return False
     item=Item.objects.filter(tipo_item_id=id_tipoItem)
     contador=0
     for i in item:
@@ -392,7 +394,20 @@ def crear_item_hijo(request,id_item):
         return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
 
 
+def eliminar_archivo(request, id_archivo):
+    archivo=Archivo.objects.get(id=id_archivo)
+    item=archivo.id_item
+    archivo.delete()
+    return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
+
+def listar_archivos(request, id_item):
+    titem=Item.objects.get(id=id_item).tipo_item
+    archivos=Archivo.objects.filter(id_item=id_item)
+    if request.method=='POST':
+        archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=id_item)
+        archivo.save()
+    return render_to_response('items/listar_archivos.html', { 'archivos': archivos,'titem':titem}, context_instance=RequestContext(request))
 
 def editar_item(request,id_item):
     '''
@@ -417,13 +432,14 @@ def editar_item(request,id_item):
                         item_nuevo.fecha_mod=dateFormat
                         item_nuevo.version=item_nuevo.version+1
                         item_nuevo.save()
+
                         return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
 
                 else:
 
                     formulario = PrimeraFaseForm(instance=item_nuevo)
                     hijo=True
-                    return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo}, context_instance=RequestContext(request))
+                    return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo,'titem':id_tipoItem}, context_instance=RequestContext(request))
 
         else:
                 return render_to_response('403.html')

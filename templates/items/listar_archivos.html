@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<head>
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea eliminar este archivo?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+
+    <center><h1>Archivos </h1></center>
+
+ <br>
+
+
+    <center>
+    {% for dato in archivos %}
+        <br>
+
+                <form class="ask-plain" action='{% url 'items.viewsItems.eliminar_archivo' dato.id %}'  >
+                {{ dato.archivo }}        <input class="btn" type="submit" value= "Eliminar" >
+                </form>
+
+
+    {% endfor %}
+
+    </center>
+
+
+<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}
+     <input type="file" name="file" id="id_file" />
+    <br>
+    <br>
+    <input type="submit" value="Guardar cambios">
+    </form>
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+
+                <a class="btn" href="/desarrollo/item/listar/{{ titem.id }}"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
