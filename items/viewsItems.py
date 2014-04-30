@@ -130,7 +130,7 @@ def crear_item(request,id_tipoItem):
     Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
-
+    atri=1
     if cantidad_items(id_tipoItem):
         id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
         flag=es_miembro(request.user.id,id_fase)
@@ -162,7 +162,7 @@ def crear_item(request,id_tipoItem):
                     item_nombre=request.POST.get('entradalista')
                     if item_nombre!=None:
                         item=Item.objects.get(nombre=item_nombre).id
-                        cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item, tipo='Antecesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+                        cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item, tipo='Sucesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
                         newItem.save()
                     else:
                         cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1,tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
@@ -248,6 +248,7 @@ def crear_item_hijo(request,id_item):
     Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
+    atri=1
     id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
     if cantidad_items(id_tipoItem):
         id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
