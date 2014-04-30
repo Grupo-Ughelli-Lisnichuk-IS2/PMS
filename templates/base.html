@@ -25,6 +25,15 @@
 	    <div class="navbar navbar-inverse navbar-fixed-top">
 		    <div class = "navbar-inner">
 			    <a class = "brand" href="/principal"> Principal </a>
+                {% if nivel >= 1 %}
+                <a class = "brand" href="/desarrollo/proyectos/"> Proyectos </a>
+                {% endif %}
+                {% if nivel == 2 %}
+                <a class = "brand" href="/desarrollo/proyectos/fases/{{ fase.proyecto_id }}"> Fases </a>
+                {% endif %}
+                {% if nivel >= 3 %}
+                <a class = "brand" href="/desarrollo/proyectos/fases/{{ titem.fase_id }}"> Fases </a>
+                {% endif %}
                     <div class="btn-group pull-right">
     <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ user.username }}</a>
     <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>

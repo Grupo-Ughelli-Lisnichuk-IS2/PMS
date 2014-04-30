@@ -67,8 +67,8 @@ def listar_fases(request, id_proyecto):
     #fases que no le correponden, se redirige al template de prohibido
     if len(fases)==0:
         return render_to_response('403.html')
-
-    return render_to_response('items/abrir_fase.html', {'datos': fases}, context_instance=RequestContext(request))
+    nivel = 1
+    return render_to_response('items/abrir_fase.html', {'datos': fases, 'nivel':nivel}, context_instance=RequestContext(request))
 
 
 def es_miembro(id_usuario, id_fase):
@@ -107,8 +107,8 @@ def listar_tiposDeItem(request, id_fase):
     else:
         return render_to_response('403.html')
 
-
-    return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
+    nivel = 2
+    return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase, 'nivel':nivel}, context_instance=RequestContext(request))
 
 
 def cantidad_items(id_tipoItem):
@@ -223,7 +223,8 @@ def listar_items(request,id_tipo_item):
     if es_miembro(request.user.id,fase):
         items=Item.objects.filter(tipo_item_id=id_tipo_item)
         if puede_add_items(fase):
-            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem}, context_instance=RequestContext(request))
+            nivel = 3
+            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel}, context_instance=RequestContext(request))
         else:
             return HttpResponse("<h1>No se pueden administrar los Items de esta fase. La fase anterior aun no tiene items finalizados<h1>")
 
