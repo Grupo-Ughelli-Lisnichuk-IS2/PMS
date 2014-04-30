@@ -12,4 +12,7 @@ urlpatterns = patterns('',
         url(r'^item/detalle/(?P<id_item>\d+)$','items.viewsItems.detalle_item'),
         url(r'^item/crear/hijo/(?P<id_item>\d+)$','items.viewsItems.crear_item_hijo'),
         url(r'^item/descargar/archivo/(?P<idarchivo>\d+)$','items.viewsItems.des'),
+        url(r'^item/modificar/(?P<id_item>\d+)$','items.viewsItems.editar_item'),
+        url(r'^item/versiones/(?P<id_item>\d+)$','items.viewsItems.listar_versiones'),
+        url(r'^item/reversionar/(?P<id_version>\d+)$','items.viewsItems.reversionar_item'),
         )

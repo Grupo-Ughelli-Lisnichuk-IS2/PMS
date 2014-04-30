@@ -9,7 +9,7 @@ from datetime import datetime
 from django.template import RequestContext
 from PMS import settings
 from fases.models import Fase
-from items.models import Item, Archivo, AtributoItem
+from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
 from items.formsItems import PrimeraFaseForm
@@ -230,6 +230,88 @@ def listar_items(request,id_tipo_item):
     else:
         return render_to_response('403.html')
 
+
+def listar_versiones(request,id_item):
+    '''
+    vista para listar todas las versiones existentes de un item dado
+    '''
+    item=Item.objects.get(id=id_item)
+    titem=TipoItem.objects.get(id=item.tipo_item_id)
+    fase=titem.fase_id
+    if es_miembro(request.user.id,fase):
+        items=VersionItem.objects.filter(id_item_id=id_item).order_by('version')
+        return render_to_response('items/listar_versiones.html', {'datos': items, 'titem':titem}, context_instance=RequestContext(request))
+
+
+    else:
+        return render_to_response('403.html')
+
+def volver_item(version,rel):
+    '''
+    funcion que vuelve a  una version anterior de un item dado
+    '''
+    today = datetime.now() #fecha actual
+    dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+    item=Item.objects.get(id=version.id_item_id)
+    item.version=item.version+1
+    item.nombre=version.nombre
+    item.descripcion=version.descripcion
+    item.costo=version.costo
+    item.tiempo=version.tiempo
+    item.tipo=version.tipo
+    if rel==0:
+        item.relacion=version.relacion
+    else:
+        item.relacion=rel
+    item.fecha_mod=dateFormat
+    item.save()
+
+
+def comprobar_relacion(version):
+    '''
+    comprueba que el item a reversionar este relacionado con un item que aun esta activo (true)
+    de lo contrario (false)
+    '''
+    relacion=version.relacion
+    items=Item.objects.filter(estado='ANU')
+    for i in items:
+        if i==relacion:
+            return False
+    return True
+
+
+def generar_version(item):
+    '''
+    funcion para generar y guardar una nueva version de un item a modificar
+    '''
+    today = datetime.now() #fecha actual
+    dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado )
+    item_viejo.save()
+
+
+
+def reversionar_item(request, id_version):
+    version=VersionItem.objects.get(id=id_version)
+    item=Item.objects.get(id=version.id_item_id)
+    titem=TipoItem.objects.get(id=item.tipo_item_id)
+    fase=titem.fase_id
+    if es_miembro(request.user.id,fase):
+        version=VersionItem.objects.get(id=id_version)
+        item=Item.objects.get(id=version.id_item_id)
+        generar_version(item)
+        if comprobar_relacion(version):
+
+            volver_item(version,0)
+            return render_to_response('items/creacion_correcta.html',{'id_fase':titem.id}, context_instance=RequestContext(request))
+        else:
+                volver_item(version,item.relacion)
+                return render_to_response('items/creacion_correcta_relacion.html',{'id_fase':titem.id}, context_instance=RequestContext(request))
+
+    else:
+        return render_to_response('403.html')
+
+
 def descargar(idarchivo):
     """Funcion que recibe el id de un archivo y retorna el objeto archivo dado el id recibido"""
     archivo=Archivo.objects.get(id=idarchivo)
@@ -237,6 +319,9 @@ def descargar(idarchivo):
     return archivo.archivo
 
 def des(request, idarchivo):
+    '''
+    Vista para descargar un archivo de un item especifico
+    '''
     return StreamingHttpResponse(descargar(idarchivo),content_type='application/force-download')
 
 @login_required
@@ -303,3 +388,42 @@ def crear_item_hijo(request,id_item):
             return render_to_response('403.html')
     else:
         return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
+
+
+
+
+def editar_item(request,id_item):
+    '''
+    vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
+    '''
+    id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
+    id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
+    flag=es_miembro(request.user.id,id_fase)
+    item_nuevo=Item.objects.get(id=id_item)
+    if item_nuevo.estado=='PEN':
+        if flag==True:
+
+                if request.method=='POST':
+                    generar_version(item_nuevo)
+                    formulario = PrimeraFaseForm(request.POST, instance=item_nuevo)
+
+                    if formulario.is_valid():
+                        today = datetime.now() #fecha actual
+                        dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+
+                        formulario.save()
+                        item_nuevo.fecha_mod=dateFormat
+                        item_nuevo.version=item_nuevo.version+1
+                        item_nuevo.save()
+                        return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+
+                else:
+
+                    formulario = PrimeraFaseForm(instance=item_nuevo)
+                    hijo=True
+                    return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo}, context_instance=RequestContext(request))
+
+        else:
+                return render_to_response('403.html')
+    else:
+        HttpResponse('<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')

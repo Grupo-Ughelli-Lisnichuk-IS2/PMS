@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
+<head>
 
-    <center><h1>Administracion de Items </h1></center>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea volver a esta version?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+
+    <center><h1>Versiones </h1></center>
 
  <br>
     <center>
@@ -15,7 +40,7 @@
                 <th style="text-align:center">Tiempo</th>
                 <th style="text-align:center">Version</th>
                 <th style="text-align:center">Estado</th>
-	            <th colspan="5" style="text-align:center">Opciones</th>
+	            <th colspan="3" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -28,15 +53,13 @@
                 <td>{{ dato.version }}</td>
                 <td>{{ dato.estado }}</td>
 		                <td><center><a class="btn"  href="/desarrollo/item/detalle/{{ dato.id }}"><li class="icon-eye-open"></li> Ver Detalle</a></center> </td>
-                        <td><center><a class="btn" href="/desarrollo/item/crear/hijo/{{ dato.pk }}"><li class="icon-pencil"></li> Crear Item hijo</a></center></td>
-                        <td><center><a class="btn" href="/desarrollo/item/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a></center></td>
-                        <td><center><a class="btn" href="/desarrollo/item/versiones/{{ dato.pk }}"><li class="icon-pencil"></li> Volver a version anterior</a></center></td>
-                        <td><center> <form class="btn ask-plain" action='{% url 'tiposDeItem.viewsTiposDeItem.eliminar_tipoItem' dato.pk %}'>
-                        <input type="submit" value="Eliminar">
-                        </form></center> </td>
+                        <td><form class="ask-plain" action='{% url 'items.viewsItems.reversionar_item' dato.id %}'  >
+                        <input class="btn" type="submit" value="Volver a esta version" ><li class="icon-backward"></li>
+                    </form></td>
+
 			</tr>
             {% empty %}
-                <li>Aún no hay Items registrados</li>
+                <li>Este item aun no ha sido modificado</li>
 	    {% endfor %}
 
 	</table>

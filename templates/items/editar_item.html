@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Modificar Item {{item.nombre|title}}</h1>
+    </center>
+<form action="" method="post">{% csrf_token %}
+    {{ formulario }}
+
+    <input type="submit" value="Guardar cambios">
+</form>
+    <br>
+    <br>
+      <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/tiposDeItem/fase/{{ id_fase }}"><li class="icon-arrow-left"></li> Regresar</a>
+
+            </ul>
+       </div>
+{% endblock %}
