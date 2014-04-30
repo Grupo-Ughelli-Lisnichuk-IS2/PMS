@@ -409,6 +409,24 @@ def listar_archivos(request, id_item):
         archivo.save()
     return render_to_response('items/listar_archivos.html', { 'archivos': archivos,'titem':titem}, context_instance=RequestContext(request))
 
+def listar_atributos(request, id_item):
+    titem=Item.objects.get(id=id_item).tipo_item
+    atributos=AtributoItem.objects.filter(id_item=id_item)
+    id_tipoi=titem.id
+
+    if request.method=='POST':
+        for atributo in atributos:
+            a=request.POST[atributo.id_atributo.nombre]
+            print a
+            #validar atributos antes de guardarlos
+            if validarAtributo(request,atributo.id_atributo.tipo,a):
+                aa=AtributoItem.objects.get(id=atributo.id)
+                aa.valor=a
+                aa.save()
+                atributos=AtributoItem.objects.filter(id_item=id_item)
+                return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoi}, context_instance=RequestContext(request))
+    return render_to_response('items/listar_atributos.html', { 'atributos': atributos,'titem':titem}, context_instance=RequestContext(request))
+
 def editar_item(request,id_item):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo

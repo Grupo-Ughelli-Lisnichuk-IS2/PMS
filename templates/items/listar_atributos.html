@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}
+
+    <center><h1>Atributos </h1></center>
+
+ <br>
+
+
+    <center>
+
+
+	            	<div style="height:150px;width:430px;overflow:auto;">
+	            	<table width="50%" border="1">
+					<tr>
+					<th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+					<th scope="col">Valor</th>
+					</tr>
+					{% for atributo in atributos %}
+							<tr>
+								<td>{{ atributo.id_atributo.nombre }}</td>
+                                <td>{{ atributo.id_atributo.tipo }}</td>
+								<td><input type='text' name={{ atributo.id_atributo.nombre }} value="{{ atributo.valor }}"></td>
+
+							</tr>
+
+					{% endfor %}
+					</table>
+                    </div>
+
+
+
+
+    </center>
+
+
+
+    <br>
+    <br>
+    <input type="submit" value="Guardar cambios">
+    </form>
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+
+                <a class="btn" href="/desarrollo/item/listar/{{ titem.id }}"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+

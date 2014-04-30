@@ -19,5 +19,5 @@ urlpatterns = patterns('',
         url(r'^item/archivos/eliminar/(?P<id_archivo>\d+)$','items.viewsItems.eliminar_archivo'),
         url(r'^item/padre/(?P<id_item>\d+)$','items.viewsItems.listar_versiones'),
         url(r'^item/antecesor/(?P<id_item>\d+)$','items.viewsItems.listar_versiones'),
-        url(r'^item/atributos/(?P<id_item>\d+)$','items.viewsItems.listar_versiones'),
+        url(r'^item/atributos/(?P<id_item>\d+)$','items.viewsItems.listar_atributos'),
         )
