@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Detalles de {{datos.nombre|title}}</h1>
+    </center>
+          	<br>
+          	<br>
+            <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
+
+
+
+            <div><strong>Nombre: </strong>{{ datos.nombre }}</div>
+            <div><strong>Descripción: </strong>{{ datos.descripcion }}</div>
+            <div><strong>Costo: </strong>{{ datos.costo }}</div>
+            <div><strong>Tiempo: </strong>{{ datos.tiempo }}</div>
+            <div><strong>Version: </strong>{{ datos.version }}</div>
+            <div><strong>Estado: </strong>{{ datos.estado }}</div>
+            {% if datos.relacion != None %}
+            <div><strong>Relacionado con: </strong>{{ datos.relacion }}</div>
+            <div><strong>Tipo de relacion: </strong>{{ datos.tipo }}</div>
+            {% else %}
+            <div><strong>Relacionado con: </strong>Nadie</div>
+            <div><strong>Tipo de relacion: </strong>Ninguna</div>
+            {% endif %}
+            <div><strong>Fecha de creacion: </strong>{{ datos.fecha_creacion }}</div>
+            <div><strong>Fecha de modificacion: </strong>{{ datos.fecha_mod }}</div>
+            <div>
+                <strong>Atributos: </strong>
+                {% for atributo in atributos %}
+
+                    <li>{{ atributo.id_atributo.nombre }} </li>
+                    <ul>Valor: {{ atributo.valor }}</ul>
+
+                {% endfor %}
+
+            </div>
+            <center>
+
+            <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>
+
+
+                </center>
+</div>
+{% endblock %}
+</html>
