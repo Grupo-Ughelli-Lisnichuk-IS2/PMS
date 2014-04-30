@@ -36,7 +36,8 @@ def listar_proyectos(request):
             proyectos.append(proyecto)
     for p in proyectosLider:
         proyectos.append(p)
-    return render_to_response('items/abrir_proyecto.html', {'datos': proyectos}, context_instance=RequestContext(request))
+    setproyectos=set(proyectos)
+    return render_to_response('items/abrir_proyecto.html', {'datos': setproyectos}, context_instance=RequestContext(request))
 
 def listar_fases(request, id_proyecto):
 
