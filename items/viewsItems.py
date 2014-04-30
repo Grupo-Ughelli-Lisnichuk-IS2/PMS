@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.forms.models import modelformset_factory
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, render_to_response, get_object_or_404
 from datetime import datetime
 # Create your views here.
@@ -230,6 +230,15 @@ def listar_items(request,id_tipo_item):
     else:
         return render_to_response('403.html')
 
+def descargar(idarchivo):
+    """Funcion que recibe el id de un archivo y retorna el objeto archivo dado el id recibido"""
+    archivo=Archivo.objects.get(id=idarchivo)
+
+    return archivo.archivo
+
+def des(request, idarchivo):
+    return StreamingHttpResponse(descargar(idarchivo),content_type='application/force-download')
+
 @login_required
 def detalle_item(request, id_item):
 
@@ -239,9 +248,10 @@ def detalle_item(request, id_item):
     item=Item.objects.get(id=id_item)
     tipoitem=TipoItem.objects.get(id=item.tipo_item_id)
     atributos=AtributoItem.objects.filter(id_item=id_item)
+    archivos=Archivo.objects.filter(id_item=id_item)
     dato = get_object_or_404(Item, pk=id_item)
 
-    return render_to_response('items/detalle_item.html', {'datos': dato, 'atributos': atributos}, context_instance=RequestContext(request))
+    return render_to_response('items/detalle_item.html', {'datos': dato, 'atributos': atributos, 'archivos':archivos}, context_instance=RequestContext(request))
 
 def crear_item_hijo(request,id_item):
     '''

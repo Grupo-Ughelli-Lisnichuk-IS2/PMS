@@ -36,6 +36,18 @@
                 {% endfor %}
 
             </div>
+              <div>
+                <strong>Archivos: </strong>
+                {% for archivo in archivos %}
+
+                    <form  action='{% url 'items.viewsItems.des' archivo.id %}'>
+                        <input type="submit" value='Descargar {{ archivo.archivo }}'>
+                        </form>
+
+
+                {% endfor %}
+
+            </div>
             <center>
 
             <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>

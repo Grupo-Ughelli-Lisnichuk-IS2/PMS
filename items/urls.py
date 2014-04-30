@@ -11,4 +11,5 @@ urlpatterns = patterns('',
         url(r'^item/listar/(?P<id_tipo_item>\d+)$','items.viewsItems.listar_items'),
         url(r'^item/detalle/(?P<id_item>\d+)$','items.viewsItems.detalle_item'),
         url(r'^item/crear/hijo/(?P<id_item>\d+)$','items.viewsItems.crear_item_hijo'),
+        url(r'^item/descargar/archivo/(?P<idarchivo>\d+)$','items.viewsItems.des'),
         )
