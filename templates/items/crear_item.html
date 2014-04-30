@@ -2,7 +2,7 @@
 {% block contenido %}
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
         <br>
-{% if items.is_defined %}
+{% if not hijo %}
 Antecesor:
 <select name="entradalista">
     {% for item in items %}
@@ -11,6 +11,7 @@ Antecesor:
 
 </select>
 {% endif %}
+{% if atri !=  0%}
 Atributos
 	            	<div style="height:150px;width:430px;overflow:auto;">
 	            	<table width="50%" border="1">
@@ -31,6 +32,7 @@ Atributos
 					</table>
 				    <br>
             </div>
+{% endif %}
     <br>
         <input type="file" name="file" id="id_file" />
 	<br>

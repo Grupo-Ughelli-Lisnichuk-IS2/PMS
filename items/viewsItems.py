@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.forms.models import modelformset_factory
+from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, get_object_or_404
 from datetime import datetime
 # Create your views here.
@@ -134,6 +135,8 @@ def crear_item(request,id_tipoItem):
         id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
         flag=es_miembro(request.user.id,id_fase)
         atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+        if len(atributos)==0:
+            atri=0
         fase=Fase.objects.get(id=id_fase)
         proyecto=fase.proyecto_id
         items=[]
@@ -145,7 +148,7 @@ def crear_item(request,id_tipoItem):
             for fase in fase_anterior:
                 titem=TipoItem.objects.filter(fase_id=fase.id)
                 for i in titem:
-                    items.append(Item.objects.get(tipoItem_id=i.id, estado='FIN'))
+                    items.append(Item.objects.get(tipo_item_id=i.id, estado='FIN'))
 
         if flag==True:
             if request.method=='POST':
@@ -160,6 +163,7 @@ def crear_item(request,id_tipoItem):
                     if item_nombre!=None:
                         item=Item.objects.get(nombre=item_nombre).id
                         cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item, tipo='Antecesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+                        newItem.save()
                     else:
                         cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1,tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
                         newItem.save()
@@ -168,6 +172,7 @@ def crear_item(request,id_tipoItem):
                         archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=cod.id)
                         archivo.save()
                 #guardar atributos
+
                     for atributo in atributos:
 
                         a=request.POST[atributo.nombre]
@@ -179,8 +184,8 @@ def crear_item(request,id_tipoItem):
             else:
 
                 formulario = PrimeraFaseForm()
-
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items}, context_instance=RequestContext(request))
+                hijo=False
+                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
         else:
             return render_to_response('403.html')
     else:
@@ -198,9 +203,10 @@ def puede_add_items(id_fase):
         return True
     else:
         fase_anterior=Fase.objects.get(orden=fase.orden-1,proyecto=fase.proyecto)
-        tipoitem=TipoItem.objects.filter(fase=fase_anterior)
+        tipoitem=TipoItem.objects.filter(fase_id=fase_anterior.id)
+        print tipoitem
         for ti in tipoitem:
-            item=Item.objects.filter(id_tipo_item_id=ti.id)
+            item=Item.objects.filter(tipo_item_id=ti.id)
             for i in item:
                 if i.estado=='FIN':
                     return True
@@ -219,7 +225,7 @@ def listar_items(request,id_tipo_item):
         if puede_add_items(fase):
             return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem}, context_instance=RequestContext(request))
         else:
-            messages.add_message(request, settings.DELETE_MESSAGE, "No se pueden administrar los Items de esta fase. La fase anterior aun no tiene items finalizados")
+            return HttpResponse("<h1>No se pueden administrar los Items de esta fase. La fase anterior aun no tiene items finalizados<h1>")
 
     else:
         return render_to_response('403.html')
@@ -247,6 +253,8 @@ def crear_item_hijo(request,id_item):
         id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
         flag=es_miembro(request.user.id,id_fase)
         atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+        if len(atributos)==0:
+            atri=0
         fase=Fase.objects.get(id=id_fase)
         proyecto=fase.proyecto_id
         if flag==True:
@@ -278,8 +286,8 @@ def crear_item_hijo(request,id_item):
             else:
 
                 formulario = PrimeraFaseForm()
-
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos}, context_instance=RequestContext(request))
+                hijo=True
+                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
         else:
             return render_to_response('403.html')
     else:
