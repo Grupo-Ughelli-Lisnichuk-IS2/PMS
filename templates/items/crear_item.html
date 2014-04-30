@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block contenido %}
-	<form id='formulario' method='post' action=''>{% csrf_token %}{{formulario.as_p}}
-        {{formularioA.as_p}}
+	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
+
+
+
+
+        <br>
 Antecesor:
 <select name="entradalista">
     {% for item in items %}
@@ -30,6 +34,7 @@ Antecesor:
 				    <br>
             </div>
     <br>
+        <input type="file" name="file" id="id_file" />
 		<p><input type='submit' value='Confirmar'/></p>
 	</form>
 {% endblock %}

@@ -6,10 +6,10 @@ from datetime import datetime
 # Create your views here.
 from django.template import RequestContext
 from fases.models import Fase
-from items.models import Item, Archivo
+from items.models import Item, Archivo, AtributoItem
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
-from items.formsItems import PrimeraFaseForm, ArchivoForm
+from items.formsItems import PrimeraFaseForm
 
 
 @login_required
@@ -118,7 +118,6 @@ def crear_item(request,id_tipoItem):
     '''
     id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase)
-    #ItemFormSet = modelformset_factory(Atributo, exclude=('tipoItem',))
     atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
     fase=Fase.objects.get(id=id_fase)
     proyecto=fase.proyecto_id
@@ -137,10 +136,11 @@ def crear_item(request,id_tipoItem):
         if request.method=='POST':
             #formset = ItemFormSet(request.POST)
             formulario = PrimeraFaseForm(request.POST)
-            formularioArchivo=ArchivoForm(request.POST, request.FILES)
+
             if formulario.is_valid():
                 today = datetime.now() #fecha actual
                 dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+                #obtener item con el cual relacionar
                 item_nombre=request.POST.get('entradalista')
 
                 if item_nombre!=None:
@@ -149,13 +149,20 @@ def crear_item(request,id_tipoItem):
                 else:
                     cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1,tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
                 newItem.save()
-                archivo=Archivo(archivo=request.POST['archivo'], id_item_id=cod.id)
-                archivo.save()
-                return render_to_response('tiposDeItem/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+                #guardar archivo
+                if request.FILES.get('file')!=None:
+                    archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=cod.id)
+                    archivo.save()
+                #guardar atributos
+                for atributo in atributos:
+                    a=request.POST[atributo.nombre]
+                    aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                    aa.save()
+                return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
         else:
-            #formset = ItemFormSet(queryset = Atributo.objects.filter(tipoItem__id=id_tipoItem))
+
             formulario = PrimeraFaseForm()
-            formularioArchivo=ArchivoForm()
-            return render_to_response('items/crear_item.html', { 'formulario': formulario, 'formularioA':formularioArchivo, 'atributos':atributos, 'items':items}, context_instance=RequestContext(request))
+
+            return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items}, context_instance=RequestContext(request))
     else:
         return render_to_response('403.html')

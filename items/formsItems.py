@@ -10,13 +10,3 @@ class PrimeraFaseForm(forms.ModelForm):
         model=Item
         exclude=('estado', 'version', 'relacion', 'fecha_creacion', 'fecha_mod','tipo', 'tipo_item')
 
-class ArchivoForm(forms.ModelForm):
-    class Meta:
-        model=Archivo
-        exclude=('id_item','nombre')
-
-
-class ValorAtributoForm(forms.ModelForm):
-    class Meta:
-        model=Atributo
-        fields = ('valorDefecto','nombre','tipo')
