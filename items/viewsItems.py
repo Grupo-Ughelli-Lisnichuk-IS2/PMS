@@ -13,7 +13,7 @@ from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
-from items.formsItems import PrimeraFaseForm
+from items.formsItems import PrimeraFaseForm, CambiarEstadoForm
 from tiposDeItem.viewsTiposDeItem import validarAtributo
 
 @login_required
@@ -407,52 +407,55 @@ def crear_item_hijo(request,id_item):
     Vista para crear un item como hijo de uno ya creado y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
-    atri=1
-    id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
-    if cantidad_items(id_tipoItem):
-        id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
-        flag=es_miembro(request.user.id,id_fase,'agregar_item')
-        atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
-        if len(atributos)==0:
-            atri=0
-        fase=Fase.objects.get(id=id_fase)
-        proyecto=fase.proyecto_id
-        if flag==True:
-            if request.method=='POST':
-                #formset = ItemFormSet(request.POST)
-                formulario = PrimeraFaseForm(request.POST)
+    item=Item.objects.get(id=id_item)
+    if item.estado=='FIN' or item.estado=='VAL' or item.estado=='PEN':
+        atri=1
+        id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
+        if cantidad_items(id_tipoItem):
+            id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
+            flag=es_miembro(request.user.id,id_fase,'agregar_item')
+            atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+            if len(atributos)==0:
+                atri=0
+            fase=Fase.objects.get(id=id_fase)
+            proyecto=fase.proyecto_id
+            if flag==True:
+                if request.method=='POST':
+                    #formset = ItemFormSet(request.POST)
+                    formulario = PrimeraFaseForm(request.POST)
 
-                if formulario.is_valid():
-                    today = datetime.now() #fecha actual
-                    dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-                    #obtener item con el cual relacionar
+                    if formulario.is_valid():
+                        today = datetime.now() #fecha actual
+                        dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+                        #obtener item con el cual relacionar
 
-                    cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=id_item, tipo='Hijo',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+                        cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=id_item, tipo='Hijo',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
 
-                    newItem.save()
-                #guardar archivo
-                    if request.FILES.get('file')!=None:
-                        archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=cod.id)
-                        archivo.save()
-                #guardar atributos
-                    for atributo in atributos:
+                        newItem.save()
+                    #guardar archivo
+                        if request.FILES.get('file')!=None:
+                            archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=cod.id)
+                            archivo.save()
+                    #guardar atributos
+                        for atributo in atributos:
 
-                        a=request.POST[atributo.nombre]
-                        #validar atributos antes de guardarlos
-                        if validarAtributo(request,atributo.tipo,a):
-                            aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
-                            aa.save()
-                    return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
+                            a=request.POST[atributo.nombre]
+                            #validar atributos antes de guardarlos
+                            if validarAtributo(request,atributo.tipo,a):
+                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                                aa.save()
+                        return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
+                else:
+
+                    formulario = PrimeraFaseForm()
+                    hijo=True
+                    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
             else:
-
-                formulario = PrimeraFaseForm()
-                hijo=True
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
+                return render_to_response('403.html')
         else:
-            return render_to_response('403.html')
+            return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
     else:
-        return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
-
+        return HttpResponse("<h1>No se puede crear un hijo a un item con estado que no sea Finalizado, Pendiente o Validado</h1>")
 
 
 @login_required
@@ -634,3 +637,43 @@ def editar_item(request,id_item):
                 return render_to_response('403.html')
     else:
         HttpResponse('<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
+
+
+
+@login_required
+def cambiar_estado_item(request,id_item):
+    '''
+    vista para cambiar el estado de un item, teniendo en cuenta:
+    1) Si se quiere pasar de PEN  a VAL, se verifica que el estado de su padre tambien sea VAL
+    2) Si se quiere pasar de VAL a PEN se verifica que el estado de sus hijos tambien sea PEN
+    '''
+
+    item=Item.objects.get(id=id_item)
+    nombre=item.nombre
+    titem=item.tipo_item_id
+    if request.method == 'POST':
+        bandera=False
+        item_form = CambiarEstadoForm(request.POST, instance=item)
+        if item_form.is_valid():
+                    if item_form.cleaned_data['estado']=='VAL':
+                        if item.tipo=='Hijo':
+                            papa=item.relacion
+                            if papa.estado!= 'VAL' or papa.estado!='FIN':
+                                messages.add_message(request,settings.DELETE_MESSAGE,'No se puede cambiar a Validado ya que su padre no ha sido validado o Finalizado')
+                                bandera=True
+                    if item_form.cleaned_data['estado']=='PEN':
+                            hijos=Item.objects.filter(relacion=item)
+                            for hijo in hijos:
+                                if hijo.estado!='PEN' and hijo.tipo=='Hijo':
+                                    messages.add_message(request,settings.DELETE_MESSAGE, 'No se puede cambiar  a pendiente ya que tiene hijos con estados distintos a Pendiente')
+                                    bandera=True
+                    if bandera==True:
+                        return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre, 'titem':titem}, context_instance=RequestContext(request))
+                    else:
+                        item_form.save()
+                        return render_to_response('items/creacion_correcta.html',{'id_tipo_item':titem}, context_instance=RequestContext(request))
+
+    else:
+        # formulario inicial
+        item_form = CambiarEstadoForm(instance=item)
+        return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))

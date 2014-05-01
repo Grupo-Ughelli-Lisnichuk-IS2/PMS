@@ -21,5 +21,5 @@ urlpatterns = patterns('',
         url(r'^item/antecesor/(?P<id_item>\d+)$','items.viewsItems.cambiar_antecesor'),
         url(r'^item/atributos/(?P<id_item>\d+)$','items.viewsItems.listar_atributos'),
         url(r'^item/detalle/version/(?P<id_version>\d+)$','items.viewsItems.detalle_version_item'),
-        #url(r'^item/cambiar_estado/(?P<id_item>\d+)$','items.viewsItems.cambiar_estado'),
+        url(r'^item/cambiar_estado/(?P<id_item>\d+)$','items.viewsItems.cambiar_estado_item'),
         )
