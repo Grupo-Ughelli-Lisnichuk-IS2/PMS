@@ -134,7 +134,7 @@ def cantidad_items(id_tipoItem):
         return False
 
 @login_required
-@permission_required('items.agregar_item')
+@permission_required('items.agregar_item',login_url='/denegado')
 def crear_item(request,id_tipoItem):
     '''
     Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
@@ -308,7 +308,7 @@ def generar_version(item):
 
 
 @login_required
-@permission_required('items.agregar_versionitem')
+@permission_required('items.agregar_versionitem',login_url='/denegado')
 def reversionar_item(request, id_version):
     '''
     vista para volver a una version anterior de un item
@@ -365,7 +365,7 @@ def detalle_item(request, id_item):
     else:
         return render_to_response('403.html')
 @login_required
-@permission_required('items.agregar_item')
+@permission_required('items.agregar_item',login_url='/denegado')
 def crear_item_hijo(request,id_item):
     '''
     Vista para crear un item como hijo de uno ya creado y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
@@ -420,7 +420,7 @@ def crear_item_hijo(request,id_item):
 
 
 @login_required
-@permission_required('items.cambiar_item')
+@permission_required('items.cambiar_item',login_url='/denegado')
 def eliminar_archivo(request, id_archivo):
     '''
     vista que recibe el id de un archivo y lo borra de la base de datos
@@ -432,7 +432,7 @@ def eliminar_archivo(request, id_archivo):
 
 
 @login_required
-@permission_required('items.cambiar_item')
+@permission_required('items.cambiar_item',login_url='/denegado')
 def cambiar_padre(request, id_item):
     item=Item.objects.get(id=id_item)
     tipo=TipoItem.objects.get(id=item.tipo_item_id)
@@ -469,7 +469,7 @@ def cambiar_padre(request, id_item):
 
 
 @login_required
-@permission_required('items.cambiar_item')
+@permission_required('items.cambiar_item',login_url='/denegado')
 def cambiar_antecesor(request, id_item):
     '''
     vista para cambiar la relacion de un item, del tipo antecesor
@@ -509,7 +509,7 @@ def cambiar_antecesor(request, id_item):
 
 
 @login_required
-@permission_required('items.cambiar_item')
+@permission_required('items.cambiar_item',login_url='/denegado')
 def listar_archivos(request, id_item):
     '''
     vista para gestionar los archivos de un item dado'
@@ -523,7 +523,7 @@ def listar_archivos(request, id_item):
     return render_to_response('items/listar_archivos.html', { 'archivos': archivos,'titem':titem}, context_instance=RequestContext(request))
 
 @login_required
-@permission_required('items.cambiar_item')
+@permission_required('items.cambiar_item',login_url='/denegado')
 def listar_atributos(request, id_item):
     '''
     vista para gestionar los atributos de un item dado
@@ -547,7 +547,7 @@ def listar_atributos(request, id_item):
 
 
 @login_required
-@permission_required('items.cambiar_item')
+@permission_required('items.cambiar_item',login_url='/denegado')
 def editar_item(request,id_item):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
