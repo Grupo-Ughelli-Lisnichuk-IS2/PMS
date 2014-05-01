@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
+from django.db.models import Q
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse, StreamingHttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
@@ -150,7 +151,9 @@ def crear_item(request,id_tipoItem):
             for fase in fase_anterior:
                 titem=TipoItem.objects.filter(fase_id=fase.id)
                 for i in titem:
-                    items.append(Item.objects.get(tipo_item_id=i.id, estado='FIN'))
+                    it=Item.objects.filter(tipo_item_id=i.id, estado='FIN')
+                    for ii in it:
+                        items.append(ii)
 
         if flag==True:
             if request.method=='POST':
@@ -163,8 +166,11 @@ def crear_item(request,id_tipoItem):
                     #obtener item con el cual relacionar
                     item_nombre=request.POST.get('entradalista')
                     if item_nombre!=None:
-                        item=Item.objects.get(nombre=item_nombre).id
-                        cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item, tipo='Sucesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
+                        item=''
+                        itemss=Item.objects.filter(nombre=item_nombre)
+                        for i in itemss:
+                            item=i
+                        cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item.id, tipo='Sucesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
                         newItem.save()
                     else:
                         cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1,tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
@@ -206,7 +212,7 @@ def puede_add_items(id_fase):
     else:
         fase_anterior=Fase.objects.get(orden=fase.orden-1,proyecto=fase.proyecto)
         tipoitem=TipoItem.objects.filter(fase_id=fase_anterior.id)
-        print tipoitem
+
         for ti in tipoitem:
             item=Item.objects.filter(tipo_item_id=ti.id)
             for i in item:
@@ -400,6 +406,75 @@ def eliminar_archivo(request, id_archivo):
     archivo.delete()
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
+def cambiar_padre(request, id_item):
+    item=Item.objects.get(id=id_item)
+    tipo=TipoItem.objects.get(id=item.tipo_item_id)
+    fase=Fase.objects.get(id=tipo.fase_id)
+    items=[]
+    titem=TipoItem.objects.filter(fase_id=fase.id)
+    for i in titem:
+        a=Item.objects.filter(Q(tipo_item_id=i.id) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
+        for aa in a:
+            #verifica que el item a relacionar no sea si mismo, su hijo o ya sea su padre
+            if aa != item and item.relacion!=aa and item!=aa.relacion:
+                items.append(aa)
+    if request.method=='POST':
+        item_nombre=request.POST.get('entradalista')
+        if item_nombre!=None:
+
+                item_rel=''
+                today = datetime.now() #fecha actual
+                dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+                item=Item.objects.get(id=id_item)
+                generar_version(item)
+                item.fecha_mod=dateFormat
+                item.version=item.version+1
+                itemss=Item.objects.filter(nombre=item_nombre)
+                for i in itemss:
+                    item_rel=i
+                item.relacion=item_rel
+                item.tipo='Hijo'
+                item.save()
+                return HttpResponseRedirect('/desarrollo/item/listar/'+str(item.tipo_item_id))
+    if len(items)==0:
+        messages.add_message(request,settings.DELETE_MESSAGE, "No hay otros items que pueden ser padres de este")
+    return render_to_response('items/listar_padres.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
+
+def cambiar_antecesor(request, id_item):
+    item=Item.objects.get(id=id_item)
+    tipo=TipoItem.objects.get(id=item.tipo_item_id)
+    fas=Fase.objects.get(id=tipo.fase_id)
+    proyecto=fas.proyecto_id
+    items=[]
+    fase_anterior=Fase.objects.filter(proyecto_id=proyecto, orden=fas.orden-1)
+    if len(fase_anterior)==0:
+        items=[]
+    else:
+        for fase in fase_anterior:
+            titem=TipoItem.objects.filter(fase_id=fase.id)
+            for i in titem:
+                ii=Item.objects.filter(tipo_item_id=i.id, estado='FIN')
+                for it in ii:
+                    if it!=item.relacion:
+                        items.append(it)
+    if request.method=='POST':
+        item_nombre=request.POST.get('entradalista')
+        if item_nombre!=None:
+                today = datetime.now() #fecha actual
+                dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+                generar_version(item)
+                item.fecha_mod=dateFormat
+                item.version=item.version+1
+                item_rel=Item.objects.get(nombre=item_nombre)
+                item.relacion=item_rel
+                item.tipo='Sucesor'
+                item.save()
+                return HttpResponseRedirect('/desarrollo/item/listar/'+str(item.tipo_item_id))
+    if len(items)==0:
+        messages.add_message(request,settings.DELETE_MESSAGE, "No hay otros items que pueden ser antecesores de este")
+    return render_to_response('items/listar_antecesores.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
+
+
 
 def listar_archivos(request, id_item):
     titem=Item.objects.get(id=id_item).tipo_item
@@ -418,7 +493,7 @@ def listar_atributos(request, id_item):
     if request.method=='POST':
         for atributo in atributos:
             a=request.POST[atributo.id_atributo.nombre]
-            print a
+
             #validar atributos antes de guardarlos
             if validarAtributo(request,atributo.id_atributo.tipo,a):
                 aa=AtributoItem.objects.get(id=atributo.id)

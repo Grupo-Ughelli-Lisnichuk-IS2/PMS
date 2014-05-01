@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}
+Padre:
+<select name="entradalista">
+    {% for item in items %}
+    <option>{{ item.nombre}}</option>
+    {% endfor %}
+
+</select>
+
+
+
+
+    <br>
+    <br>
+    <input type="submit" value="Cambiar relacion">
+    </form>
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+
+                <a class="btn" href="/desarrollo/item/modificar/{{ tipoitem.id }}"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
