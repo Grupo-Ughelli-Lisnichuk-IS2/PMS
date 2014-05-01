@@ -298,8 +298,14 @@ def comprobar_relacion(version):
     '''
     comprueba que el item a reversionar este relacionado con un item que aun esta activo (true)
     de lo contrario (false)
+    Ademas comprueba que no se formen ciclos al modificar una relacion del tipo padre-hijo
     '''
+
     relacion=version.relacion
+    item=version.id_item
+    a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item) & Q(id=relacion.id)) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
+    if a!=None:
+        return False
     items=Item.objects.filter(estado='ANU')
     for i in items:
         if i==relacion:
