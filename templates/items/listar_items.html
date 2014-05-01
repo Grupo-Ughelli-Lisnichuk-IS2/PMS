@@ -28,12 +28,10 @@
                 <td>{{ dato.version }}</td>
                 <td>{{ dato.estado }}</td>
 		                <td><center><a class="btn"  href="/desarrollo/item/detalle/{{ dato.id }}"><li class="icon-eye-open"></li> Ver Detalle</a></center> </td>
-                        <td><center><a class="btn" href="/desarrollo/item/crear/hijo/{{ dato.pk }}"><li class="icon-pencil"></li> Crear Item hijo</a></center></td>
-                        <td><center><a class="btn" href="/desarrollo/item/modificar/{{ dato.pk }}"><li class="icon-pencil"></li> Modificar</a></center></td>
-                        <td><center><a class="btn" href="/desarrollo/item/versiones/{{ dato.pk }}"><li class="icon-pencil"></li> Volver a version anterior</a></center></td>
-                        <td><center> <form class="btn ask-plain" action='{% url 'tiposDeItem.viewsTiposDeItem.eliminar_tipoItem' dato.pk %}'>
-                        <input type="submit" value="Eliminar">
-                        </form></center> </td>
+                        <td><center><a class="btn" href="/desarrollo/item/crear/hijo/{{ dato.pk }}"><li class="icon-plus"></li> Crear Item hijo</a></center></td>
+                        <td><center><a class="btn" href="/desarrollo/item/modificar/{{ dato.pk }}"><li class="icon-edit"></li> Modificar</a></center></td>
+
+                        <td><center><a class="btn" href="/desarrollo/item/versiones/{{ dato.pk }}"><li class="icon-check"></li> Cambiar Estado</a></center></td>
 			</tr>
             {% empty %}
                 <li>Aún no hay Items registrados</li>
@@ -46,7 +44,7 @@
 
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <td><center><a class="btn"  href="/desarrollo/item/crear/{{ titem.id }}"><li class="icon-eye-open"></li> Crear Item</a></center> </td>
+                <td><center><a class="btn"  href="/desarrollo/item/crear/{{ titem.id }}"><li class="icon-plus"></li> Crear Item</a></center> </td>
 
 
                 <a class="btn" href="/desarrollo/fases/tiposDeItem/{{ titem.fase_id }}"><li class="icon-arrow-left"></li> Regresar</a>

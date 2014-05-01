@@ -267,7 +267,7 @@ def listar_versiones(request,id_item):
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
         items=VersionItem.objects.filter(id_item_id=id_item).order_by('version')
-        return render_to_response('items/listar_versiones.html', {'datos': items, 'titem':titem}, context_instance=RequestContext(request))
+        return render_to_response('items/listar_versiones.html', {'datos': items, 'titem':titem,'item':item}, context_instance=RequestContext(request))
 
 
     else:
@@ -374,6 +374,24 @@ def detalle_item(request, id_item):
         return render_to_response('items/detalle_item.html', {'datos': dato, 'atributos': atributos, 'archivos':archivos}, context_instance=RequestContext(request))
     else:
         return render_to_response('403.html')
+
+
+@login_required
+def detalle_version_item(request, id_version):
+
+    '''
+    vista para ver los detalles del item <id_item>
+    '''
+    item=VersionItem.objects.get(id=id_version)
+    tipoitem=TipoItem.objects.get(id=item.tipo_item_id)
+    fase=tipoitem.fase_id
+    if es_miembro(request.user.id, fase,''):
+        dato = get_object_or_404(VersionItem, pk=id_version)
+
+        return render_to_response('items/detalle_version.html', {'datos': dato}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('403.html')
+
 
 
 @login_required
@@ -598,7 +616,7 @@ def editar_item(request,id_item):
                         item_nuevo.version=item_nuevo.version+1
                         item_nuevo.save()
 
-                        return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+                        return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase, 'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
 
                 else:
 

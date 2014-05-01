@@ -27,7 +27,7 @@
 		</script>
 </head>
 
-    <center><h1>Versiones </h1></center>
+    <center><h1>Versiones de {{ item.nombre }}</h1></center>
 
  <br>
     <center>
@@ -52,7 +52,7 @@
                 <td>{{ dato.tiempo }}</td>
                 <td>{{ dato.version }}</td>
                 <td>{{ dato.estado }}</td>
-		                <td><center><a class="btn"  href="/desarrollo/item/detalle/{{ dato.id }}"><li class="icon-eye-open"></li> Ver Detalle</a></center> </td>
+		                <td><center><a class="btn"  href="/desarrollo/item/detalle/version/{{ dato.id }}"><li class="icon-eye-open"></li> Ver Detalle</a></center> </td>
                         <td><form class="ask-plain" action='{% url 'items.viewsItems.reversionar_item' dato.id %}'  >
                         <input class="btn" type="submit" value="Volver a esta version" ><li class="icon-backward"></li>
                     </form></td>
@@ -69,10 +69,10 @@
 
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <td><center><a class="btn"  href="/desarrollo/item/crear/{{ titem.id }}"><li class="icon-eye-open"></li> Crear Item</a></center> </td>
 
 
-                <a class="btn" href="/desarrollo/fases/tiposDeItem/{{ titem.fase_id }}"><li class="icon-arrow-left"></li> Regresar</a>
+
+                <a class="btn" href="/desarrollo/item/modificar/{{ item.id }}"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>
 
