@@ -636,7 +636,7 @@ def editar_item(request,id_item):
         else:
                 return render_to_response('403.html')
     else:
-        HttpResponse('<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
+        return HttpResponse('<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
 
 
 
