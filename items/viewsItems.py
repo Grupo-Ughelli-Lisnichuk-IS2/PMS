@@ -43,6 +43,7 @@ def listar_proyectos(request):
     setproyectos=set(proyectos)
     return render_to_response('items/abrir_proyecto.html', {'datos': setproyectos}, context_instance=RequestContext(request))
 
+@login_required
 def listar_fases(request, id_proyecto):
 
     '''
@@ -94,6 +95,7 @@ def es_miembro(id_usuario, id_fase):
     return False
 
 
+@login_required
 def listar_tiposDeItem(request, id_fase):
 
     '''
@@ -113,6 +115,11 @@ def listar_tiposDeItem(request, id_fase):
 
 
 def cantidad_items(id_tipoItem):
+    '''
+    funcion para contar la cantidad de items ya creados en una fase
+    Si aun no se alcanzo el limite devuelve True,
+    Ademas verifica que la fase a agregar items no tenga estado FIN
+    '''
     titem=TipoItem.objects.get(id=id_tipoItem)
     fase=Fase.objects.get(id=titem.fase_id)
     if fase.estado=='FIN':
@@ -127,7 +134,7 @@ def cantidad_items(id_tipoItem):
         return False
 
 @login_required
-#@permission_required('items.agregar_item')
+@permission_required('items.agregar_item')
 def crear_item(request,id_tipoItem):
     '''
     Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
@@ -221,7 +228,7 @@ def puede_add_items(id_fase):
     return False
 
 @login_required
-#@permission_required('item')
+
 def listar_items(request,id_tipo_item):
     '''
     vista para listar los items pertenecientes a un tipo de item
@@ -300,8 +307,12 @@ def generar_version(item):
     item_viejo.save()
 
 
-
+@login_required
+@permission_required('items.agregar_versionitem')
 def reversionar_item(request, id_version):
+    '''
+    vista para volver a una version anterior de un item
+    '''
     version=VersionItem.objects.get(id=id_version)
     item=Item.objects.get(id=version.id_item_id)
     titem=TipoItem.objects.get(id=item.tipo_item_id)
@@ -310,6 +321,7 @@ def reversionar_item(request, id_version):
         version=VersionItem.objects.get(id=id_version)
         item=Item.objects.get(id=version.id_item_id)
         generar_version(item)
+        #comprueba la relacion
         if comprobar_relacion(version):
 
             volver_item(version,0)
@@ -328,6 +340,7 @@ def descargar(idarchivo):
 
     return archivo.archivo
 
+@login_required
 def des(request, idarchivo):
     '''
     Vista para descargar un archivo de un item especifico
@@ -342,15 +355,20 @@ def detalle_item(request, id_item):
     '''
     item=Item.objects.get(id=id_item)
     tipoitem=TipoItem.objects.get(id=item.tipo_item_id)
-    atributos=AtributoItem.objects.filter(id_item=id_item)
-    archivos=Archivo.objects.filter(id_item=id_item)
-    dato = get_object_or_404(Item, pk=id_item)
+    fase=tipoitem.fase_id
+    if es_miembro(request.user.id, fase):
+        atributos=AtributoItem.objects.filter(id_item=id_item)
+        archivos=Archivo.objects.filter(id_item=id_item)
+        dato = get_object_or_404(Item, pk=id_item)
 
-    return render_to_response('items/detalle_item.html', {'datos': dato, 'atributos': atributos, 'archivos':archivos}, context_instance=RequestContext(request))
-
+        return render_to_response('items/detalle_item.html', {'datos': dato, 'atributos': atributos, 'archivos':archivos}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('403.html')
+@login_required
+@permission_required('items.agregar_item')
 def crear_item_hijo(request,id_item):
     '''
-    Vista para crear un item y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
+    Vista para crear un item como hijo de uno ya creado y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
     atri=1
@@ -400,12 +418,21 @@ def crear_item_hijo(request,id_item):
         return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
 
 
+
+@login_required
+@permission_required('items.cambiar_item')
 def eliminar_archivo(request, id_archivo):
+    '''
+    vista que recibe el id de un archivo y lo borra de la base de datos
+    '''
     archivo=Archivo.objects.get(id=id_archivo)
     item=archivo.id_item
     archivo.delete()
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
+
+@login_required
+@permission_required('items.cambiar_item')
 def cambiar_padre(request, id_item):
     item=Item.objects.get(id=id_item)
     tipo=TipoItem.objects.get(id=item.tipo_item_id)
@@ -440,7 +467,13 @@ def cambiar_padre(request, id_item):
         messages.add_message(request,settings.DELETE_MESSAGE, "No hay otros items que pueden ser padres de este")
     return render_to_response('items/listar_padres.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
 
+
+@login_required
+@permission_required('items.cambiar_item')
 def cambiar_antecesor(request, id_item):
+    '''
+    vista para cambiar la relacion de un item, del tipo antecesor
+    '''
     item=Item.objects.get(id=id_item)
     tipo=TipoItem.objects.get(id=item.tipo_item_id)
     fas=Fase.objects.get(id=tipo.fase_id)
@@ -475,8 +508,12 @@ def cambiar_antecesor(request, id_item):
     return render_to_response('items/listar_antecesores.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
 
 
-
+@login_required
+@permission_required('items.cambiar_item')
 def listar_archivos(request, id_item):
+    '''
+    vista para gestionar los archivos de un item dado'
+    '''
     titem=Item.objects.get(id=id_item).tipo_item
     archivos=Archivo.objects.filter(id_item=id_item)
     if request.method=='POST':
@@ -485,7 +522,12 @@ def listar_archivos(request, id_item):
             archivo.save()
     return render_to_response('items/listar_archivos.html', { 'archivos': archivos,'titem':titem}, context_instance=RequestContext(request))
 
+@login_required
+@permission_required('items.cambiar_item')
 def listar_atributos(request, id_item):
+    '''
+    vista para gestionar los atributos de un item dado
+    '''
     titem=Item.objects.get(id=id_item).tipo_item
     atributos=AtributoItem.objects.filter(id_item=id_item)
     id_tipoi=titem.id
@@ -503,6 +545,9 @@ def listar_atributos(request, id_item):
                 return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoi}, context_instance=RequestContext(request))
     return render_to_response('items/listar_atributos.html', { 'atributos': atributos,'titem':titem}, context_instance=RequestContext(request))
 
+
+@login_required
+@permission_required('items.cambiar_item')
 def editar_item(request,id_item):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
