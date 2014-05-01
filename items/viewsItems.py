@@ -182,12 +182,12 @@ def crear_item(request,id_tipoItem):
                         if validarAtributo(request,atributo.tipo,a):
                             aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
                             aa.save()
-                    return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+                    return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
 
                 formulario = PrimeraFaseForm()
                 hijo=False
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
+                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri,'titem':id_tipoItem}, context_instance=RequestContext(request))
         else:
             return render_to_response('403.html')
     else:
@@ -307,10 +307,10 @@ def reversionar_item(request, id_version):
         if comprobar_relacion(version):
 
             volver_item(version,0)
-            return render_to_response('items/creacion_correcta.html',{'id_fase':titem.id}, context_instance=RequestContext(request))
+            return render_to_response('items/creacion_correcta.html',{'id_tipo_item':titem.id}, context_instance=RequestContext(request))
         else:
                 volver_item(version,item.relacion)
-                return render_to_response('items/creacion_correcta_relacion.html',{'id_fase':titem.id}, context_instance=RequestContext(request))
+                return render_to_response('items/creacion_correcta_relacion.html',{'id_tipo_item':titem.id}, context_instance=RequestContext(request))
 
     else:
         return render_to_response('403.html')
@@ -382,7 +382,7 @@ def crear_item_hijo(request,id_item):
                         if validarAtributo(request,atributo.tipo,a):
                             aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
                             aa.save()
-                    return render_to_response('items/creacion_correcta.html',{'id_fase':id_fase}, context_instance=RequestContext(request))
+                    return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
 
                 formulario = PrimeraFaseForm()
@@ -405,8 +405,9 @@ def listar_archivos(request, id_item):
     titem=Item.objects.get(id=id_item).tipo_item
     archivos=Archivo.objects.filter(id_item=id_item)
     if request.method=='POST':
-        archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=id_item)
-        archivo.save()
+        if request.FILES.get('file')!=None:
+            archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=id_item)
+            archivo.save()
     return render_to_response('items/listar_archivos.html', { 'archivos': archivos,'titem':titem}, context_instance=RequestContext(request))
 
 def listar_atributos(request, id_item):
