@@ -658,9 +658,13 @@ def cambiar_estado_item(request,id_item):
                     if item_form.cleaned_data['estado']=='VAL':
                         if item.tipo=='Hijo':
                             papa=item.relacion
-                            if papa.estado!= 'VAL' or papa.estado!='FIN':
+
+
+                            if papa.estado=='PEN':
                                 messages.add_message(request,settings.DELETE_MESSAGE,'No se puede cambiar a Validado ya que su padre no ha sido validado o Finalizado')
                                 bandera=True
+                            if papa.estado=='VAL':
+                                bandera=False
                     if item_form.cleaned_data['estado']=='PEN':
                             hijos=Item.objects.filter(relacion=item)
                             for hijo in hijos:
