@@ -13,7 +13,8 @@ from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
-from items.formsItems import CambiarEstadoItemForm, PrimeraFaseForm
+from items.formsItems import EstadoItemForm
+from items.formsItems import PrimeraFaseForm
 from tiposDeItem.viewsTiposDeItem import validarAtributo
 
 @login_required
@@ -207,7 +208,7 @@ def crear_item(request,id_tipoItem):
                             if validarAtributo(request,atributo.tipo,a):
                                 aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
                                 aa.save()
-                        return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
+                    return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
 
                 formulario = PrimeraFaseForm()
@@ -462,7 +463,7 @@ def crear_item_hijo(request,id_item):
             else:
                 return render_to_response('403.html')
         else:
-            return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
+            return render_to_response('items/creacion_incorrecta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
     else:
         return HttpResponse("<h1>No se puede crear un hijo a un item con estado que no sea Finalizado, Pendiente o Validado</h1>")
 
@@ -664,7 +665,7 @@ def cambiar_estado_item(request,id_item):
     titem=item.tipo_item_id
     if request.method == 'POST':
         bandera=False
-        item_form = CambiarEstadoItemForm(request.POST, instance=item)
+        item_form = EstadoItemForm(request.POST, instance=item)
         if item_form.is_valid():
                     if item_form.cleaned_data['estado']=='VAL':
                         if item.tipo=='Hijo':
@@ -690,5 +691,5 @@ def cambiar_estado_item(request,id_item):
 
     else:
         # formulario inicial
-        item_form = CambiarEstadoItemForm(instance=item)
+        item_form = EstadoItemForm(instance=item)
         return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))

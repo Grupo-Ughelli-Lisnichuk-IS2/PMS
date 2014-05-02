@@ -1,8 +1,8 @@
-from django.forms import ModelForm
+
 from django import forms
-from PMS import settings
-from items.models import Item, Archivo
-from tiposDeItem.models import Atributo
+
+import items.models
+
 
 ESTADOS = (
 
@@ -13,11 +13,11 @@ ESTADOS = (
 
 class PrimeraFaseForm(forms.ModelForm):
     class Meta:
-        model=Item
+        model=items.models.Item
         exclude=('estado', 'version', 'relacion', 'fecha_creacion', 'fecha_mod','tipo', 'tipo_item')
 
-class CambiarEstadoItemForm(forms.ModelForm):
+class EstadoItemForm(forms.ModelForm):
     estado=forms.CharField(max_length=3,widget=forms.Select(choices= ESTADOS))
     class Meta:
-        model=Item
+        model=items.models.Item
         fields=['estado']
