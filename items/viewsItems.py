@@ -52,7 +52,7 @@ def listar_fases(request, id_proyecto):
     #busca todas las fases del proyecto
     fasesProyecto=Fase.objects.filter(proyecto_id=id_proyecto, estado='EJE')
     usuario = request.user
-    proyecto=Proyecto.objects.get(id=id_proyecto)
+    proyecto=get_object_or_404(Proyecto,id=id_proyecto)
     fases=[]
     #si es lider pertenece a todas las fases
     if usuario.id==proyecto.lider_id:
@@ -79,9 +79,10 @@ def es_miembro(id_usuario, id_fase,permiso):
     o false si no tiene ningun rol en esa fase
     Ademas verifica que el estado de la fase se EJE
     '''
-    fase=Fase.objects.get(id=id_fase)
+
+    fase=get_object_or_404(Fase,id=id_fase)
     usuario=User.objects.get(id=id_usuario)
-    proyecto=Proyecto.objects.get(id=fase.proyecto_id)
+    proyecto=get_object_or_404(Proyecto,id=fase.proyecto_id)
     if fase.estado!='EJE':
         return False
     if usuario.id==proyecto.lider_id:
@@ -130,7 +131,7 @@ def cantidad_items(id_tipoItem):
     Si aun no se alcanzo el limite devuelve True,
     Ademas verifica que la fase a agregar items no tenga estado FIN
     '''
-    titem=TipoItem.objects.get(id=id_tipoItem)
+    titem=get_object_or_404(TipoItem,id=id_tipoItem)
     fase=Fase.objects.get(id=titem.fase_id)
     if fase.estado=='FIN':
         return False
@@ -200,12 +201,13 @@ def crear_item(request,id_tipoItem):
 
                     for atributo in atributos:
 
-                        a=request.POST[atributo.nombre]
-                        #validar atributos antes de guardarlos
-                        if validarAtributo(request,atributo.tipo,a):
-                            aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
-                            aa.save()
-                    return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
+                        a=request.POST.get(atributo.nombre)
+                        if a!=None:
+                            #validar atributos antes de guardarlos
+                            if validarAtributo(request,atributo.tipo,a):
+                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                                aa.save()
+                        return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
 
                 formulario = PrimeraFaseForm()
@@ -214,7 +216,7 @@ def crear_item(request,id_tipoItem):
         else:
             return render_to_response('403.html')
     else:
-        return render_to_response('items/creacion_incorrecta.html', context_instance=RequestContext(request))
+        return render_to_response('items/creacion_incorrecta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
 
 
 def puede_add_items(id_fase):
@@ -243,7 +245,7 @@ def listar_items(request,id_tipo_item):
     '''
     vista para listar los items pertenecientes a un tipo de item
     '''
-    titem=TipoItem.objects.get(id=id_tipo_item)
+    titem=get_object_or_404(TipoItem,id=id_tipo_item)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,''):
         items=Item.objects.filter(tipo_item_id=id_tipo_item)
@@ -262,8 +264,8 @@ def listar_versiones(request,id_item):
     '''
     vista para listar todas las versiones existentes de un item dado
     '''
-    item=Item.objects.get(id=id_item)
-    titem=TipoItem.objects.get(id=item.tipo_item_id)
+    item=get_object_or_404(Item,id=id_item)
+    titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
         items=VersionItem.objects.filter(id_item_id=id_item).order_by('version')
@@ -279,7 +281,7 @@ def volver_item(version,rel):
     '''
     today = datetime.now() #fecha actual
     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-    item=Item.objects.get(id=version.id_item_id)
+    item=get_object_or_404(Item,id=version.id_item_id)
     item.version=item.version+1
     item.nombre=version.nombre
     item.descripcion=version.descripcion
@@ -301,7 +303,10 @@ def comprobar_relacion(version):
     Ademas comprueba que no se formen ciclos al modificar una relacion del tipo padre-hijo
     '''
 
-    relacion=version.relacion
+    if version.relacion==None:
+        return True
+    relacion=get_object_or_404(Item,id=version.relacion_id)
+
     item=version.id_item
     a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item) & Q(id=relacion.id)) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
     if a!=None:
@@ -329,13 +334,14 @@ def reversionar_item(request, id_version):
     '''
     vista para volver a una version anterior de un item
     '''
-    version=VersionItem.objects.get(id=id_version)
-    item=Item.objects.get(id=version.id_item_id)
-    titem=TipoItem.objects.get(id=item.tipo_item_id)
+    version=get_object_or_404(VersionItem,id=id_version)
+    item=get_object_or_404(Item,id=version.id_item_id)
+
+    titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
-        version=VersionItem.objects.get(id=id_version)
-        item=Item.objects.get(id=version.id_item_id)
+        version=get_object_or_404(VersionItem,id=id_version)
+        item=get_object_or_404(Item,id=version.id_item_id)
         generar_version(item)
         #comprueba la relacion
         if comprobar_relacion(version):
@@ -346,13 +352,16 @@ def reversionar_item(request, id_version):
                 volver_item(version,item.relacion)
                 return render_to_response('items/creacion_correcta_relacion.html',{'id_tipo_item':titem.id}, context_instance=RequestContext(request))
 
+
     else:
         return render_to_response('403.html')
 
 
 def descargar(idarchivo):
-    """Funcion que recibe el id de un archivo y retorna el objeto archivo dado el id recibido"""
-    archivo=Archivo.objects.get(id=idarchivo)
+    '''
+    Funcion que recibe el id de un archivo y retorna el objeto archivo dado el id recibido
+    '''
+    archivo=get_object_or_404(Archivo,id=idarchivo)
 
     return archivo.archivo
 
@@ -369,8 +378,8 @@ def detalle_item(request, id_item):
     '''
     vista para ver los detalles del item <id_item>
     '''
-    item=Item.objects.get(id=id_item)
-    tipoitem=TipoItem.objects.get(id=item.tipo_item_id)
+    item=get_object_or_404(Item,id=id_item)
+    tipoitem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=tipoitem.fase_id
     if es_miembro(request.user.id, fase,''):
         atributos=AtributoItem.objects.filter(id_item=id_item)
@@ -388,8 +397,8 @@ def detalle_version_item(request, id_version):
     '''
     vista para ver los detalles del item <id_item>
     '''
-    item=VersionItem.objects.get(id=id_version)
-    tipoitem=TipoItem.objects.get(id=item.tipo_item_id)
+    item=get_object_or_404(VersionItem,id=id_version)
+    tipoitem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=tipoitem.fase_id
     if es_miembro(request.user.id, fase,''):
         dato = get_object_or_404(VersionItem, pk=id_version)
@@ -407,17 +416,17 @@ def crear_item_hijo(request,id_item):
     Vista para crear un item como hijo de uno ya creado y asignarlo a un tipo de item. Ademas se dan las opciones de agregar un
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
-    item=Item.objects.get(id=id_item)
+    item=get_object_or_404(Item,id=id_item)
     if item.estado=='FIN' or item.estado=='VAL' or item.estado=='PEN':
         atri=1
-        id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
+        id_tipoItem=get_object_or_404(Item,id=id_item).tipo_item_id
         if cantidad_items(id_tipoItem):
-            id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
+            id_fase=get_object_or_404(TipoItem,id=id_tipoItem).fase_id
             flag=es_miembro(request.user.id,id_fase,'agregar_item')
             atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
             if len(atributos)==0:
                 atri=0
-            fase=Fase.objects.get(id=id_fase)
+            fase=get_object_or_404(Fase,id=id_fase)
             proyecto=fase.proyecto_id
             if flag==True:
                 if request.method=='POST':
@@ -465,7 +474,7 @@ def eliminar_archivo(request, id_archivo):
     vista que recibe el id de un archivo y lo borra de la base de datos
     '''
 
-    archivo=Archivo.objects.get(id=id_archivo)
+    archivo=get_object_or_404(Archivo,id=id_archivo)
     item=archivo.id_item
     archivo.delete()
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
@@ -474,9 +483,9 @@ def eliminar_archivo(request, id_archivo):
 @login_required
 
 def cambiar_padre(request, id_item):
-    item=Item.objects.get(id=id_item)
-    tipo=TipoItem.objects.get(id=item.tipo_item_id)
-    fase=Fase.objects.get(id=tipo.fase_id)
+    item=get_object_or_404(Item,id=id_item)
+    tipo=get_object_or_404(TipoItem,id=item.tipo_item_id)
+    fase=get_object_or_404(Fase,id=tipo.fase_id)
     if es_miembro(request.user.id,fase.id,'cambiar_item'):
         items=[]
         titem=TipoItem.objects.filter(fase_id=fase.id)
@@ -493,7 +502,7 @@ def cambiar_padre(request, id_item):
                     item_rel=''
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-                    item=Item.objects.get(id=id_item)
+                    item=get_object_or_404(Item,id=id_item)
                     generar_version(item)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
@@ -508,7 +517,7 @@ def cambiar_padre(request, id_item):
             messages.add_message(request,settings.DELETE_MESSAGE, "No hay otros items que pueden ser padres de este")
         return render_to_response('items/listar_padres.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
     else:
-        HttpResponseRedirect('/denegado')
+        return HttpResponseRedirect('/denegado')
 
 @login_required
 
@@ -516,9 +525,9 @@ def cambiar_antecesor(request, id_item):
     '''
     vista para cambiar la relacion de un item, del tipo antecesor
     '''
-    item=Item.objects.get(id=id_item)
-    tipo=TipoItem.objects.get(id=item.tipo_item_id)
-    fas=Fase.objects.get(id=tipo.fase_id)
+    item=get_object_or_404(Item,id=id_item)
+    tipo=get_object_or_404(TipoItem,id=item.tipo_item_id)
+    fas=get_object_or_404(Fase,id=tipo.fase_id)
     if es_miembro(request.user.id,fas.id,'cambiar_item'):
         proyecto=fas.proyecto_id
         items=[]
@@ -550,7 +559,7 @@ def cambiar_antecesor(request, id_item):
             messages.add_message(request,settings.DELETE_MESSAGE, "No hay otros items que pueden ser antecesores de este")
         return render_to_response('items/listar_antecesores.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
     else:
-        HttpResponseRedirect('/denegado')
+       return HttpResponseRedirect('/denegado')
 
 @login_required
 
@@ -559,7 +568,7 @@ def listar_archivos(request, id_item):
     vista para gestionar los archivos de un item dado'
     '''
 
-    titem=Item.objects.get(id=id_item).tipo_item
+    titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_item'):
         archivos=Archivo.objects.filter(id_item=id_item)
@@ -567,9 +576,11 @@ def listar_archivos(request, id_item):
             if request.FILES.get('file')!=None:
                 archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=id_item)
                 archivo.save()
+
+
         return render_to_response('items/listar_archivos.html', { 'archivos': archivos,'titem':titem}, context_instance=RequestContext(request))
     else:
-        HttpResponseRedirect('/denegado')
+        return render_to_response('403.html')
 
 
 @login_required
@@ -578,7 +589,7 @@ def listar_atributos(request, id_item):
     '''
     vista para gestionar los atributos de un item dado
     '''
-    titem=Item.objects.get(id=id_item).tipo_item
+    titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_item'):
         atributos=AtributoItem.objects.filter(id_item=id_item)
@@ -597,7 +608,7 @@ def listar_atributos(request, id_item):
                     return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoi}, context_instance=RequestContext(request))
         return render_to_response('items/listar_atributos.html', { 'atributos': atributos,'titem':titem}, context_instance=RequestContext(request))
     else:
-        HttpResponseRedirect('/denegado')
+        return HttpResponseRedirect('/denegado')
 
 @login_required
 
@@ -605,10 +616,10 @@ def editar_item(request,id_item):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
     '''
-    id_tipoItem=Item.objects.get(id=id_item).tipo_item_id
-    id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
+    id_tipoItem=get_object_or_404(Item,id=id_item).tipo_item_id
+    id_fase=get_object_or_404(TipoItem,id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase,'cambiar_item')
-    item_nuevo=Item.objects.get(id=id_item)
+    item_nuevo=get_object_or_404(Item,id=id_item)
     if item_nuevo.estado=='PEN':
         if flag==True:
 
@@ -648,7 +659,7 @@ def cambiar_estado_item(request,id_item):
     2) Si se quiere pasar de VAL a PEN se verifica que el estado de sus hijos tambien sea PEN
     '''
 
-    item=Item.objects.get(id=id_item)
+    item=get_object_or_404(Item,id=id_item)
     nombre=item.nombre
     titem=item.tipo_item_id
     if request.method == 'POST':

@@ -1,0 +1,1057 @@
+[
+{
+    "pk": 1, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Lider", 
+        "permissions": []
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Analista", 
+        "permissions": [
+            34, 
+            35, 
+            36, 
+            37, 
+            38, 
+            39, 
+            16, 
+            17, 
+            18
+        ]
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador", 
+        "permissions": [
+            16, 
+            17, 
+            18
+        ]
+    }
+},
+{
+    "pk": 6, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Desarrollador", 
+        "permissions": [
+            34, 
+            35, 
+            36
+        ]
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-05-01T16:21:18.613Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$KHHRXTEb10P2$woL5VHEO8m81UJTyFq1rRITxvIGHRKtWF8FkgoFHUyI=", 
+        "email": "", 
+        "date_joined": "2014-04-23T01:13:44.784Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "pgonzalez", 
+        "first_name": "Pedro", 
+        "last_name": "Gonzalez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-24T14:00:22.034Z", 
+        "groups": [
+            1, 
+            5
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$AyNiRCG3Cegn$x900C4UwUixr8I34bSPQJ/+2f4Et/C/u1fnx8LiHHtw=", 
+        "email": "pgonzalez@gmail.com", 
+        "date_joined": "2014-04-23T01:16:55.183Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "mlopez", 
+        "first_name": "Maria", 
+        "last_name": "Lopez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-05-01T19:36:17.618Z", 
+        "groups": [
+            1, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$JSOY1CcgmS2l$ejC7yKCvBeRtm5H0VN4HyPtNh1jHXbQpUtpSBSt1Ma0=", 
+        "email": "mlopez@hotmail.com", 
+        "date_joined": "2014-04-23T01:20:11.588Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "rperez", 
+        "first_name": "Rodrigo", 
+        "last_name": "Perez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-05-01T13:54:44.521Z", 
+        "groups": [
+            5, 
+            6, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$tWvwCFuJ6gH7$M4I3G9NKgoE1OekXl/DBYi1S6dNf6AyS+Li7fVu+Xb8=", 
+        "email": "rperez@gmail.com", 
+        "date_joined": "2014-04-23T01:21:02.371Z"
+    }
+},
+{
+    "pk": 5, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "sperez", 
+        "first_name": "Susana", 
+        "last_name": "Perez", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-04-24T14:10:19.414Z", 
+        "groups": [
+            5, 
+            2
+        ], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$Za1IVS5PWEnK$mbjj98HaeceoS4xdN9fYVVcI6T2Pdlc1vi83KmPk5b4=", 
+        "email": "sperez@hotmail.com", 
+        "date_joined": "2014-04-23T01:22:05.829Z"
+    }
+},
+{
+    "pk": "08ju9z51t0wlxnd4agmt6iweyrwo5fwp", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T21:08:43.858Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "13ys78vbmkvnzrlf012s7dli8brbrefe", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T15:50:19.826Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "1xakl91i9ws0wgfk31578j0h73fpdmzz", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T14:41:17.548Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "1ykbncfsd2c1cc7idh6n5ccfacautlh2", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T02:24:13.502Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "25bgvqp5hqbiiq5rs8rn4c1chmh3l2m4", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T13:05:19.257Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "261gxlc0dv4fqqdiqgw67xp1hs8frn7o", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T20:12:10.914Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "26cvwj942tq3up0o3kcox3lht0s1ou3b", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T19:27:53.249Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "2ecxnsmxgh4typ1y2j0mtzmc3v2ct2ev", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T01:38:34.030Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "2kdi0q46rwizrdg95i5gfqa3lg3slegr", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T13:31:59.506Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "30s92p6i4kn5is5c62r1574u5scmawj0", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T01:54:01.138Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "59vxm8z3mncqoipnlav63wmogli268jb", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T17:46:01.801Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "5yxmf4icxbp51fpxam8lvln4m4y94d65", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T15:58:01.721Z", 
+        "session_data": "MDRkYTE0YzdiMmJiNzAyY2Y5ODcwYWE4MjUzYTU1MjE2ZjE5ODU3Zjp7Il9hdXRoX3VzZXJfaWQiOjMsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0="
+    }
+},
+{
+    "pk": "6y03jcxe8c9e6f3vg0f42m4twzka6xmp", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T18:53:44.225Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "7vji4lqyd453cd67koz9gky66oldoa79", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-25T02:42:41.183Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "7wvoa46tjj6egwm1p8qup1pdwchrmtz0", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T21:13:13.467Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "8d599930dae5apmj2q3alx7meamry9kq", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T01:16:26.675Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "8ia7rudufsklu7ye3zq9rufbkg6kc4ne", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T22:26:00.532Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "8zo2x0ket0pimmcc34pzvcn6h5u0ksl1", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T21:55:02.141Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "avttwl7101gpx48a76n2mtsw6iz1dwiu", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T15:12:02.904Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "c5cxhrwcq3zfq2roi8ojwruxxvk2je3i", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T20:11:55.264Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "cn1i2iblln968z67v1gobnyxrzyjsfdu", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T01:13:55.088Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "dmzin36q2l0swedjzy9k4i7du03c760k", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-23T02:13:26.881Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "e37mklgm1exyflcak60a18g15b37afqz", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-25T03:34:56.286Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "g8eoq2b00ea3s8q8bdsoy9p1bzpfgni9", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T16:51:59.907Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "gbk4udtghuvzp56n5435lospe8zzf2fz", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T22:59:12.724Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "gxfdqumod278gg9ks01s1igpldsnm9z9", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T03:45:57.977Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "h2et36p9hd5g0seuftugjzof2alnl75j", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T19:28:11.923Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "ip3ovjfdll70crjba5ud8ezdt67auah9", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T20:06:17.628Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "kmmlujdn3nn69sx6kn3hmb5pyht3lla7", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T23:48:26.983Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "kq0nmtjva7nym8jmhjovfn51d6rqqrwf", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T04:01:09.127Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "myxaebxog1nw5s200y0ymjlcei5iszwc", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T20:37:23.874Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "nqe77rq8qsc48a59m6zkwbwg756g10sj", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-23T15:57:41.013Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "okvh1ak1xdfa4em133fv8bbbmvaz08ta", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T15:52:51.393Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "qgfglykk510ktix6itu2t2e1d01hdhwk", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T14:12:28.004Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "qlpk3mrogsotnxs8qbpbmcgy0z95wbs3", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T01:45:13.393Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "r5wvd1kirlwwk9wk9xh96yeekphiaik1", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T19:26:14.680Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "rbum7qf5uww55icb1sor0kasifh59t3b", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T02:48:44.041Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "s0j2ztjk1n8vuetjq1zwz7z6ofuslxwi", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-24T03:48:48.623Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "sy9dgpav9knbgemb8d2hyrtr68f494vp", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T20:06:15.323Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "t2rkv04kyh6rexedevljso636azbb7kt", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T17:00:08.872Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "uvj7k7n4t6xk0nq67njpla54u6emw6mc", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-23T16:32:51.594Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "vcsl1p46ivrz1p8kn3imi1vza6r6mkw2", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T02:21:42.915Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "vehrkqkd214dhci0hmagfkllldqyfuko", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T02:18:09.042Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "vgusjhuyzxheork3hvo86gokz7a91wf8", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-25T04:05:04.044Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "vjm7mpisfqhkg6t5lx0nv4d90cr2ougd", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-25T04:45:38.138Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "w5v5nuhg9o71fk8ov258tt5tcofae2wn", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T03:00:56.340Z", 
+        "session_data": "ZGUzNTFmZjcwYmFkZjlmYzljODY3NmJlNDU3YWI1YTUxZWI4OTAzYzp7Il9hdXRoX3VzZXJfaWQiOjEsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0="
+    }
+},
+{
+    "pk": "wmubrpmfkkh6a14st6v9lzehud6bs1b9", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T21:50:19.307Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "wrjev6xr3rmz59rz4am799b64wc8z0s2", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T00:46:45.258Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "wtbqxfgktvwnunkbse9rdzlemjvfq7ba", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T14:49:07.845Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "wy54istkngui9c471fycr6ah5bgm5vbp", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T02:59:09.490Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "wzl04661k1is8ndjwtvwwog78xes8ra2", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-01T16:25:07.193Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
+    }
+},
+{
+    "pk": "xr5x3bcj0dlyx8ldrrolkfy8idgccqel", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-30T03:30:17.504Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "y05qypd2hpz3jilrgqgm6grfyq1540ao", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T13:35:39.618Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "zvdg77cu1sfky8ewhrzmfhp6fug02tct", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-04-29T16:29:35.861Z", 
+        "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": 1, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            2
+        ], 
+        "fCreacion": "2014-04-24", 
+        "fInicio": "2014-02-01", 
+        "maxItems": 5, 
+        "proyecto": 1, 
+        "descripcion": "-", 
+        "nombre": "Planificacion", 
+        "estado": "EJE"
+    }
+},
+{
+    "pk": 2, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 1, 
+        "roles": [
+            5
+        ], 
+        "fCreacion": "2014-04-30", 
+        "fInicio": "2014-04-25", 
+        "maxItems": 3, 
+        "proyecto": 2, 
+        "descripcion": "Planificacion del proyecto", 
+        "nombre": "Primera Fase", 
+        "estado": "EJE"
+    }
+},
+{
+    "pk": 3, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 2, 
+        "roles": [
+            6
+        ], 
+        "fCreacion": "2014-04-30", 
+        "fInicio": "2014-04-25", 
+        "maxItems": 5, 
+        "proyecto": 2, 
+        "descripcion": "es la segunda fase del proyecto", 
+        "nombre": "Segunda Fase", 
+        "estado": "EJE"
+    }
+},
+{
+    "pk": 1, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": "Ninguna", 
+        "fecha_fin": "2014-07-01", 
+        "lider": 2, 
+        "fecha_ini": "2014-01-20", 
+        "descripcion": "Project Managmenet System", 
+        "nombre": "PMS", 
+        "comite": [
+            3, 
+            4, 
+            5
+        ], 
+        "estado": "ACT"
+    }
+},
+{
+    "pk": 2, 
+    "model": "proyectos.proyecto", 
+    "fields": {
+        "observaciones": ":D", 
+        "fecha_fin": "2014-06-24", 
+        "lider": 3, 
+        "fecha_ini": "2014-04-24", 
+        "descripcion": "Beta", 
+        "nombre": "Proyecto Beta", 
+        "comite": [
+            2, 
+            4, 
+            5
+        ], 
+        "estado": "ACT"
+    }
+},
+{
+    "pk": 2, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": ":D", 
+        "nombre": "Documentaciones", 
+        "fase": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": ":D", 
+        "nombre": "Prueba", 
+        "fase": 2
+    }
+},
+{
+    "pk": 4, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": ":D", 
+        "nombre": "Primer Tipo de Item", 
+        "fase": 3
+    }
+},
+{
+    "pk": 1, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "Colores", 
+        "valorDefecto": "Azul", 
+        "tipo": "TEX", 
+        "tipoItem": []
+    }
+},
+{
+    "pk": 2, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "Colores", 
+        "valorDefecto": "Azul", 
+        "tipo": "TEX", 
+        "tipoItem": []
+    }
+},
+{
+    "pk": 4, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "Tamanho", 
+        "valorDefecto": "10", 
+        "tipo": "NUM", 
+        "tipoItem": [
+            2
+        ]
+    }
+},
+{
+    "pk": 11, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "Colores", 
+        "valorDefecto": "Azul", 
+        "tipo": "TEX", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 14, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "numero", 
+        "valorDefecto": "3", 
+        "tipo": "NUM", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 16, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "d", 
+        "valorDefecto": "Verdadero", 
+        "tipo": "LOG", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 17, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "fecha", 
+        "valorDefecto": "12/04/2014", 
+        "tipo": "FEC", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 18, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "ddvcds", 
+        "valorDefecto": "cxdsfsdf", 
+        "tipo": "TEX", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 19, 
+    "model": "tiposDeItem.atributo", 
+    "fields": {
+        "nombre": "fechaaa", 
+        "valorDefecto": "01/04/2014", 
+        "tipo": "FEC", 
+        "tipoItem": [
+            3
+        ]
+    }
+},
+{
+    "pk": 1, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 5, 
+        "tipo": null, 
+        "tipo_item": 2, 
+        "fecha_creacion": "2014-05-01", 
+        "costo": 1000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":D", 
+        "nombre": "Primer Item", 
+        "estado": "VAL", 
+        "relacion": null
+    }
+},
+{
+    "pk": 2, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 5, 
+        "tipo": "Hijo", 
+        "tipo_item": 2, 
+        "fecha_creacion": "2014-05-01", 
+        "costo": 500, 
+        "version": 2, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":D", 
+        "nombre": "Hijo del primer item", 
+        "estado": "PEN", 
+        "relacion": 4
+    }
+},
+{
+    "pk": 3, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 54, 
+        "tipo": null, 
+        "tipo_item": 3, 
+        "fecha_creacion": "2014-05-01", 
+        "costo": 5400, 
+        "version": 3, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": "Hola, que tal?>>", 
+        "nombre": "Item 1", 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 4, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 55, 
+        "tipo": "Hijo", 
+        "tipo_item": 2, 
+        "fecha_creacion": "2014-05-01", 
+        "costo": 44, 
+        "version": 3, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":d", 
+        "nombre": "Hijo del hijo del primer item", 
+        "estado": "VAL", 
+        "relacion": 1
+    }
+},
+{
+    "pk": 1, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 3, 
+        "tiempo": 54, 
+        "tipo": null, 
+        "tipo_item": 3, 
+        "costo": 5400, 
+        "version": 1, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":D", 
+        "nombre": "Item 1", 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 2, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 3, 
+        "tiempo": 54, 
+        "tipo": null, 
+        "tipo_item": 3, 
+        "costo": 5400, 
+        "version": 2, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": "Hola, que tal?", 
+        "nombre": "Item 1", 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 3, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 55, 
+        "tipo": "Hijo", 
+        "tipo_item": 2, 
+        "costo": 44, 
+        "version": 1, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":d", 
+        "nombre": "Hijo del hijo del primer item", 
+        "estado": "PEN", 
+        "relacion": 2
+    }
+},
+{
+    "pk": 4, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 2, 
+        "tiempo": 5, 
+        "tipo": "Hijo", 
+        "tipo_item": 2, 
+        "costo": 500, 
+        "version": 1, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":D", 
+        "nombre": "Hijo del primer item", 
+        "estado": "PEN", 
+        "relacion": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 55, 
+        "tipo": "Hijo", 
+        "tipo_item": 2, 
+        "costo": 44, 
+        "version": 2, 
+        "fecha_mod": "2014-05-01", 
+        "descripcion": ":d", 
+        "nombre": "Hijo del hijo del primer item", 
+        "estado": "PEN", 
+        "relacion": 1
+    }
+},
+{
+    "pk": 1, 
+    "model": "items.archivo", 
+    "fields": {
+        "id_item": 1, 
+        "nombre": "", 
+        "archivo": "archivos/libros_que_leer_1"
+    }
+},
+{
+    "pk": 1, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 1, 
+        "id_atributo": 4, 
+        "version": 1, 
+        "valor": "35"
+    }
+},
+{
+    "pk": 2, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 2, 
+        "id_atributo": 4, 
+        "version": 1, 
+        "valor": "25"
+    }
+},
+{
+    "pk": 3, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 3, 
+        "id_atributo": 11, 
+        "version": 1, 
+        "valor": "Azul"
+    }
+},
+{
+    "pk": 4, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 3, 
+        "id_atributo": 14, 
+        "version": 1, 
+        "valor": "3"
+    }
+},
+{
+    "pk": 5, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 3, 
+        "id_atributo": 16, 
+        "version": 1, 
+        "valor": "Verdadero"
+    }
+},
+{
+    "pk": 6, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 3, 
+        "id_atributo": 17, 
+        "version": 1, 
+        "valor": "12/04/2014"
+    }
+},
+{
+    "pk": 7, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 3, 
+        "id_atributo": 18, 
+        "version": 1, 
+        "valor": "cxdsfsdf"
+    }
+},
+{
+    "pk": 8, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 3, 
+        "id_atributo": 19, 
+        "version": 1, 
+        "valor": "01/04/2014"
+    }
+},
+{
+    "pk": 9, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 4, 
+        "version": 1, 
+        "valor": "10"
+    }
+}
+]

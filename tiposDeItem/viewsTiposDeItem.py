@@ -109,7 +109,7 @@ def crear_atributo(request, id_tipoItem):
                 atributo.save()
                 atributo.tipoItem=tipoItem
                 atributo.save()
-                tipoItem2 = TipoItem.objects.get(id=id_tipoItem)
+                tipoItem2 = get_object_or_404(TipoItem,id=id_tipoItem)
                 id_fase = tipoItem2.fase_id
                 return HttpResponseRedirect('/tiposDeItem/modificar/'+str(id_tipoItem))
     else:
@@ -145,7 +145,7 @@ def editar_TipoItem(request,id_tipoItem):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
     '''
-    tipoItem= TipoItem.objects.get(id=id_tipoItem)
+    tipoItem= get_object_or_404(TipoItem,id=id_tipoItem)
     atributos=Atributo.objects.filter(tipoItem__id=id_tipoItem)
     id_fase=tipoItem.fase_id
     if request.method == 'POST':
@@ -168,7 +168,7 @@ def importar_tipoItem(request, id_tipoItem,id_fase):
     '''
     Vista para importar un tipo de Item, dado en <id_fase>
     '''
-    tipoItem=TipoItem.objects.get(id=id_tipoItem)
+    tipoItem=get_object_or_404(TipoItem,id=id_tipoItem)
     if request.method=='POST':
         formulario = TipoItemForm(request.POST, initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )
 
@@ -208,7 +208,7 @@ def listar_tiposItemProyecto(request,id_fase):
     '''
     vista para listar las fases pertenecientes a un proyecto
     '''
-    fase = Fase.objects.get(id=id_fase)
+    fase = get_object_or_404(Fase,id=id_fase)
     proyecto_id = fase.proyecto_id
     fases = Fase.objects.filter(proyecto_id=proyecto_id)
     tiposItem = TipoItem.objects.all()
