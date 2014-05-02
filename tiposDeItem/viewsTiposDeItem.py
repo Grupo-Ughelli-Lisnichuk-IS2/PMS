@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.contrib import messages
@@ -200,7 +201,8 @@ def eliminar_tipoItem(request, id_tipoItem):
     tipoItem.delete()
     messages.add_message(request, settings.DELETE_MESSAGE, "Tipo de item eliminado")
     tiposItem = TipoItem.objects.filter(fase_id=fase.id).order_by('nombre')
-    return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem}, context_instance=RequestContext(request))
+
+    return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase}, context_instance=RequestContext(request))
 
 @login_required
 @permission_required('tipoItem')
