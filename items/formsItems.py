@@ -16,7 +16,7 @@ class PrimeraFaseForm(forms.ModelForm):
         model=Item
         exclude=('estado', 'version', 'relacion', 'fecha_creacion', 'fecha_mod','tipo', 'tipo_item')
 
-class CambiarEstadoForm(forms.ModelForm):
+class CambiarEstadoItemForm(forms.ModelForm):
     estado=forms.CharField(max_length=3,widget=forms.Select(choices= ESTADOS))
     class Meta:
         model=Item

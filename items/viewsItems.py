@@ -13,7 +13,7 @@ from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
 from tiposDeItem.models import TipoItem, Atributo
-from items.formsItems import PrimeraFaseForm, CambiarEstadoForm
+from items.formsItems import CambiarEstadoItemForm, PrimeraFaseForm
 from tiposDeItem.viewsTiposDeItem import validarAtributo
 
 @login_required
@@ -664,7 +664,7 @@ def cambiar_estado_item(request,id_item):
     titem=item.tipo_item_id
     if request.method == 'POST':
         bandera=False
-        item_form = CambiarEstadoForm(request.POST, instance=item)
+        item_form = CambiarEstadoItemForm(request.POST, instance=item)
         if item_form.is_valid():
                     if item_form.cleaned_data['estado']=='VAL':
                         if item.tipo=='Hijo':
@@ -690,5 +690,5 @@ def cambiar_estado_item(request,id_item):
 
     else:
         # formulario inicial
-        item_form = CambiarEstadoForm(instance=item)
+        item_form = CambiarEstadoItemForm(instance=item)
         return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
