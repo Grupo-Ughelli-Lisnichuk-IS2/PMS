@@ -4,7 +4,7 @@ __pycache__/
 *.html[cod]
 # C extensions
 *.so
-
+/static/img/
 # Distribution / packaging
 .Python
 env/
