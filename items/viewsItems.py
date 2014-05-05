@@ -484,6 +484,14 @@ def eliminar_archivo(request, id_archivo):
     archivo.delete()
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
+def validar_hijos(item_hijo, item):
+    while(item_hijo.relacion!=None):
+        if item_hijo.relacion==item:
+            return False
+        else:
+            item_hijo=item_hijo.relacion
+    return True
+
 
 @login_required
 
@@ -514,10 +522,14 @@ def cambiar_padre(request, id_item):
                     itemss=Item.objects.filter(nombre=item_nombre)
                     for i in itemss:
                         item_rel=i
-                    item.relacion=item_rel
-                    item.tipo='Hijo'
-                    item.save()
-                    return HttpResponseRedirect('/desarrollo/item/listar/'+str(item.tipo_item_id))
+                    if validar_hijos(item_rel,item):
+
+                        item.relacion=item_rel
+                        item.tipo='Hijo'
+                        item.save()
+                        return HttpResponseRedirect('/desarrollo/item/listar/'+str(item.tipo_item_id))
+                    else:
+                        messages.add_message(request,settings.DELETE_MESSAGE, "Este item genera ciclos. No puede ser su padre")
         if len(items)==0:
             messages.add_message(request,settings.DELETE_MESSAGE, "No hay otros items que pueden ser padres de este")
         return render_to_response('items/listar_padres.html', { 'items':items, 'tipoitem':item}, context_instance=RequestContext(request))
@@ -768,8 +780,9 @@ def dibujarProyecto(proyecto):
                 grafo.add_edge(pydot.Edge(str(item.id),str(relacion.id),label='costo='+str(item.costo) ))
 
     date=datetime.now()
-    name='graficoo.jpg'
-    grafo.write_jpg('/home/yolile/PMS/static/img/'+str(name))
+
+    name=str(date)+'grafico.jpg'
+    grafo.write_jpg(str(settings.BASE_DIR)+'/static/img/'+str(name))
     return name
 
 
