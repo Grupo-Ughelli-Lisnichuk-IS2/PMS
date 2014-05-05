@@ -8,6 +8,7 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from datetime import datetime
 # Create your views here.
 from django.template import RequestContext
+import pydot
 from PMS import settings
 from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
@@ -71,6 +72,7 @@ def listar_fases(request, id_proyecto):
     if len(fases)==0:
         return render_to_response('403.html')
     nivel = 1
+
     return render_to_response('items/abrir_fase.html', {'datos': fases, 'nivel':nivel}, context_instance=RequestContext(request))
 
 
@@ -139,7 +141,8 @@ def cantidad_items(id_tipoItem):
     item=Item.objects.filter(tipo_item_id=id_tipoItem)
     contador=0
     for i in item:
-        contador+=1
+        if i.estado!='ANU':
+            contador+=1
     if contador<fase.maxItems:
         return True
     else:
@@ -253,7 +256,8 @@ def listar_items(request,id_tipo_item):
         if puede_add_items(fase):
             nivel = 3
             id_proyecto=Fase.objects.get(id=fase).proyecto_id
-            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto}, context_instance=RequestContext(request))
+            nombre=dibujarProyecto(id_proyecto)
+            return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto,'name':nombre}, context_instance=RequestContext(request))
         else:
             return HttpResponse("<h1>No se pueden administrar los Items de esta fase. La fase anterior aun no tiene items finalizados<h1>")
 
@@ -693,3 +697,81 @@ def cambiar_estado_item(request,id_item):
         # formulario inicial
         item_form = EstadoItemForm(instance=item)
         return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
+
+def itemsProyecto(proyecto):
+    fases = Fase.objects.filter(proyecto_id=proyecto)
+    items=[]
+    for fase in fases:
+        titem=TipoItem.objects.filter(fase=fase)
+        for t in titem:
+            item=Item.objects.filter(tipo_item=t)
+            for i in item:
+                items.append(i)
+    return items
+
+
+def dibujarProyecto(proyecto):
+    #inicializar estructuras
+    grafo = pydot.Dot(graph_type='digraph',fontname="Verdana",rankdir="LR")
+    fases = Fase.objects.filter(proyecto_id=proyecto).order_by('orden')
+    clusters = []
+    clusters.append(None)
+    for fase in fases:
+        if(fase.estado=='FIN'):
+            cluster = pydot.Cluster(str(fase.orden),
+                                    label=str(fase.orden)+") "+fase.nombre,
+                                    style="filled",
+                                    fillcolor="gray")
+        else:
+            cluster = pydot.Cluster(str(fase.orden),
+                                    label=str(fase.orden)+") "+fase.nombre)
+        clusters.append(cluster)
+
+    for cluster in clusters:
+        if(cluster!=None):
+            grafo.add_subgraph(cluster)
+
+    #items=getItemsProyecto(proyecto.idproyecto)
+    lista=itemsProyecto(proyecto)
+    items=[]
+    for item in lista:
+        if item.estado!="ANU":
+            items.append(item)
+    #agregar nodos
+    for item in items:
+        #if(item.idlineabase==None):
+         #   clusters[item.fase.posicionfase].add_node(pydot.Node(str(item.iditem),
+          #                                                       label=item.nombre))
+        if item.estado=="PEN":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="blue",
+                                                                 fontcolor="white"))
+        elif item.estado=="VAL":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="red",
+                                                                 fontcolor="white"))
+        elif item.estado=="FIN":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="violet",
+                                                                 fontcolor="white"))
+    #agregar arcos
+    for item in items:
+        relaciones = Item.objects.filter(relacion=item)
+        if relaciones!=None:
+            for relacion in relaciones:
+                grafo.add_edge(pydot.Edge(str(item.id),str(relacion.id),label='costo='+str(item.costo) ))
+
+    date=datetime.now()
+    name='graficoo.jpg'
+    grafo.write_jpg('/home/yolile/PMS/static/img/'+str(name))
+    return name
+
+
+
+
