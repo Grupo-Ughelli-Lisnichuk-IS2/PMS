@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<head>
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea revivir este item?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+
+    <center><h1>Items eliminados</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="70%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="...">Nombre</th>
+	            <th style="...">Costo</th>
+                <th style="text-align:center">Tiempo</th>
+                <th style="text-align:center">Version</th>
+                <th style="text-align:center">Estado</th>
+	            <th colspan="3" style="text-align:center">Opciones</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos %}
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.nombre }}</td>
+                <td>{{ dato.costo }}</td>
+                <td>{{ dato.tiempo }}</td>
+                <td>{{ dato.version }}</td>
+                <td>{{ dato.estado }}</td>
+		                <td><center><a class="btn"  href="/desarrollo/item/detalle/muerto/{{ dato.id }}"><li class="icon-eye-open"></li> Ver Detalle</a></center> </td>
+
+                        <td><form class="ask-plain" action='{% url 'items.viewsItems.revivir' dato.id %}'  >
+                        <input class="btn" type="submit" value="Revivir" ><li class="icon-backward"></li>
+                    </form></td>
+
+
+			</tr>
+            {% empty %}
+                <li>Aun no hay items eliminados</li>
+	    {% endfor %}
+
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+
+
+
+                <a class="btn" href="/desarrollo/item/listar/{{ tipoitem.id }}"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+

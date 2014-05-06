@@ -1,12 +1,37 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
+<head>
 
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea eliminar el Item?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
     <center><h1>Administracion de Items </h1></center>
 
  <br>
     <center>
-	<table class='table table-hover' width="70%" border="2">
+
+	<table class='table table-hover' width="70%" border="2" style="overflow: auto">
         <theader>
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
@@ -32,12 +57,16 @@
                         <td><center><a class="btn" href="/desarrollo/item/modificar/{{ dato.pk }}"><li class="icon-edit"></li> Modificar</a></center></td>
 
                         <td><center><a class="btn" href="/desarrollo/item/cambiar_estado/{{ dato.pk }}"><li class="icon-check"></li> Cambiar Estado</a></center></td>
+                      <td>  <form class="ask-plain" action='{% url 'items.viewsItems.eliminar_item' dato.pk %}'  >
+                        <input class="btn" type="submit" value="Eliminar Item" ><li class="icon-minus"></li>
+                    </form></td>
 			</tr>
             {% empty %}
                 <li>Aún no hay Items registrados</li>
 	    {% endfor %}
 
 	</table>
+
     </center>
 
 </form>
@@ -46,7 +75,7 @@
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
                 <td><center><a class="btn"  href="/desarrollo/item/crear/{{ titem.id }}"><li class="icon-plus"></li> Crear Item</a></center> </td>
-
+                <center><a class="btn"  href="/desarrollo/item/listar_muertos/{{ titem.id }}"><li class="icon-refresh"></li> Revivir Item</a></center>
 
                 <a class="btn" href="/desarrollo/fases/tiposDeItem/{{ titem.fase_id }}"><li class="icon-arrow-left"></li> Regresar</a>
             </ul>

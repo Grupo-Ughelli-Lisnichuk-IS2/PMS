@@ -22,5 +22,8 @@ urlpatterns = patterns('',
         url(r'^item/atributos/(?P<id_item>\d+)$','items.viewsItems.listar_atributos'),
         url(r'^item/detalle/version/(?P<id_version>\d+)$','items.viewsItems.detalle_version_item'),
         url(r'^item/cambiar_estado/(?P<id_item>\d+)$','items.viewsItems.cambiar_estado_item'),
-
+        url(r'^item/eliminar/(?P<id_item>\d+)$','items.viewsItems.eliminar_item'),
+        url(r'^item/listar_muertos/(?P<id_tipo_item>\d+)$','items.viewsItems.listar_muertos'),
+        url(r'^item/revivir/(?P<id_item>\d+)$','items.viewsItems.revivir'),
+        url(r'^item/detalle/muerto/(?P<id_item>\d+)$','items.viewsItems.detalle_muerto'),
         )

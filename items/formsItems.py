@@ -7,7 +7,6 @@ import items.models
 ESTADOS = (
 
     ('PEN', 'Pendiente'),
-    ('FIN','Finalizado'),
     ('VAL', 'Validado'),
 )
 

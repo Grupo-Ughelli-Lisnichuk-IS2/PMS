@@ -252,7 +252,7 @@ def listar_items(request,id_tipo_item):
     titem=get_object_or_404(TipoItem,id=id_tipo_item)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,''):
-        items=Item.objects.filter(tipo_item_id=id_tipo_item)
+        items=Item.objects.filter(tipo_item_id=id_tipo_item).exclude(estado='ANU')
         if puede_add_items(fase):
             nivel = 3
             id_proyecto=Fase.objects.get(id=fase).proyecto_id
@@ -307,21 +307,25 @@ def comprobar_relacion(version):
     de lo contrario (false)
     Ademas comprueba que no se formen ciclos al modificar una relacion del tipo padre-hijo
     '''
-
+    if version.relacion==version.id_item.relacion:
+        return True
     if version.relacion==None:
+        return True
+    if version.tipo=='Sucesor':
         return True
     relacion=get_object_or_404(Item,id=version.relacion_id)
 
     item=version.id_item
-    a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item) & Q(id=relacion.id)) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
-    if a!=None:
+    if validar_hijos(relacion, item)!=True:
         return False
+  #  a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item) & Q(id=relacion.id)) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
+   # if a!=None:
+    #    return False
     items=Item.objects.filter(estado='ANU')
     for i in items:
         if i==relacion:
             return False
     return True
-
 
 def generar_version(item):
     '''
@@ -485,11 +489,12 @@ def eliminar_archivo(request, id_archivo):
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
 def validar_hijos(item_hijo, item):
-    while(item_hijo.relacion!=None):
-        if item_hijo.relacion==item:
-            return False
-        else:
-            item_hijo=item_hijo.relacion
+    if item_hijo!=None:
+        while(item_hijo!=item and item_hijo!=None):
+            if item_hijo.relacion==item:
+                return False
+            else:
+                item_hijo=item_hijo.relacion
     return True
 
 
@@ -694,7 +699,7 @@ def cambiar_estado_item(request,id_item):
                             if papa.estado=='VAL':
                                 bandera=False
                     if item_form.cleaned_data['estado']=='PEN':
-                            hijos=Item.objects.filter(relacion=item)
+                            hijos=Item.objects.filter(relacion=item).exclude(estado='ANU')
                             for hijo in hijos:
                                 if hijo.estado!='PEN' and hijo.tipo=='Hijo':
                                     messages.add_message(request,settings.DELETE_MESSAGE, 'No se puede cambiar  a pendiente ya que tiene hijos con estados distintos a Pendiente')
@@ -774,7 +779,7 @@ def dibujarProyecto(proyecto):
                                                                  fontcolor="white"))
     #agregar arcos
     for item in items:
-        relaciones = Item.objects.filter(relacion=item)
+        relaciones = Item.objects.filter(relacion=item).exclude(estado='ANU')
         if relaciones!=None:
             for relacion in relaciones:
                 grafo.add_edge(pydot.Edge(str(item.id),str(relacion.id),label='costo='+str(item.costo) ))
@@ -785,6 +790,106 @@ def dibujarProyecto(proyecto):
     grafo.write_jpg(str(settings.BASE_DIR)+'/static/img/'+str(name))
     return name
 
+@login_required
+def eliminar_item(request, id_item):
+    item=get_object_or_404(Item, id=id_item)
+    fase=item.tipo_item.fase_id
+    if es_miembro(request.user.id,fase,'eliminar_item')!=True:
+        return HttpResponseRedirect('/denegado')
+    item=get_object_or_404(Item, id=id_item)
+    if item.estado=='PEN':
+        a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item))).exclude(estado='ANU')
+        if len(a)!=0:
+            messages.add_message(request,settings.DELETE_MESSAGE,"No se puede eliminar un item que tenga hijos")
+        else:
+            item.estado='ANU'
+            item.save()
+            messages.add_message(request,settings.DELETE_MESSAGE,"Item eliminado correctamente")
+    else:
+         messages.add_message(request,settings.DELETE_MESSAGE,"No se puede eliminar un item cuyo estado no sea pendiente")
+    fase=item.tipo_item.fase_id
+    titem=item.tipo_item
+    id_proyecto=Fase.objects.get(id=fase).proyecto_id
+    nombre=dibujarProyecto(id_proyecto)
+    nivel=3
+    items=Item.objects.filter(tipo_item_id=titem.id).exclude(estado='ANU')
+    return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto,'name':nombre}, context_instance=RequestContext(request))
+@login_required
+def listar_muertos(request,id_tipo_item):
+    titem=get_object_or_404(TipoItem,id=id_tipo_item)
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
+    else:
+        items=Item.objects.filter(estado='ANU',tipo_item=titem)
+        return render_to_response('items/listar_muertos.html', {'datos': items,'tipoitem':titem}, context_instance=RequestContext(request))
 
+@login_required
+def detalle_muerto(request,id_item):
+    item=get_object_or_404(Item,id=id_item)
+    titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
+    else:
+        return render_to_response('items/detalle_version.html', {'datos': item}, context_instance=RequestContext(request))
 
+@login_required
+def revivir(request, id_item):
+    item=get_object_or_404(Item,id=id_item)
+    titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
+    else:
+        #si revive un item y su relacion aun existe, se revive
 
+        if item.relacion==None:
+
+            item.estado='PEN'
+            item.save()
+            messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido')
+        else:
+            if item.relacion.estado!='ANU':
+                item.estado='PEN'
+                item.save()
+                messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido')
+            else:
+                i=[]
+                #si no, se buscan items de su fase y se relaciona con el primero de ellos, del tipo padre
+                tipos_item=TipoItem.objects.filter(fase=fase)
+                for t in tipos_item:
+                    items=Item.objects.filter(tipo_item=titem).exclude(estado='ANU')
+                    for it in items:
+                        i.append(it)
+                if len(i)!=0:
+                    item.estado='PEN'
+                    item.relacion=i[0]
+                    item.tipo='Hijo'
+                    item.save()
+                    messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacion cambiada')
+
+                else:
+                    #primera fase sin items, revive y quita relacion anterior
+                    if titem.fase.orden==1:
+                        item.estado='PEN'
+                        item.relacion=None
+                        item.tipo=''
+                        item.save()
+                        messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacion eliminada')
+                    else:
+                        #si no es la primera fase, se busca un antecesor de la fase anterior y se relaciona con el
+                        fase_anterior=Fase.objects.get(proyecto=fase.proyecto, orden=fase.orden-1)
+                        tipositem=TipoItem.objects.filter(fase=fase_anterior)
+                        ite=[]
+                        for t in tipositem:
+                            itemss=Item.objects.filter(tipo_item=t, estado='FIN')
+                            for ii in itemss:
+                                ite.append(ii)
+                        item.relacion=ite[0]
+                        item.tipo='Sucesor'
+                        item.estado='PEN'
+                        item.save()
+                        messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacionado con item de fase anterior')
+        items=Item.objects.filter(estado='ANU',tipo_item=titem)
+        return render_to_response('items/listar_muertos.html', {'datos': items, 'tipoitem':titem}, context_instance=RequestContext(request))
