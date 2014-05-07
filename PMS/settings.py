@@ -55,7 +55,8 @@ INSTALLED_APPS = (
     'fases',
     'proyectos',
     'tiposDeItem',
-    'items'
+    'items',
+    'lineasBase',
 )
 
 

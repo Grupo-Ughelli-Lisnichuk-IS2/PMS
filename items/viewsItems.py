@@ -327,13 +327,13 @@ def comprobar_relacion(version):
             return False
     return True
 
-def generar_version(item):
+def generar_version(item,usuario):
     '''
     funcion para generar y guardar una nueva version de un item a modificar
     '''
     today = datetime.now() #fecha actual
     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado )
+    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado, usuario=usuario )
     item_viejo.save()
 
 
@@ -351,7 +351,7 @@ def reversionar_item(request, id_version):
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
         version=get_object_or_404(VersionItem,id=id_version)
         item=get_object_or_404(Item,id=version.id_item_id)
-        generar_version(item)
+        generar_version(item,request.user)
         #comprueba la relacion
         if comprobar_relacion(version):
 
@@ -521,7 +521,7 @@ def cambiar_padre(request, id_item):
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
                     item=get_object_or_404(Item,id=id_item)
-                    generar_version(item)
+                    generar_version(item, request.user)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
                     itemss=Item.objects.filter(nombre=item_nombre)
@@ -569,7 +569,7 @@ def cambiar_antecesor(request, id_item):
             if item_nombre!=None:
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-                    generar_version(item)
+                    generar_version(item,request.user)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
                     item_rel=Item.objects.get(nombre=item_nombre)
@@ -646,7 +646,7 @@ def editar_item(request,id_item):
         if flag==True:
 
                 if request.method=='POST':
-                    generar_version(item_nuevo)
+                    generar_version(item_nuevo,request.user)
                     formulario = PrimeraFaseForm(request.POST, instance=item_nuevo)
 
                     if formulario.is_valid():
