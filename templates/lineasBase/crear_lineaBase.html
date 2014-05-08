@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block contenido %}
+    <head>
+
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea agregar este Item?')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
+	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
+        <br>
+        <p>Items</p>
+
+        <p><input type='submit' value='Confirmar'/></p>
+        <a class="btn" href="/desarrollo/item/listar/{{ titem }}"><li class="icon-backward"></li> Regresar</a>
+	</form>
+{% endblock %}

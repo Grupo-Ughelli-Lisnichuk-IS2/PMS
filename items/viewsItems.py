@@ -716,6 +716,9 @@ def cambiar_estado_item(request,id_item):
         return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
 
 def itemsProyecto(proyecto):
+    '''
+    Funcion que recibe como parametro un proyecto y retorna todos los items del mismo
+    '''
     fases = Fase.objects.filter(proyecto_id=proyecto)
     items=[]
     for fase in fases:
@@ -728,6 +731,9 @@ def itemsProyecto(proyecto):
 
 
 def dibujarProyecto(proyecto):
+    '''
+    Funcion que grafica los items con sus relaciones de un proyecto dado
+    '''
     #inicializar estructuras
     grafo = pydot.Dot(graph_type='digraph',fontname="Verdana",rankdir="LR")
     fases = Fase.objects.filter(proyecto_id=proyecto).order_by('orden')
@@ -748,7 +754,7 @@ def dibujarProyecto(proyecto):
         if(cluster!=None):
             grafo.add_subgraph(cluster)
 
-    #items=getItemsProyecto(proyecto.idproyecto)
+
     lista=itemsProyecto(proyecto)
     items=[]
     for item in lista:
@@ -756,26 +762,36 @@ def dibujarProyecto(proyecto):
             items.append(item)
     #agregar nodos
     for item in items:
-        #if(item.idlineabase==None):
-         #   clusters[item.fase.posicionfase].add_node(pydot.Node(str(item.iditem),
-          #                                                       label=item.nombre))
+
         if item.estado=="PEN":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="gray",
+                                                                 fontcolor="black"))
+        elif item.estado=="VAL":
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
                                                                  fillcolor="blue",
                                                                  fontcolor="white"))
-        elif item.estado=="VAL":
+        elif item.estado=="FIN":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="green",
+                                                                 fontcolor="white"))
+        elif item.estado=="REV":
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
                                                                  fillcolor="red",
                                                                  fontcolor="white"))
-        elif item.estado=="FIN":
+        elif item.estado=="CON":
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
-                                                                 fillcolor="violet",
+                                                                 fillcolor="yellow",
                                                                  fontcolor="white"))
     #agregar arcos
     for item in items:
@@ -790,8 +806,14 @@ def dibujarProyecto(proyecto):
     grafo.write_jpg(str(settings.BASE_DIR)+'/static/img/'+str(name))
     return name
 
+
+
 @login_required
 def eliminar_item(request, id_item):
+    '''
+    Vista que permite cambiar el estado del item a anulado, para ello se verifica que el mismo
+    no tenga hijos y ademas que su estado sea pendiente
+    '''
     item=get_object_or_404(Item, id=id_item)
     fase=item.tipo_item.fase_id
     if es_miembro(request.user.id,fase,'eliminar_item')!=True:
@@ -814,8 +836,12 @@ def eliminar_item(request, id_item):
     nivel=3
     items=Item.objects.filter(tipo_item_id=titem.id).exclude(estado='ANU')
     return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto,'name':nombre}, context_instance=RequestContext(request))
+
 @login_required
 def listar_muertos(request,id_tipo_item):
+    '''
+    Vista para listar todos los items con estado anulado de un tipo de item especificado
+    '''
     titem=get_object_or_404(TipoItem,id=id_tipo_item)
     fase=titem.fase
     if es_miembro(request.user.id,fase.id,'')!=True:
@@ -824,8 +850,12 @@ def listar_muertos(request,id_tipo_item):
         items=Item.objects.filter(estado='ANU',tipo_item=titem)
         return render_to_response('items/listar_muertos.html', {'datos': items,'tipoitem':titem}, context_instance=RequestContext(request))
 
+
 @login_required
 def detalle_muerto(request,id_item):
+    '''
+    Vista para ver los detalles de un item con estado anulado
+    '''
     item=get_object_or_404(Item,id=id_item)
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase
@@ -834,8 +864,17 @@ def detalle_muerto(request,id_item):
     else:
         return render_to_response('items/detalle_version.html', {'datos': item}, context_instance=RequestContext(request))
 
+
 @login_required
 def revivir(request, id_item):
+    '''
+    Vista para revivir un item seleccionado. Los criterios a seguir para revivir el item son:
+    1) Si el item con el que el item a revivir aun existe, lo revive
+    2) Si no, revive el item pero lo relaciona con un item de su fase como hijo
+    3) Si ya no existen items en su fase, lo relaciona con un item finalizado de la fase anterior
+    como sucesor
+    4) Si es de la primera fase y ya no tiene items en su fase, revive el item y no le asigna ninguna relacion
+    '''
     item=get_object_or_404(Item,id=id_item)
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase

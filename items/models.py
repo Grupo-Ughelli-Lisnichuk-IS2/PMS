@@ -31,6 +31,8 @@ class Item(models.Model):
     fecha_mod=models.DateField(verbose_name='Fecha de Modificacion')
     tipo_item=models.ForeignKey(TipoItem)
     lineaBase=models.ForeignKey(LineaBase, null=True)
+    def __str__(self):
+        return self.nombre
 
 class VersionItem(models.Model):
     id_item=models.ForeignKey(Item, verbose_name='Item', related_name='itemVersion')
