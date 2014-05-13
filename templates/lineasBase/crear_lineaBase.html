@@ -15,7 +15,7 @@
 					e.preventDefault();
 					thisHref	= $(this).attr('action');
 
-					if(confirm('Seguro que desea agregar este Item?')) {
+					if(confirm('Seguro que desea crear la linea base?')) {
 						window.location = thisHref;
 					}
 
@@ -27,9 +27,8 @@
 </head>
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
         <br>
-        <p>Items</p>
 
         <p><input type='submit' value='Confirmar'/></p>
-        <a class="btn" href="/desarrollo/item/listar/{{ titem }}"><li class="icon-backward"></li> Regresar</a>
+        <a class="btn"  href="/gestionDeCambios/lineasBase/listar/{{ fase }}"><li class="icon-backward"></li> Regresar</a>
 	</form>
 {% endblock %}

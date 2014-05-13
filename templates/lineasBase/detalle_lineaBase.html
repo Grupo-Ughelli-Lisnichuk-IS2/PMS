@@ -12,11 +12,12 @@
 
 
             <div><strong>Nombre: </strong>{{ datos.nombre }}</div>
+            <div><strong>Estado: </strong>{{ datos.estado }}</div>
             <div><strong>Items: </strong></div>
                 {% for item in items %}
 
-                    <li>{{ item.nombre }} </li>
-
+                   <li>{{ item.nombre }} </li>
+                         <ul>Version: {{ item.version }}</ul>
 
                 {% endfor %}
 

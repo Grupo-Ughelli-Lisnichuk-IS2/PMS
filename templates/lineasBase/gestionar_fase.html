@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
+    <head>
 
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+
+
+				$('.ask-plain').click(function(e) {
+
+					e.preventDefault();
+					thisHref	= $(this).attr('action');
+
+					if(confirm('Seguro que desea finalizar la fase? Al finalizarla ya no se podran realizar cambios en ninguno de sus items')) {
+						window.location = thisHref;
+					}
+
+				});
+
+			});
+
+		</script>
+</head>
 
     <center><h1>Fases del proyecto {{ proyecto.nombre }}</h1></center>
 
@@ -17,7 +41,7 @@
 	            <th style="text-align:center">Orden</th>
 	            <th style="text-align:center">Nombre</th>
 	            <th style="text-align:center">Estado</th>
-	            <th colspan="1" style="text-align:center">Opciones</th>
+	            <th colspan="2" style="text-align:center">Opciones</th>
             </tr>
         </theader>
 
@@ -31,6 +55,11 @@
 		                <td>
                               <center>
                         <a class="btn" href="/gestionDeCambios/lineasBase/listar/{{ dato.pk }}"><li class="icon-list"></li> Lineas Base</a>
+                                   <td>  <form class="ask-plain" action='{% url 'lineasBase.viewsLineasBase.finalizar_fase' dato.pk %}'  >
+
+                           <input class="btn" type="submit" value="Finalizar"><li class="icon-lock"></li>
+
+                    </form></td>
                </center>
                 </td>
 			</tr>
@@ -44,12 +73,12 @@
 </form>
     <h2>Relaciones</h2>
 <center><img src="/static/img/{{ name }}" width = 40% >
-                            <img src="/static/referencias.jpg" width = 20%></center>
+                            <img src="/static/referencias2.jpg" width = 20%></center>
        <div class="well sidebar-nav">
             <ul class="nav nav-list">
+                <center><a class="btn"  href="/gestionDeCambios/lineasBase/reporte/{{ proyecto.id }}"><li class="icon-plus"></li> Reporte Lineas Base</a></center>
 
-
-                <a class="btn" href="/gestionDecambios/lineasBase/proyectos"><li class="icon-arrow-left"></li> Regresar</a>
+                <a class="btn" href='/gestionDeCambios/lineasBase/proyectos/'><li class="icon-arrow-left"></li> Regresar</a>
             </ul>
        </div>
 

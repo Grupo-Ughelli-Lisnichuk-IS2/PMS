@@ -11,6 +11,7 @@ ESTADOS = (
     ('VAL','Validado'),
     ('REV','Revision'),
     ('ANU','Anulado'),
+    ('BLO','Bloqueado')
 )
 TIPOS = (
 
@@ -47,6 +48,7 @@ class VersionItem(models.Model):
     fecha_mod=models.DateField(verbose_name='Fecha de Modificacion')
     tipo_item=models.ForeignKey(TipoItem)
     usuario=models.ForeignKey(User)
+    lineaBase=models.ForeignKey(LineaBase, null=True)
 
 class Archivo(models.Model):
     archivo=models.FileField(upload_to='archivos')

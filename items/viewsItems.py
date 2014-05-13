@@ -333,7 +333,7 @@ def generar_version(item,usuario):
     '''
     today = datetime.now() #fecha actual
     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado, usuario=usuario )
+    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado, usuario=usuario, lineaBase=item.lineaBase )
     item_viejo.save()
 
 
@@ -793,6 +793,12 @@ def dibujarProyecto(proyecto):
                                                                  style="filled",
                                                                  fillcolor="yellow",
                                                                  fontcolor="white"))
+        elif item.estado=="BLO":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="pink",
+                                                                 fontcolor="white"))
     #agregar arcos
     for item in items:
         relaciones = Item.objects.filter(relacion=item).exclude(estado='ANU')
@@ -816,7 +822,7 @@ def eliminar_item(request, id_item):
     '''
     item=get_object_or_404(Item, id=id_item)
     fase=item.tipo_item.fase_id
-    if es_miembro(request.user.id,fase,'eliminar_item')!=True:
+    if es_miembro(request.user.id,fase,'eliminar_item')!=True or item.estado=='ANU':
         return HttpResponseRedirect('/denegado')
     item=get_object_or_404(Item, id=id_item)
     if item.estado=='PEN':
@@ -859,7 +865,7 @@ def detalle_muerto(request,id_item):
     item=get_object_or_404(Item,id=id_item)
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase
-    if es_miembro(request.user.id,fase.id,'')!=True:
+    if es_miembro(request.user.id,fase.id,'')!=True or item.estado!='VAL':
         return HttpResponseRedirect('/denegado')
     else:
         return render_to_response('items/detalle_version.html', {'datos': item}, context_instance=RequestContext(request))
@@ -878,7 +884,7 @@ def revivir(request, id_item):
     item=get_object_or_404(Item,id=id_item)
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase
-    if es_miembro(request.user.id,fase.id,'')!=True:
+    if es_miembro(request.user.id,fase.id,'')!=True or item.estado!='ANU':
         return HttpResponseRedirect('/denegado')
     else:
         #si revive un item y su relacion aun existe, se revive
