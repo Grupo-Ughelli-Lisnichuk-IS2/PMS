@@ -52,11 +52,11 @@ def listar_fases(request, id_proyecto):
     vista para listar las fases asignadas a un usuario de un proyecto especifico
     '''
     #busca todas las fases del proyecto
-    fasesProyecto=Fase.objects.filter(proyecto_id=id_proyecto, estado='EJE')
+    fasesProyecto=Fase.objects.filter(Q(proyecto_id=id_proyecto) & (Q(estado='EJE') | Q(estado='FIN')))
     usuario = request.user
     proyecto=get_object_or_404(Proyecto,id=id_proyecto)
     fases=[]
-    flag=0;
+    flag=0
     #si es lider pertenece a todas las fases
     if usuario.id==proyecto.lider_id:
         fases=fasesProyecto
@@ -158,6 +158,7 @@ def crear_item(request,id_tipoItem):
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
     atri=1
+    hijo=False
     if cantidad_items(id_tipoItem):
         id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
         flag=es_miembro(request.user.id,id_fase,'agregar_item')
@@ -218,7 +219,7 @@ def crear_item(request,id_tipoItem):
 
                 formulario = PrimeraFaseForm()
                 hijo=False
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri,'titem':id_tipoItem}, context_instance=RequestContext(request))
+            return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri,'titem':id_tipoItem}, context_instance=RequestContext(request))
         else:
             return render_to_response('403.html')
     else:
@@ -428,6 +429,7 @@ def crear_item_hijo(request,id_item):
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
     item=get_object_or_404(Item,id=id_item)
+    hijo=True
     if item.estado=='FIN' or item.estado=='VAL' or item.estado=='PEN':
         atri=1
         id_tipoItem=get_object_or_404(Item,id=id_item).tipo_item_id
@@ -469,7 +471,7 @@ def crear_item_hijo(request,id_item):
 
                     formulario = PrimeraFaseForm()
                     hijo=True
-                    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
+                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
             else:
                 return render_to_response('403.html')
         else:
@@ -666,7 +668,7 @@ def editar_item(request,id_item):
 
                     formulario = PrimeraFaseForm(instance=item_nuevo)
                     hijo=True
-                    return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo,'titem':id_tipoItem}, context_instance=RequestContext(request))
+                return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo,'titem':id_tipoItem}, context_instance=RequestContext(request))
 
         else:
                 return render_to_response('403.html')
@@ -686,6 +688,8 @@ def cambiar_estado_item(request,id_item):
     item=get_object_or_404(Item,id=id_item)
     nombre=item.nombre
     titem=item.tipo_item_id
+    if item.estado=='FIN':
+        return HttpResponse('<h1>No se puede cambiar el estado de un item finalizado<h1>')
     if request.method == 'POST':
         bandera=False
         item_form = EstadoItemForm(request.POST, instance=item)
@@ -715,7 +719,7 @@ def cambiar_estado_item(request,id_item):
     else:
         # formulario inicial
         item_form = EstadoItemForm(instance=item)
-        return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
+    return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
 
 def itemsProyecto(proyecto):
     '''
@@ -888,6 +892,7 @@ def revivir(request, id_item):
     fase=titem.fase
     if es_miembro(request.user.id,fase.id,'')!=True or item.estado!='ANU':
         return HttpResponseRedirect('/denegado')
+
     else:
         #si revive un item y su relacion aun existe, se revive
 

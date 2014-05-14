@@ -134,9 +134,12 @@ def crear_lineaBase(request, id_fase):
                         else:
                             cod=lineabase=LineaBase(nombre=request.POST['nombre'], fase=fase, estado='CERRADA')
                             lineabase.save()
+                            items= request.POST.getlist('items')
                             for item in items:
                                 i=Item.objects.get(id=item)
                                 generar_version(i,request.user)
+                            for item in items:
+                                i=Item.objects.get(id=item)
                                 i.estado='FIN'
                                 i.lineaBase=cod
                                 i.save()
@@ -212,7 +215,7 @@ def reporte_lineas_base(id_proyecto):
     base que posee cada fase del proyecto, ordenado por fase y lineas bases con sus items
     '''
 
-    fases=Fase.objects.filter(proyecto_id=id_proyecto)
+    fases=Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
     proyecto = get_object_or_404(Proyecto,id=id_proyecto)
     doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_lineasBase"+proyecto.nombre+".pdf",pagesize=letter,
                             rightMargin=72,leftMargin=72,
@@ -232,7 +235,7 @@ def reporte_lineas_base(id_proyecto):
     styles.add(ParagraphStyle(name='Subtitulos',fontSize=12,spaceAfter=3))
     styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
 
-    titulo="<b>Reporte de Lineas Base proyecto </b>"+proyecto.nombre+"<br/><br/>"
+    titulo="<b>Lineas Base proyecto "+proyecto.nombre+"<br/>"
     Story.append(Paragraph(titulo,styles['Principal']))
 
     im = Image(logo, width=100,height=50)
@@ -248,9 +251,13 @@ def reporte_lineas_base(id_proyecto):
         contador=0
         for lb in lineasBase:
             contador+=1
-            ptext = str(contador)+ ") "+ lb.nombre+ '   Estado:  '+ lb.estado + "<br/>"
+            ptext = str(contador)+ ") "+ lb.nombre + "<br/>"
             Story.append(Paragraph(ptext, styles["Justify"]))
             Story.append(Spacer(1, 12))
+            ptext ='Estado:  '+ lb.estado
+            Story.append(Paragraph(ptext, styles["Justify"]))
+            Story.append(Spacer(1, 12))
+
             items=Item.objects.filter(lineaBase=lb.id)
 
             ptext=''
