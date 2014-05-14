@@ -195,7 +195,7 @@ def finalizar_fase(request, id_fase):
             comprobar_fase=True
         elif fase.orden!=1:
             fase_anterior=get_object_or_404(Fase, proyecto=fase.proyecto, orden=fase.orden-1)
-            if comprobar_items_fase(fase_anterior.proyecto_id):
+            if comprobar_items_fase(fase.id) and fase_anterior.estado=='FIN':
                 comprobar_fase=True
         if comprobar_fase:
             fase.estado='FIN'
