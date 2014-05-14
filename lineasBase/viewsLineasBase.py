@@ -89,6 +89,7 @@ def crear_lineaBase(request, id_fase):
     vista para crear una linea base.
     Una vez que se crea se asigna el id correspondiente a los items seleccionados, y
     se cambia el estado de los mismos a FIN
+    y el estado de la linea base creada es CERRADA
     '''
 
     usuario = request.user
@@ -206,6 +207,11 @@ def finalizar_fase(request, id_fase):
 
 
 def reporte_lineas_base(id_proyecto):
+    '''
+    Funcion que recibe el id de un proyecto y genera un reporte en formato pdf de todas las lineas
+    base que posee cada fase del proyecto, ordenado por fase y lineas bases con sus items
+    '''
+
     fases=Fase.objects.filter(proyecto_id=id_proyecto)
     proyecto = get_object_or_404(Proyecto,id=id_proyecto)
     doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_lineasBase"+proyecto.nombre+".pdf",pagesize=letter,
@@ -264,10 +270,13 @@ def reporte_lineas_base(id_proyecto):
     doc.build(Story)
     return str(settings.BASE_DIR)+"/reporte_lineasBase"+proyecto.nombre+".pdf"
 
+@login_required
 def descargar_reporteLB(request, id_proyecto):
     '''
-    Vista para descargar un archivo de un item especifico
+    Vista para descargar el reporte de lineas base de un proyecto especifico
     '''
+    if es_lider(request.user.id, id_proyecto)!=True:
+        return HttpResponseRedirect('/denegado')
     a=file(reporte_lineas_base(id_proyecto))
 
     return StreamingHttpResponse(a,content_type='application/pdf')

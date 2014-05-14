@@ -56,9 +56,11 @@ def listar_fases(request, id_proyecto):
     usuario = request.user
     proyecto=get_object_or_404(Proyecto,id=id_proyecto)
     fases=[]
+    flag=0;
     #si es lider pertenece a todas las fases
     if usuario.id==proyecto.lider_id:
         fases=fasesProyecto
+        flag=1
     #si no, busca todas las fases en las que tiene algun rol asignado
     else:
         roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
@@ -69,7 +71,7 @@ def listar_fases(request, id_proyecto):
                     fases.append(fff)
     #si no encuentra ninguna fase, significa que alguien que no tiene permisos esta tratando de ver
     #fases que no le correponden, se redirige al template de prohibido
-    if len(fases)==0:
+    if len(fases)==0 and flag==0:
         return render_to_response('403.html')
     nivel = 1
 
