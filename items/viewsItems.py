@@ -273,6 +273,8 @@ def listar_versiones(request,id_item):
     vista para listar todas las versiones existentes de un item dado
     '''
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
@@ -348,7 +350,8 @@ def reversionar_item(request, id_version):
     '''
     version=get_object_or_404(VersionItem,id=id_version)
     item=get_object_or_404(Item,id=version.id_item_id)
-
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
@@ -382,6 +385,11 @@ def des(request, idarchivo):
     '''
     Vista para descargar un archivo de un item especifico
     '''
+    archivo=get_object_or_404(Archivo,id=idarchivo)
+    item=get_object_or_404(Item, id=archivo.id_item)
+    fase=item.tipo_item__fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
     return StreamingHttpResponse(descargar(idarchivo),content_type='application/force-download')
 
 @login_required
@@ -489,6 +497,11 @@ def eliminar_archivo(request, id_archivo):
 
     archivo=get_object_or_404(Archivo,id=id_archivo)
     item=archivo.id_item
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
+    fase=item.tipo_item__fase
+    if es_miembro(request.user.id, fase.id, 'eliminar_archivo')!=True:
+        return HttpResponseRedirect('/denegado')
     archivo.delete()
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
@@ -506,6 +519,8 @@ def validar_hijos(item_hijo, item):
 
 def cambiar_padre(request, id_item):
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     tipo=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=get_object_or_404(Fase,id=tipo.fase_id)
     if es_miembro(request.user.id,fase.id,'cambiar_item'):
@@ -551,7 +566,10 @@ def cambiar_antecesor(request, id_item):
     '''
     vista para cambiar la relacion de un item, del tipo antecesor
     '''
+
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     tipo=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fas=get_object_or_404(Fase,id=tipo.fase_id)
     if es_miembro(request.user.id,fas.id,'cambiar_item'):
@@ -593,7 +611,9 @@ def listar_archivos(request, id_item):
     '''
     vista para gestionar los archivos de un item dado'
     '''
-
+    item=get_object_or_404(Item,id=id_item)
+    if item.estado!='FIN':
+        return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_item'):
@@ -615,6 +635,9 @@ def listar_atributos(request, id_item):
     '''
     vista para gestionar los atributos de un item dado
     '''
+    item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_item'):
@@ -868,10 +891,13 @@ def detalle_muerto(request,id_item):
     '''
     Vista para ver los detalles de un item con estado anulado
     '''
+
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='ANU':
+        return HttpResponse("<h1> No se puede listar el detalle de un item no anulado")
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase
-    if es_miembro(request.user.id,fase.id,'')!=True or item.estado!='VAL':
+    if es_miembro(request.user.id,fase.id,'')!=True:
         return HttpResponseRedirect('/denegado')
     else:
         return render_to_response('items/detalle_version.html', {'datos': item}, context_instance=RequestContext(request))
