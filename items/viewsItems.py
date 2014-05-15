@@ -612,7 +612,7 @@ def listar_archivos(request, id_item):
     vista para gestionar los archivos de un item dado'
     '''
     item=get_object_or_404(Item,id=id_item)
-    if item.estado!='FIN':
+    if item.estado!='PEN':
         return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
