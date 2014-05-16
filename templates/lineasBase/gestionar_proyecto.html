@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+    <center><h1>Proyectos del usuario {{ user.username }}</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Nombre</th>
+	            <th style="text-align:center">Estado</th>
+	            <th style="text-align:center">Lider</th>
+	            <th colspan="1" style="text-align:center">Abrir</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos  %}
+
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.nombre }}</td>
+				<td>{{ dato.estado }}</td>
+                <td>{{ dato.lider }}</td>
+
+
+		                <td>
+                            <center>
+                	    <a class="btn" href="/gestionDeCambios/lineasBase/proyectos/fases/{{ dato.pk }}"><li class="icon-certificate"></li> Gestionar </a>
+
+
+                        </center>
+                </td>
+			</tr>
+
+            {% empty %}
+                <li>Usted aun no tiene proyectos asignados</li>
+
+{% endfor %}
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
+ {% block busqueda %}
+
+    {% endblock %}
+

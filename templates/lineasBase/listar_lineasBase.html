@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+
+    <center><h1>Lineas Base de la fase {{ fase.nombre }}</h1></center>
+
+ <br>
+
+    <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+
+	            <th style="text-align:center">Nombre</th>
+	            <th colspan="1" style="text-align:center">Opciones</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos %}
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+
+				<td>{{ dato.nombre }}</td>
+		                <td>
+                              <center>
+                        <a class="btn" href="/gestionDeCambios/lineasBase/detalle/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
+
+               </center>
+                </td>
+			</tr>
+            {% empty %}
+                <li>Aun no hay lineas Base en esta fase</li>
+	    {% endfor %}
+
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+
+                <td><center><a class="btn"  href="/gestionDeCambios/lineasBase/crear/{{ fase.id }}"><li class="icon-plus"></li> Crear Linea Base</a></center> </td>
+
+                <a class="btn" href="/gestionDeCambios/lineasBase/proyectos/fases/{{ fase.proyecto_id }}"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+

@@ -24,9 +24,8 @@
             <div><strong>Relacionado con: </strong>Nadie</div>
             <div><strong>Tipo de relacion: </strong>Ninguna</div>
             {% endif %}
-            <div><strong>Fecha de creacion: </strong>{{ datos.fecha_creacion }}</div>
             <div><strong>Fecha de modificacion: </strong>{{ datos.fecha_mod }}</div>
-
+            <div><strong>Usuario que modifico: </strong> {{ datos.usuario.first_name }} {{ datos.usuario.last_name }}</div>
             <center>
 
             <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>

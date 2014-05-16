@@ -55,7 +55,8 @@ INSTALLED_APPS = (
     'fases',
     'proyectos',
     'tiposDeItem',
-    'items'
+    'items',
+    'lineasBase',
 )
 
 
@@ -93,7 +94,7 @@ WSGI_APPLICATION = 'PMS.wsgi.application'
 DATABASES = {
  'default': {
  'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add ‘postgresql_psycopg2’, ‘mysql’, ‘sqlite3’ or ‘oracle’.
- 'NAME': 'PMS_db', # Or path to database file if using sqlite3.
+ 'NAME': 'PMS_desarrollo', # Or path to database file if using sqlite3.
  'USER': 'postgres', # Not used with sqlite3.
  'PASSWORD': '123456', # Not used with sqlite3.
  'HOST': 'localhost', # Set to empty string for localhost. Not used with sqlite3.

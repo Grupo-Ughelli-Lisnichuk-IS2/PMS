@@ -4,6 +4,7 @@ __pycache__/
 *.html[cod]
 # C extensions
 *.so
+*.pdf
 /static/img/
 # Distribution / packaging
 .Python

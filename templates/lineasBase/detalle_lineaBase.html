@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<html>
+{% block contenido %}
+<br>
+    <center>
+    <h1>Detalles de {{datos.nombre|title}}</h1>
+    </center>
+          	<br>
+          	<br>
+            <div style="font-size: 16px; padding-left: 20px; padding-bottom: 50px; padding-top: 30px;">
+
+
+
+            <div><strong>Nombre: </strong>{{ datos.nombre }}</div>
+            <div><strong>Estado: </strong>{{ datos.estado }}</div>
+            <div><strong>Items: </strong></div>
+                {% for item in items %}
+
+                   <li>{{ item.nombre }} </li>
+                         <ul>Version: {{ item.version }}</ul>
+
+                {% endfor %}
+
+            </div>
+
+            <center>
+
+            <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>
+
+
+                </center>
+</div>
+{% endblock %}
+</html>

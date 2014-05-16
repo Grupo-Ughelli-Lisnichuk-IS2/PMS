@@ -126,7 +126,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-13T20:04:09.082Z", 
+        "last_login": "2014-05-13T20:41:41.490Z", 
         "groups": [
             1, 
             5
@@ -147,7 +147,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-13T20:03:31.033Z", 
+        "last_login": "2014-05-13T20:54:55.938Z", 
         "groups": [
             1, 
             2
@@ -357,6 +357,14 @@
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-05-08T05:13:24.159Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "487os9j3yyy1spu90tc35si35vl27bvv", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-13T21:24:55.949Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -661,6 +669,14 @@
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-04-30T04:01:09.127Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "ku3qmbmvla2aatk70f8pjewthpr4g8zn", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-13T21:23:52.842Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -1444,8 +1460,8 @@
         "fecha_mod": "2014-05-07", 
         "descripcion": "Primer item de la fase", 
         "nombre": "Primer Item", 
-        "lineaBase": 2, 
-        "estado": "FIN", 
+        "lineaBase": null,
+        "estado": "VAL",
         "relacion": null
     }
 },

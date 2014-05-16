@@ -1,8 +1,8 @@
 
 from django.db import models
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from tiposDeItem.models import TipoItem, Atributo
-
+from lineasBase.models import LineaBase
 # Create your models here.
 ESTADOS = (
     ('PEN','Pendiente'),
@@ -11,6 +11,7 @@ ESTADOS = (
     ('VAL','Validado'),
     ('REV','Revision'),
     ('ANU','Anulado'),
+    ('BLO','Bloqueado')
 )
 TIPOS = (
 
@@ -30,6 +31,9 @@ class Item(models.Model):
     fecha_creacion=models.DateField(verbose_name='Fecha de Creacion')
     fecha_mod=models.DateField(verbose_name='Fecha de Modificacion')
     tipo_item=models.ForeignKey(TipoItem)
+    lineaBase=models.ForeignKey(LineaBase, null=True)
+    def __str__(self):
+        return self.nombre
 
 class VersionItem(models.Model):
     id_item=models.ForeignKey(Item, verbose_name='Item', related_name='itemVersion')
@@ -43,6 +47,8 @@ class VersionItem(models.Model):
     tipo=models.CharField(null=True,max_length=10, choices=TIPOS, verbose_name='Tipo')
     fecha_mod=models.DateField(verbose_name='Fecha de Modificacion')
     tipo_item=models.ForeignKey(TipoItem)
+    usuario=models.ForeignKey(User)
+    lineaBase=models.ForeignKey(LineaBase, null=True)
 
 class Archivo(models.Model):
     archivo=models.FileField(upload_to='archivos')

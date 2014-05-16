@@ -52,13 +52,15 @@ def listar_fases(request, id_proyecto):
     vista para listar las fases asignadas a un usuario de un proyecto especifico
     '''
     #busca todas las fases del proyecto
-    fasesProyecto=Fase.objects.filter(proyecto_id=id_proyecto, estado='EJE')
+    fasesProyecto=Fase.objects.filter(Q(proyecto_id=id_proyecto) & (Q(estado='EJE') | Q(estado='FIN')))
     usuario = request.user
     proyecto=get_object_or_404(Proyecto,id=id_proyecto)
     fases=[]
+    flag=0
     #si es lider pertenece a todas las fases
     if usuario.id==proyecto.lider_id:
         fases=fasesProyecto
+        flag=1
     #si no, busca todas las fases en las que tiene algun rol asignado
     else:
         roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
@@ -69,7 +71,7 @@ def listar_fases(request, id_proyecto):
                     fases.append(fff)
     #si no encuentra ninguna fase, significa que alguien que no tiene permisos esta tratando de ver
     #fases que no le correponden, se redirige al template de prohibido
-    if len(fases)==0:
+    if len(fases)==0 and flag==0:
         return render_to_response('403.html')
     nivel = 1
 
@@ -156,6 +158,7 @@ def crear_item(request,id_tipoItem):
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
     atri=1
+    hijo=False
     if cantidad_items(id_tipoItem):
         id_fase=TipoItem.objects.get(id=id_tipoItem).fase_id
         flag=es_miembro(request.user.id,id_fase,'agregar_item')
@@ -216,7 +219,7 @@ def crear_item(request,id_tipoItem):
 
                 formulario = PrimeraFaseForm()
                 hijo=False
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri,'titem':id_tipoItem}, context_instance=RequestContext(request))
+            return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos, 'items':items, 'hijo':hijo,'atri':atri,'titem':id_tipoItem}, context_instance=RequestContext(request))
         else:
             return render_to_response('403.html')
     else:
@@ -252,7 +255,7 @@ def listar_items(request,id_tipo_item):
     titem=get_object_or_404(TipoItem,id=id_tipo_item)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,''):
-        items=Item.objects.filter(tipo_item_id=id_tipo_item)
+        items=Item.objects.filter(tipo_item_id=id_tipo_item).exclude(estado='ANU')
         if puede_add_items(fase):
             nivel = 3
             id_proyecto=Fase.objects.get(id=fase).proyecto_id
@@ -270,6 +273,8 @@ def listar_versiones(request,id_item):
     vista para listar todas las versiones existentes de un item dado
     '''
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
@@ -307,29 +312,33 @@ def comprobar_relacion(version):
     de lo contrario (false)
     Ademas comprueba que no se formen ciclos al modificar una relacion del tipo padre-hijo
     '''
-
+    if version.relacion==version.id_item.relacion:
+        return True
     if version.relacion==None:
+        return True
+    if version.tipo=='Sucesor':
         return True
     relacion=get_object_or_404(Item,id=version.relacion_id)
 
     item=version.id_item
-    a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item) & Q(id=relacion.id)) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
-    if a!=None:
+    if validar_hijos(relacion, item)!=True:
         return False
+  #  a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item) & Q(id=relacion.id)) & (Q (estado='PEN') | Q(estado='FIN')  | Q(estado='VAL')))
+   # if a!=None:
+    #    return False
     items=Item.objects.filter(estado='ANU')
     for i in items:
         if i==relacion:
             return False
     return True
 
-
-def generar_version(item):
+def generar_version(item,usuario):
     '''
     funcion para generar y guardar una nueva version de un item a modificar
     '''
     today = datetime.now() #fecha actual
     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado )
+    item_viejo=VersionItem(id_item=item, nombre=item.nombre, descripcion=item.descripcion, fecha_mod=dateFormat, version=item.version, costo=item.costo, tiempo=item.tiempo, tipo_item=item.tipo_item, relacion=item.relacion, tipo=item.tipo, estado=item.estado, usuario=usuario, lineaBase=item.lineaBase )
     item_viejo.save()
 
 
@@ -341,13 +350,14 @@ def reversionar_item(request, id_version):
     '''
     version=get_object_or_404(VersionItem,id=id_version)
     item=get_object_or_404(Item,id=version.id_item_id)
-
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_versionitem'):
         version=get_object_or_404(VersionItem,id=id_version)
         item=get_object_or_404(Item,id=version.id_item_id)
-        generar_version(item)
+        generar_version(item,request.user)
         #comprueba la relacion
         if comprobar_relacion(version):
 
@@ -375,6 +385,12 @@ def des(request, idarchivo):
     '''
     Vista para descargar un archivo de un item especifico
     '''
+    archivo=get_object_or_404(Archivo,id=idarchivo)
+    item=get_object_or_404(Item, id=archivo.id_item)
+    titem=item.tipo_item
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
     return StreamingHttpResponse(descargar(idarchivo),content_type='application/force-download')
 
 @login_required
@@ -422,6 +438,7 @@ def crear_item_hijo(request,id_item):
     archivo al item, y de completar todos los atributos de su tipo de item
     '''
     item=get_object_or_404(Item,id=id_item)
+    hijo=True
     if item.estado=='FIN' or item.estado=='VAL' or item.estado=='PEN':
         atri=1
         id_tipoItem=get_object_or_404(Item,id=id_item).tipo_item_id
@@ -463,7 +480,7 @@ def crear_item_hijo(request,id_item):
 
                     formulario = PrimeraFaseForm()
                     hijo=True
-                    return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
+                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
             else:
                 return render_to_response('403.html')
         else:
@@ -481,15 +498,22 @@ def eliminar_archivo(request, id_archivo):
 
     archivo=get_object_or_404(Archivo,id=id_archivo)
     item=archivo.id_item
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
+    titem=item.tipo_item
+    fase=titem.fase
+    if es_miembro(request.user.id, fase.id, 'eliminar_archivo')!=True:
+        return HttpResponseRedirect('/denegado')
     archivo.delete()
     return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
 
 def validar_hijos(item_hijo, item):
-    while(item_hijo.relacion!=None):
-        if item_hijo.relacion==item:
-            return False
-        else:
-            item_hijo=item_hijo.relacion
+    if item_hijo!=None:
+        while(item_hijo!=item and item_hijo!=None):
+            if item_hijo.relacion==item:
+                return False
+            else:
+                item_hijo=item_hijo.relacion
     return True
 
 
@@ -497,6 +521,8 @@ def validar_hijos(item_hijo, item):
 
 def cambiar_padre(request, id_item):
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     tipo=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=get_object_or_404(Fase,id=tipo.fase_id)
     if es_miembro(request.user.id,fase.id,'cambiar_item'):
@@ -516,7 +542,7 @@ def cambiar_padre(request, id_item):
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
                     item=get_object_or_404(Item,id=id_item)
-                    generar_version(item)
+                    generar_version(item, request.user)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
                     itemss=Item.objects.filter(nombre=item_nombre)
@@ -542,7 +568,10 @@ def cambiar_antecesor(request, id_item):
     '''
     vista para cambiar la relacion de un item, del tipo antecesor
     '''
+
     item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     tipo=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fas=get_object_or_404(Fase,id=tipo.fase_id)
     if es_miembro(request.user.id,fas.id,'cambiar_item'):
@@ -564,7 +593,7 @@ def cambiar_antecesor(request, id_item):
             if item_nombre!=None:
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
-                    generar_version(item)
+                    generar_version(item,request.user)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
                     item_rel=Item.objects.get(nombre=item_nombre)
@@ -584,7 +613,9 @@ def listar_archivos(request, id_item):
     '''
     vista para gestionar los archivos de un item dado'
     '''
-
+    item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_item'):
@@ -606,6 +637,9 @@ def listar_atributos(request, id_item):
     '''
     vista para gestionar los atributos de un item dado
     '''
+    item=get_object_or_404(Item,id=id_item)
+    if item.estado!='PEN':
+        return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
     titem=get_object_or_404(Item,id=id_item).tipo_item
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,'cambiar_item'):
@@ -641,7 +675,7 @@ def editar_item(request,id_item):
         if flag==True:
 
                 if request.method=='POST':
-                    generar_version(item_nuevo)
+                    generar_version(item_nuevo,request.user)
                     formulario = PrimeraFaseForm(request.POST, instance=item_nuevo)
 
                     if formulario.is_valid():
@@ -659,7 +693,7 @@ def editar_item(request,id_item):
 
                     formulario = PrimeraFaseForm(instance=item_nuevo)
                     hijo=True
-                    return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo,'titem':id_tipoItem}, context_instance=RequestContext(request))
+                return render_to_response('items/editar_item.html', { 'formulario': formulario, 'item':item_nuevo,'titem':id_tipoItem}, context_instance=RequestContext(request))
 
         else:
                 return render_to_response('403.html')
@@ -679,6 +713,8 @@ def cambiar_estado_item(request,id_item):
     item=get_object_or_404(Item,id=id_item)
     nombre=item.nombre
     titem=item.tipo_item_id
+    if item.estado=='FIN':
+        return HttpResponse('<h1>No se puede cambiar el estado de un item finalizado<h1>')
     if request.method == 'POST':
         bandera=False
         item_form = EstadoItemForm(request.POST, instance=item)
@@ -694,7 +730,7 @@ def cambiar_estado_item(request,id_item):
                             if papa.estado=='VAL':
                                 bandera=False
                     if item_form.cleaned_data['estado']=='PEN':
-                            hijos=Item.objects.filter(relacion=item)
+                            hijos=Item.objects.filter(relacion=item).exclude(estado='ANU')
                             for hijo in hijos:
                                 if hijo.estado!='PEN' and hijo.tipo=='Hijo':
                                     messages.add_message(request,settings.DELETE_MESSAGE, 'No se puede cambiar  a pendiente ya que tiene hijos con estados distintos a Pendiente')
@@ -708,9 +744,12 @@ def cambiar_estado_item(request,id_item):
     else:
         # formulario inicial
         item_form = EstadoItemForm(instance=item)
-        return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
+    return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
 
 def itemsProyecto(proyecto):
+    '''
+    Funcion que recibe como parametro un proyecto y retorna todos los items del mismo
+    '''
     fases = Fase.objects.filter(proyecto_id=proyecto)
     items=[]
     for fase in fases:
@@ -718,11 +757,15 @@ def itemsProyecto(proyecto):
         for t in titem:
             item=Item.objects.filter(tipo_item=t)
             for i in item:
-                items.append(i)
+                if i.estado!='ANU':
+                    items.append(i)
     return items
 
 
 def dibujarProyecto(proyecto):
+    '''
+    Funcion que grafica los items con sus relaciones de un proyecto dado
+    '''
     #inicializar estructuras
     grafo = pydot.Dot(graph_type='digraph',fontname="Verdana",rankdir="LR")
     fases = Fase.objects.filter(proyecto_id=proyecto).order_by('orden')
@@ -743,7 +786,7 @@ def dibujarProyecto(proyecto):
         if(cluster!=None):
             grafo.add_subgraph(cluster)
 
-    #items=getItemsProyecto(proyecto.idproyecto)
+
     lista=itemsProyecto(proyecto)
     items=[]
     for item in lista:
@@ -751,30 +794,46 @@ def dibujarProyecto(proyecto):
             items.append(item)
     #agregar nodos
     for item in items:
-        #if(item.idlineabase==None):
-         #   clusters[item.fase.posicionfase].add_node(pydot.Node(str(item.iditem),
-          #                                                       label=item.nombre))
+
         if item.estado=="PEN":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="gray",
+                                                                 fontcolor="black"))
+        elif item.estado=="VAL":
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
                                                                  fillcolor="blue",
                                                                  fontcolor="white"))
-        elif item.estado=="VAL":
+        elif item.estado=="FIN":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="green",
+                                                                 fontcolor="white"))
+        elif item.estado=="REV":
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
                                                                  fillcolor="red",
                                                                  fontcolor="white"))
-        elif item.estado=="FIN":
+        elif item.estado=="CON":
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
-                                                                 fillcolor="violet",
+                                                                 fillcolor="yellow",
+                                                                 fontcolor="white"))
+        elif item.estado=="BLO":
+            clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
+                                                                 label=item.nombre,
+                                                                 style="filled",
+                                                                 fillcolor="pink",
                                                                  fontcolor="white"))
     #agregar arcos
     for item in items:
-        relaciones = Item.objects.filter(relacion=item)
+        relaciones = Item.objects.filter(relacion=item).exclude(estado='ANU')
         if relaciones!=None:
             for relacion in relaciones:
                 grafo.add_edge(pydot.Edge(str(item.id),str(relacion.id),label='costo='+str(item.costo) ))
@@ -787,4 +846,180 @@ def dibujarProyecto(proyecto):
 
 
 
+@login_required
+def eliminar_item(request, id_item):
+    '''
+    Vista que permite cambiar el estado del item a anulado, para ello se verifica que el mismo
+    no tenga hijos y ademas que su estado sea pendiente
+    '''
+    item=get_object_or_404(Item, id=id_item)
+    fase=item.tipo_item.fase_id
+    if es_miembro(request.user.id,fase,'eliminar_item')!=True or item.estado=='ANU':
+        return HttpResponseRedirect('/denegado')
+    item=get_object_or_404(Item, id=id_item)
+    if item.estado=='PEN':
+        a=Item.objects.filter((Q(tipo='Hijo') & Q(relacion=item))).exclude(estado='ANU')
+        if len(a)!=0:
+            messages.add_message(request,settings.DELETE_MESSAGE,"No se puede eliminar un item que tenga hijos")
+        else:
+            item.estado='ANU'
+            item.save()
+            messages.add_message(request,settings.DELETE_MESSAGE,"Item eliminado correctamente")
+    else:
+         messages.add_message(request,settings.DELETE_MESSAGE,"No se puede eliminar un item cuyo estado no sea pendiente")
+    fase=item.tipo_item.fase_id
+    titem=item.tipo_item
+    id_proyecto=Fase.objects.get(id=fase).proyecto_id
+    nombre=dibujarProyecto(id_proyecto)
+    nivel=3
+    items=Item.objects.filter(tipo_item_id=titem.id).exclude(estado='ANU')
+    return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto,'name':nombre}, context_instance=RequestContext(request))
 
+@login_required
+def listar_muertos(request,id_tipo_item):
+    '''
+    Vista para listar todos los items con estado anulado de un tipo de item especificado
+    '''
+    titem=get_object_or_404(TipoItem,id=id_tipo_item)
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
+    else:
+        items=Item.objects.filter(estado='ANU',tipo_item=titem)
+        return render_to_response('items/listar_muertos.html', {'datos': items,'tipoitem':titem}, context_instance=RequestContext(request))
+
+
+@login_required
+def detalle_muerto(request,id_item):
+    '''
+    Vista para ver los detalles de un item con estado anulado
+    '''
+
+    item=get_object_or_404(Item,id=id_item)
+    if item.estado!='ANU':
+        return HttpResponse("<h1> No se puede listar el detalle de un item no anulado")
+    titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True:
+        return HttpResponseRedirect('/denegado')
+    else:
+        return render_to_response('items/detalle_version.html', {'datos': item}, context_instance=RequestContext(request))
+
+
+@login_required
+def revivir(request, id_item):
+    '''
+    Vista para revivir un item seleccionado. Los criterios a seguir para revivir el item son:
+    1) Si el item con el que el item a revivir aun existe, lo revive
+    2) Si no, revive el item pero lo relaciona con un item de su fase como hijo
+    3) Si ya no existen items en su fase, lo relaciona con un item finalizado de la fase anterior
+    como sucesor
+    4) Si es de la primera fase y ya no tiene items en su fase, revive el item y no le asigna ninguna relacion
+    '''
+    item=get_object_or_404(Item,id=id_item)
+    titem=get_object_or_404(TipoItem,id=item.tipo_item_id)
+    fase=titem.fase
+    if es_miembro(request.user.id,fase.id,'')!=True or item.estado!='ANU':
+        return HttpResponseRedirect('/denegado')
+
+    else:
+        #si revive un item y su relacion aun existe, se revive
+
+        if item.relacion==None:
+
+            item.estado='PEN'
+            item.save()
+            messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido')
+        else:
+            if item.relacion.estado!='ANU':
+                item.estado='PEN'
+                item.save()
+                messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido')
+            else:
+                i=[]
+                #si no, se buscan items de su fase y se relaciona con el primero de ellos, del tipo padre
+                tipos_item=TipoItem.objects.filter(fase=fase)
+                for t in tipos_item:
+                    items=Item.objects.filter(tipo_item=titem).exclude(estado='ANU')
+                    for it in items:
+                        i.append(it)
+                if len(i)!=0:
+                    item.estado='PEN'
+                    item.relacion=i[0]
+                    item.tipo='Hijo'
+                    item.save()
+                    messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacion cambiada')
+
+                else:
+                    #primera fase sin items, revive y quita relacion anterior
+                    if titem.fase.orden==1:
+                        item.estado='PEN'
+                        item.relacion=None
+                        item.tipo=''
+                        item.save()
+                        messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacion eliminada')
+                    else:
+                        #si no es la primera fase, se busca un antecesor de la fase anterior y se relaciona con el
+                        fase_anterior=Fase.objects.get(proyecto=fase.proyecto, orden=fase.orden-1)
+                        tipositem=TipoItem.objects.filter(fase=fase_anterior)
+                        ite=[]
+                        for t in tipositem:
+                            itemss=Item.objects.filter(tipo_item=t, estado='FIN')
+                            for ii in itemss:
+                                ite.append(ii)
+                        item.relacion=ite[0]
+                        item.tipo='Sucesor'
+                        item.estado='PEN'
+                        item.save()
+                        messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacionado con item de fase anterior')
+        items=Item.objects.filter(estado='ANU',tipo_item=titem)
+        return render_to_response('items/listar_muertos.html', {'datos': items, 'tipoitem':titem}, context_instance=RequestContext(request))
+
+def calculo(request,id_item):
+    item=get_object_or_404(Item,id=id_item)
+    print recorridoEnProfundidad(item)
+
+def recorridoEnProfundidad(item):
+    '''
+    Funcion que llama a recorrer items en profundidad
+    y retorna un vector con la suma del costo y del tiempo
+    '''
+    titem=item.tipo_item
+    fase=titem.fase
+    proyecto=fase.proyecto
+    listaitems =itemsProyecto(proyecto)
+    maxiditem = getMaxIdItemEnLista(listaitems)
+    global sumaCosto, sumaTiempo,visitados
+    visitados = [0]*(maxiditem+1)
+    sumaCosto=0
+    sumaTiempo=0
+    recorrer(item.id)
+    ret = [sumaCosto,sumaTiempo]
+    return ret
+
+def recorrer(id_item):
+    '''
+    Funcion para recorrer el grafo de items del proyecto en profundidad
+    Sumando el costo y el tiempo de cada uno
+    '''
+    global sumaCosto, sumaTiempo, visitados
+    visitados[id_item]=1
+    #print ('Visite  el item '+str(iditem))
+    item=get_object_or_404(Item,id=id_item)
+    sumaCosto = sumaCosto + item.costo
+    sumaTiempo = sumaTiempo + item.tiempo
+    relaciones = Item.objects.filter(relacion=item.id)
+    for relacion in relaciones:
+        if(visitados[relacion.id]==0):
+            recorrer(relacion.id)
+
+
+def getMaxIdItemEnLista(lista):
+    '''
+    Funcion para hallar el id maximo de los items de una lista
+    '''
+    max=0
+    for item in lista:
+        if item.id>max:
+            max=item.id
+    return max
