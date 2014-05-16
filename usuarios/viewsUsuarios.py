@@ -91,7 +91,7 @@ class RegisterSuccessView(TemplateView):
 @permission_required('user')
 def lista_usuarios(request):
     '''
-    vista para listar los usuarios del sistema
+    vista para listar todos los usuarios del sistema
     '''
 
     usuarios = User.objects.all().order_by('is_active').reverse()
@@ -102,7 +102,7 @@ def lista_usuarios(request):
 def detalle_usuario(request, id_user):
 
     '''
-    vista para ver los detalles del usuario <id_user> del sistema
+    vista para ver los detalles del usuario <id_user>
     '''
 
     dato = get_object_or_404(User, pk=id_user)
@@ -143,7 +143,7 @@ def cambiar_pass (request,
 def editar_perfil(request):
 
     '''
-    Vista para que un usuario pueda modificar sus datos
+    Vista para modificar los datos de un usuario
     '''
     if request.method == 'POST':
         # formulario enviado
@@ -165,7 +165,7 @@ def editar_perfil(request):
 def modificar_usuario(request, id_user):
 
     '''
-    vista para cambiar el estado de los usuarios del sistema
+    vista para cambiar el estado del usuario id_user
     '''
 
     dato = get_object_or_404(User, pk=id_user)
@@ -190,7 +190,7 @@ def modificar_usuario(request, id_user):
 @permission_required('user')
 def buscarUsuario(request):
     '''
-    vista para buscar los usuarios del sistema
+    vista para buscar un usuario dentro del listado de usuarios del sistema
     '''
     query = request.GET.get('q', '')
     if query:
