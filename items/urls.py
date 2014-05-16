@@ -26,4 +26,5 @@ urlpatterns = patterns('',
         url(r'^item/listar_muertos/(?P<id_tipo_item>\d+)$','items.viewsItems.listar_muertos'),
         url(r'^item/revivir/(?P<id_item>\d+)$','items.viewsItems.revivir'),
         url(r'^item/detalle/muerto/(?P<id_item>\d+)$','items.viewsItems.detalle_muerto'),
+        url(r'^item/calculo/(?P<id_item>\d+)$','items.viewsItems.calculo'),
         )

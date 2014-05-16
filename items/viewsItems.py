@@ -387,7 +387,8 @@ def des(request, idarchivo):
     '''
     archivo=get_object_or_404(Archivo,id=idarchivo)
     item=get_object_or_404(Item, id=archivo.id_item)
-    fase=item.tipo_item__fase
+    titem=item.tipo_item
+    fase=titem.fase
     if es_miembro(request.user.id,fase.id,'')!=True:
         return HttpResponseRedirect('/denegado')
     return StreamingHttpResponse(descargar(idarchivo),content_type='application/force-download')
@@ -499,7 +500,8 @@ def eliminar_archivo(request, id_archivo):
     item=archivo.id_item
     if item.estado!='PEN':
         return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
-    fase=item.tipo_item__fase
+    titem=item.tipo_item
+    fase=titem.fase
     if es_miembro(request.user.id, fase.id, 'eliminar_archivo')!=True:
         return HttpResponseRedirect('/denegado')
     archivo.delete()
@@ -755,7 +757,8 @@ def itemsProyecto(proyecto):
         for t in titem:
             item=Item.objects.filter(tipo_item=t)
             for i in item:
-                items.append(i)
+                if i.estado!='ANU':
+                    items.append(i)
     return items
 
 
@@ -971,3 +974,52 @@ def revivir(request, id_item):
                         messages.add_message(request,settings.DELETE_MESSAGE,'Item revivido. Relacionado con item de fase anterior')
         items=Item.objects.filter(estado='ANU',tipo_item=titem)
         return render_to_response('items/listar_muertos.html', {'datos': items, 'tipoitem':titem}, context_instance=RequestContext(request))
+
+def calculo(request,id_item):
+    item=get_object_or_404(Item,id=id_item)
+    print recorridoEnProfundidad(item)
+
+def recorridoEnProfundidad(item):
+    '''
+    Funcion que llama a recorrer items en profundidad
+    y retorna un vector con la suma del costo y del tiempo
+    '''
+    titem=item.tipo_item
+    fase=titem.fase
+    proyecto=fase.proyecto
+    listaitems =itemsProyecto(proyecto)
+    maxiditem = getMaxIdItemEnLista(listaitems)
+    global sumaCosto, sumaTiempo,visitados
+    visitados = [0]*(maxiditem+1)
+    sumaCosto=0
+    sumaTiempo=0
+    recorrer(item.id)
+    ret = [sumaCosto,sumaTiempo]
+    return ret
+
+def recorrer(id_item):
+    '''
+    Funcion para recorrer el grafo de items del proyecto en profundidad
+    Sumando el costo y el tiempo de cada uno
+    '''
+    global sumaCosto, sumaTiempo, visitados
+    visitados[id_item]=1
+    #print ('Visite  el item '+str(iditem))
+    item=get_object_or_404(Item,id=id_item)
+    sumaCosto = sumaCosto + item.costo
+    sumaTiempo = sumaTiempo + item.tiempo
+    relaciones = Item.objects.filter(relacion=item.id)
+    for relacion in relaciones:
+        if(visitados[relacion.id]==0):
+            recorrer(relacion.id)
+
+
+def getMaxIdItemEnLista(lista):
+    '''
+    Funcion para hallar el id maximo de los items de una lista
+    '''
+    max=0
+    for item in lista:
+        if item.id>max:
+            max=item.id
+    return max
