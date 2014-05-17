@@ -138,13 +138,15 @@ def cantidad_items(id_tipoItem):
     '''
     titem=get_object_or_404(TipoItem,id=id_tipoItem)
     fase=Fase.objects.get(id=titem.fase_id)
+    tipoItems=TipoItem.objects.filter(fase_id=fase.id)
     if fase.estado=='FIN':
         return False
-    item=Item.objects.filter(tipo_item_id=id_tipoItem)
     contador=0
-    for i in item:
-        if i.estado!='ANU':
-            contador+=1
+    for ti in tipoItems:
+        item=Item.objects.filter(tipo_item_id=ti.id)
+        for i in item:
+            if i.estado!='ANU':
+                contador+=1
     if contador<fase.maxItems:
         return True
     else:
@@ -977,7 +979,7 @@ def revivir(request, id_item):
                 items=Item.objects.filter(estado='ANU',tipo_item=titem)
                 return render_to_response('items/listar_muertos.html', {'datos': items, 'tipoitem':titem}, context_instance=RequestContext(request))
     else:
-            return render_to_response('items/creacion_incorrecta.html',{'id_tipo_item':item.tipo_item_id}, context_instance=RequestContext(request))
+        return render_to_response('items/creacion_incorrecta.html',{'id_tipo_item':item.tipo_item_id}, context_instance=RequestContext(request))
 
 def calculo(request,id_item):
     item=get_object_or_404(Item,id=id_item)
