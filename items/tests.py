@@ -288,7 +288,7 @@ class PMSTestCase(TestCase):
         print 'Test cambiar padre de un item que no existe'
 
         resp = c.get('/desarrollo/item/padre/1')
-        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 200)
         print 'Test cambiar padre de un item  que existe'
 
     def test_cambiar_antecesor(self):
@@ -304,7 +304,7 @@ class PMSTestCase(TestCase):
         print 'Test cambiar antecesor de un item que no existe'
 
         resp = c.get('/desarrollo/item/antecesor/1')
-        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 200)
         print 'Test cambiar antecesor de un item  que existe'
 
     def test_atributos(self):
@@ -320,7 +320,7 @@ class PMSTestCase(TestCase):
         print 'Test listar atributos de un item que no existe'
 
         resp = c.get('/desarrollo/item/atributos/2')
-        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 200)
         print 'Test listar atributos de un item  que existe'
 
     def test_detalle_version(self):
@@ -384,7 +384,7 @@ class PMSTestCase(TestCase):
         self.assertEqual(resp.status_code, 404)
         print 'Test revivir item que no existe'
         resp = c.get('/desarrollo/item/revivir/1')
-        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 200)
         print 'Test revivir item que existe'
 
     def test_detalle_anulado(self):
@@ -395,5 +395,5 @@ class PMSTestCase(TestCase):
         self.assertEqual(resp.status_code, 404)
         print 'Test detalle item que no existe'
         resp = c.get('/desarrollo/item/detalle/muerto/1')
-        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp.status_code, 200)
         print 'Test detalle item que existe'

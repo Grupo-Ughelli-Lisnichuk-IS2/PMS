@@ -13,8 +13,9 @@ from PMS import settings
 from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
+from solicitudesCambio.models import SolicitudCambio
 from tiposDeItem.models import TipoItem, Atributo
-from items.formsItems import EstadoItemForm
+from items.formsItems import EstadoItemForm, SolicitudCambioForm
 from items.formsItems import PrimeraFaseForm
 from tiposDeItem.viewsTiposDeItem import validarAtributo
 
@@ -673,7 +674,14 @@ def editar_item(request,id_item):
     id_fase=get_object_or_404(TipoItem,id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase,'cambiar_item')
     item_nuevo=get_object_or_404(Item,id=id_item)
+
+    if flag==True and item_nuevo.estado=='BLO':
+        return HttpResponse('<h1> No se puede modificar el item, ya que ya ha sido generada una solicitud de cambio para el mismo</h1>')
+
+    if flag==True and item_nuevo.estado=='FIN':
+        return render_to_response('solicitudesCambio/modificar_finalizado.html',{'id_item':item_nuevo.id, 'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
     if item_nuevo.estado=='PEN':
+
         if flag==True:
 
                 if request.method=='POST':
@@ -700,7 +708,7 @@ def editar_item(request,id_item):
         else:
                 return render_to_response('403.html')
     else:
-        return HttpResponse('<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
+        return HttpResponse('{% extends "base.html" %}<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
 
 
 
@@ -831,7 +839,7 @@ def dibujarProyecto(proyecto):
             clusters[item.tipo_item.fase.orden].add_node(pydot.Node(str(item.id),
                                                                  label=item.nombre,
                                                                  style="filled",
-                                                                 fillcolor="pink",
+                                                                 fillcolor="magenta",
                                                                  fontcolor="white"))
     #agregar arcos
     for item in items:
@@ -981,9 +989,6 @@ def revivir(request, id_item):
     else:
         return render_to_response('items/creacion_incorrecta.html',{'id_tipo_item':item.tipo_item_id}, context_instance=RequestContext(request))
 
-def calculo(request,id_item):
-    item=get_object_or_404(Item,id=id_item)
-    print recorridoEnProfundidad(item)
 
 def recorridoEnProfundidad(item):
     '''
@@ -1010,7 +1015,6 @@ def recorrer(id_item):
     '''
     global sumaCosto, sumaTiempo, visitados
     visitados[id_item]=1
-    #print ('Visite  el item '+str(iditem))
     item=get_object_or_404(Item,id=id_item)
     sumaCosto = sumaCosto + item.costo
     sumaTiempo = sumaTiempo + item.tiempo
@@ -1029,3 +1033,31 @@ def getMaxIdItemEnLista(lista):
         if item.id>max:
             max=item.id
     return max
+
+def crear_solicitud_cambio(request,id_item):
+    '''
+    Vista para la creacion de una solicitud de cambio para un item especificado en id_item
+    '''
+    item=get_object_or_404(Item,id=id_item)
+    id_tipoItem=item.tipo_item.id
+    fase=item.tipo_item.fase
+    proyecto=fase.proyecto
+    costotiempo=recorridoEnProfundidad(item)
+    costo=costotiempo[0]
+    tiempo=costotiempo[1]
+    if es_miembro(request.user.id,fase.id,'agregar_solicitudcambio')!=True or item.estado!='FIN':
+        return HttpResponseRedirect('/denegado')
+    if request.method=='POST':
+        formulario = SolicitudCambioForm(request.POST)
+        if formulario.is_valid():
+            today = datetime.now()
+            dateFormat = today.strftime("%Y-%m-%d")
+            usuario=request.user
+            solicitud=SolicitudCambio(nombre=request.POST['nombre'], descripcion=request.POST['descripcion'],item=item,proyecto=proyecto,usuario=usuario,fecha=dateFormat, costo=costo, tiempo=tiempo,estado='PENDIENTE')
+            solicitud.save()
+            item.estado='BLO'
+            item.save()
+            return render_to_response('solicitudesCambio/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
+    else:
+        formulario=SolicitudCambioForm()
+    return render_to_response('solicitudesCambio/crear_solicitud.html',{'titem':id_tipoItem,'costo':costo, 'tiempo':tiempo, 'item':item, 'proyecto':proyecto, 'fase':fase,'formulario':formulario}, context_instance=RequestContext(request))
