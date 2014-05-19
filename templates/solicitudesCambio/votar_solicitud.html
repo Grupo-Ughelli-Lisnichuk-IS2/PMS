@@ -3,11 +3,11 @@
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
         <br>
 
-        <div><strong>Proyecto: </strong>{{ proyecto.nombre }}</div>
-        <div><strong>Fase: </strong>{{ fase.nombre }}</div>
-        <div><strong>Item: </strong>{{ item.nombre }}</div>
-        <div><strong>Costo total de la modificacion: </strong>{{ costo }}</div>
-        <div><strong>Tiempo total de la modificacion: </strong>{{ tiempo }}</div>
+        <div><strong>Proyecto: </strong>{{ solicitud.proyecto.nombre }}</div>
+        <div><strong>Fase: </strong>{{ solicitud.item.tipo_item.fase.nombre }}</div>
+        <div><strong>Item: </strong>{{ solicitud.item.nombre }}</div>
+        <div><strong>Costo total de la modificacion: </strong>{{ solicitud.costo }}</div>
+        <div><strong>Tiempo total de la modificacion: </strong>{{ solicitud.tiempo }}</div>
 
         <p><input type='submit' name="favor" value='Votar'/></p>
 

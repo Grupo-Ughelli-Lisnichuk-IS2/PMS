@@ -50,9 +50,9 @@ def puede_votar(id_usuario,id_solicitud):
 def votar(request, id_solicitud):
     if puede_votar(request.user.id, id_solicitud)!=True:
         return HttpResponseRedirect('/denegado')
+    solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     if request.method=='POST':
         formulario=VotoForm(request.POST)
     else:
-
         formulario=VotoForm()
-    return render_to_response('solicitudesCambio/votar_solicitud.html',{'formulario':formulario}, context_instance=RequestContext(request))
+    return render_to_response('solicitudesCambio/votar_solicitud.html',{'formulario':formulario,'solicitud':solicitud}, context_instance=RequestContext(request))
