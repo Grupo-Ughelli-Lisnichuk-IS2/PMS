@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+    <center><h1>Solicitudes de cambio</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Nombre</th>
+	            <th style="text-align:center">Proyecto</th>
+                <th style="text-align:center">Item</th>
+	            <th style="text-align:center">Usuario Solicitante</th>
+	            <th colspan="1" style="text-align:center">Opciones</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos  %}
+
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.nombre }}</td>
+				<td>{{ dato.proyecto.nombre }}</td>
+                <td>{{ dato.item.nombre }}</td>
+                <td>{{ dato.usuario.first_name }} {{ dato.usuario.last_name }}</td>
+
+
+
+
+		                <td>
+                            <center>
+                     <a class="btn" href='/gestionDeCambios/solicitudes/votar/{{ dato.pk }}'><li class="icon-check"></li> Votar</a>
+
+
+
+</center>
+                </td>
+			</tr>
+            {% empty %}
+                <li>No tiene solicitudes de cambio pendientes</li>
+
+{% endfor %}
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
+

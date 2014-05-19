@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block contenido %}
+	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
+        <br>
+
+        <div><strong>Proyecto: </strong>{{ proyecto.nombre }}</div>
+        <div><strong>Fase: </strong>{{ fase.nombre }}</div>
+        <div><strong>Item: </strong>{{ item.nombre }}</div>
+        <div><strong>Costo total de la modificacion: </strong>{{ costo }}</div>
+        <div><strong>Tiempo total de la modificacion: </strong>{{ tiempo }}</div>
+        <p><input type='submit' value='Enviar Solicitud'/></p>
+        <a class="btn" href="/desarrollo/item/listar/{{ titem }}"><li class="icon-backward"></li> Regresar</a>
+	</form>
+{% endblock %}
