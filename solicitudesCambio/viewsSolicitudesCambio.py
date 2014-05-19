@@ -5,6 +5,7 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import RequestContext
 from PMS import settings
 from items.models import Item
+from items.viewsItems import getMaxIdItemEnLista, itemsProyecto
 from proyectos.models import Proyecto
 from solicitudesCambio.formsSolicitudes import VotoForm
 from solicitudesCambio.models import SolicitudCambio, Voto
@@ -56,24 +57,53 @@ def votar(request, id_solicitud):
     solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     item=solicitud.item
     if request.method=='POST':
-#        formulario=VotoForm(request.POST)
         voto=Voto(solicitud=solicitud,usuario=request.user,voto=request.POST['voto'])
         voto.save()
         votacionCerrada(solicitud)
         if votacionCerrada(solicitud):
             resultado(solicitud)
             if solicitud.estado=='APROBADA':
+                item.estado='FIN'
+                item.save()
+                listaitems =itemsProyecto(solicitud.proyecto)
+                maxiditem = getMaxIdItemEnLista(listaitems)
+                global nodos_visitados
+                nodos_visitados = [0]*(maxiditem+1)
+                estadoDependientes(item.id)
                 item.estado='CON'
-                item.lineaBase.estado='ROTA'
+                item.save()
+                lb=item.lineaBase
+                lb.estado='ROTA'
+                lb.save()
             else:
                 item.estado='FIN'
-            item.save()
-#        item.estado='CON'
-#        item.save()
+                item.save()
+
         return render_to_response('solicitudesCambio/votacion_satisfactoria.html', context_instance=RequestContext(request))
     else:
         formulario=VotoForm()
     return render_to_response('solicitudesCambio/votar_solicitud.html',{'formulario':formulario,'solicitud':solicitud}, context_instance=RequestContext(request))
+
+def estadoDependientes(id_item):
+    '''
+    Funcion para recorrer el grafo de items del proyecto en profundidad
+    Sumando el costo y el tiempo de cada uno
+    '''
+    global nodos_visitados
+#    print id_item
+    nodos_visitados[id_item]=1
+    item=get_object_or_404(Item,id=id_item)
+#    print item.estado
+#    print(not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN'))
+    if not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN'):
+        item.estado='REV'
+        item.save()
+        relaciones = Item.objects.filter(relacion=item.id)
+        for relacion in relaciones:
+            if(nodos_visitados[relacion.id]==0):
+                estadoDependientes(relacion.id)
+
+
 
 def votacionCerrada(solicitud):
     comite = User.objects.filter(comite__id=solicitud.proyecto.id)
@@ -83,6 +113,9 @@ def votacionCerrada(solicitud):
         if len(voto)==0:
             return False
     return True
+
+
+
 
 def resultado(solicitud):
     votos = Voto.objects.filter(solicitud_id=solicitud.id)
