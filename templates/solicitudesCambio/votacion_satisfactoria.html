@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>Votacion</title>{% endblock %}
+
+
+    </head>
+    <body>
+        {% block contenido %}
+        <div class="container">
+            <h4>Votacion realizada satisfactoriamente <span class="glyphicon glyphicon-ok"></span></h4>
+
+        </div>
+            <button> <a href= '/gestionDeCambios/solicitudes/listar/' > Regresar </a> </button>
+        {% endblock %}
+{% comment %}
+        <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>
