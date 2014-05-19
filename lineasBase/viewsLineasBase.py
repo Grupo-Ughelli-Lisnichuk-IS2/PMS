@@ -172,7 +172,7 @@ def comprobar_items_fase(id_fase):
     Funcion que recibe el id de una fase y retorna verdadero o falso si es que todos los items de la
     misma se encuentran en una linea base
     '''
-    items=Item.objects.filter(tipo_item__fase=id_fase)
+    items=Item.objects.filter(tipo_item__fase=id_fase).exlude(estado='ANU')
     for item in items:
         if item.lineaBase is None or item.estado!='FIN':
             return False
