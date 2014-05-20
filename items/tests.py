@@ -182,11 +182,11 @@ class PMSTestCase(TestCase):
         print 'Test acceder modificar item inexistente'
 
         resp = c.get('/desarrollo/item/modificar/2')
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 302)
         print 'Test acceder a modificar item existente'
 
         resp = c.post('/desarrollo/item/modificar/2',{'nombre':'Item'})
-        self.assertEqual(resp.status_code,200)
+        self.assertEqual(resp.status_code,302)
         print 'Modifica el item'
 
         c = Client()
@@ -397,3 +397,15 @@ class PMSTestCase(TestCase):
         resp = c.get('/desarrollo/item/detalle/muerto/1')
         self.assertEqual(resp.status_code, 200)
         print 'Test detalle item que existe'
+
+    def test_crear_solicitud(self):
+        c = Client()
+        c.login(username='mlopez', password='mlopez')
+
+        resp = c.get('/desarrollo/item/solicitud/88')
+        self.assertEqual(resp.status_code, 404)
+        print 'Test solicitud cambios item que no existe'
+        resp = c.get('/desarrollo/item/solicitud/1')
+        self.assertEqual(resp.status_code, 302)
+        print 'Test solicitud de cambios sin permisos'
+

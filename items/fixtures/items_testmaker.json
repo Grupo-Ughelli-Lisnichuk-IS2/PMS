@@ -13,12 +13,12 @@
     "fields": {
         "name": "Analista", 
         "permissions": [
-            34, 
-            35, 
-            36, 
             37, 
             38, 
             39, 
+            34, 
+            35, 
+            36, 
             16, 
             17, 
             18
@@ -31,6 +31,15 @@
     "fields": {
         "name": "Programador", 
         "permissions": [
+            37, 
+            38, 
+            39, 
+            40, 
+            41, 
+            42, 
+            34, 
+            35, 
+            36, 
             16, 
             17, 
             18
@@ -43,6 +52,9 @@
     "fields": {
         "name": "Desarrollador", 
         "permissions": [
+            37, 
+            38, 
+            39, 
             34, 
             35, 
             36
@@ -55,12 +67,12 @@
     "fields": {
         "name": "Analista del Proyecto 1", 
         "permissions": [
-            34, 
-            35, 
-            36, 
             37, 
             38, 
-            39
+            39, 
+            34, 
+            35, 
+            36
         ]
     }
 },
@@ -92,9 +104,54 @@
     "fields": {
         "name": "Profesor", 
         "permissions": [
-            25, 
-            26, 
-            27
+            37, 
+            38, 
+            39, 
+            31, 
+            32, 
+            33, 
+            34, 
+            35, 
+            36, 
+            46, 
+            47, 
+            48
+        ]
+    }
+},
+{
+    "pk": 11, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador del Proyecto 3", 
+        "permissions": [
+            37, 
+            38, 
+            39, 
+            40, 
+            41, 
+            42, 
+            34, 
+            35, 
+            36
+        ]
+    }
+},
+{
+    "pk": 12, 
+    "model": "auth.group", 
+    "fields": {
+        "name": "Programador de pruebas", 
+        "permissions": [
+            37, 
+            38, 
+            39, 
+            40, 
+            41, 
+            42, 
+            34, 
+            35, 
+            36
         ]
     }
 },
@@ -108,7 +165,7 @@
         "is_active": true, 
         "is_superuser": true, 
         "is_staff": true, 
-        "last_login": "2014-05-08T14:47:44.055Z", 
+        "last_login": "2014-05-20T15:34:49.229Z", 
         "groups": [], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$12000$KHHRXTEb10P2$woL5VHEO8m81UJTyFq1rRITxvIGHRKtWF8FkgoFHUyI=", 
@@ -126,7 +183,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-13T20:04:09.082Z", 
+        "last_login": "2014-05-20T15:23:29.571Z", 
         "groups": [
             1, 
             5
@@ -147,7 +204,7 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-13T20:03:31.033Z", 
+        "last_login": "2014-05-20T12:45:10.850Z", 
         "groups": [
             1, 
             2
@@ -168,11 +225,12 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-01T13:54:44.521Z", 
+        "last_login": "2014-05-20T02:21:15.153Z", 
         "groups": [
+            2, 
             5, 
             6, 
-            2
+            10
         ], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$12000$tWvwCFuJ6gH7$M4I3G9NKgoE1OekXl/DBYi1S6dNf6AyS+Li7fVu+Xb8=", 
@@ -190,11 +248,11 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-04-24T14:10:19.414Z", 
+        "last_login": "2014-05-20T15:15:44.125Z", 
         "groups": [
             1, 
-            5, 
-            2
+            2, 
+            5
         ], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$12000$Za1IVS5PWEnK$mbjj98HaeceoS4xdN9fYVVcI6T2Pdlc1vi83KmPk5b4=", 
@@ -212,9 +270,10 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-02T23:22:13.146Z", 
+        "last_login": "2014-05-20T15:27:17.576Z", 
         "groups": [
-            7
+            7, 
+            10
         ], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$12000$29UW9F0b07le$EiKNNCPL6RU8azc9S7VO5ALSWCLyflLsY1KW/Dahhcw=", 
@@ -232,9 +291,10 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-03T12:38:13.543Z", 
+        "last_login": "2014-05-20T15:23:46.140Z", 
         "groups": [
-            8
+            8, 
+            12
         ], 
         "user_permissions": [], 
         "password": "pbkdf2_sha256$12000$bmw7sQHSZztO$y966Qa9vyDsfieIiBIQs19TbM9Zy+8ahUtKIel/mfOY=", 
@@ -252,10 +312,11 @@
         "is_active": true, 
         "is_superuser": false, 
         "is_staff": false, 
-        "last_login": "2014-05-03T12:39:15.195Z", 
+        "last_login": "2014-05-20T15:35:20.310Z", 
         "groups": [
             1, 
             9, 
+            11, 
             10
         ], 
         "user_permissions": [], 
@@ -329,6 +390,22 @@
     }
 },
 {
+    "pk": "2839za2r3saahgclhi4zkz4j4acuqe7g", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T21:55:04.731Z", 
+        "session_data": "ZjU4ZDllMTBlZTVhOGI3OWI4YTFlNjRkNDZjYjUxOGIyYTY2YjdmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6N30="
+    }
+},
+{
+    "pk": "2bya9kjwsi42qrco1osfm6l6qw599yit", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-19T01:29:07.565Z", 
+        "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
     "pk": "2ecxnsmxgh4typ1y2j0mtzmc3v2ct2ev", 
     "model": "sessions.session", 
     "fields": {
@@ -357,6 +434,14 @@
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-05-08T05:13:24.159Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "487os9j3yyy1spu90tc35si35vl27bvv", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-13T21:24:55.949Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -465,10 +550,26 @@
     }
 },
 {
+    "pk": "8r600ojo4bcxhqph8nompauyz8s09dfv", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T20:26:01.159Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
     "pk": "8zo2x0ket0pimmcc34pzvcn6h5u0ksl1", 
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-04-30T21:55:02.141Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "9gclayi2pvpzj170dlv1852c6evj01xk", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-15T16:01:50.069Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -493,6 +594,14 @@
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-05-08T02:04:38.213Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "b59u589i1wks2pp92wbsarjexf2hvhq7", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-18T23:37:57.498Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -545,6 +654,22 @@
     }
 },
 {
+    "pk": "encw5fcf037zrl9y0q78d41b896zt47q", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-19T23:30:18.023Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "fa28ijfc8xjgylfjo7fvxojdiv6ifgen", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-20T04:02:35.491Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
     "pk": "g0cmmjyxs948xzgpjox5xatgbzkca40a", 
     "model": "sessions.session", 
     "fields": {
@@ -557,6 +682,14 @@
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-05-06T21:32:48.308Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "g52eox5687r9bh3ztno6eeelzahv1yw5", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-15T16:32:07.766Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -601,6 +734,14 @@
     }
 },
 {
+    "pk": "htcx4tb977b82955kz6rsjfs8ykbhonv", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-20T13:15:10.905Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
     "pk": "hzxkxvaaucb6n1fhzcmn9myyij58a51u", 
     "model": "sessions.session", 
     "fields": {
@@ -630,6 +771,14 @@
     "fields": {
         "expire_date": "2014-05-06T18:09:10.458Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "jrserpu8g24g0ofugziwhqfzaoyxv6xc", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-15T19:11:14.673Z", 
+        "session_data": "YWU1YjA5NjNlMjFhMzY2NDIyZWRkMzQ5ZmUxN2RiNjA4YzVlYzk5YTp7fQ=="
     }
 },
 {
@@ -665,6 +814,22 @@
     }
 },
 {
+    "pk": "ku3qmbmvla2aatk70f8pjewthpr4g8zn", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-13T21:23:52.842Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "l7znilr5co0xlo2r03ijziaxldwcvn1s", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-20T16:05:20.322Z", 
+        "session_data": "MjAyZDE2MzRiN2U0MmZhNjk2MTRmMmM4ZTY3MmNkYWViZmRiYjM4NTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6OH0="
+    }
+},
+{
     "pk": "likws3f71e9249h7lqexrdk9knrxxw4r", 
     "model": "sessions.session", 
     "fields": {
@@ -678,6 +843,14 @@
     "fields": {
         "expire_date": "2014-05-08T19:52:51.681Z", 
         "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
+    "pk": "mxvw53b4c2h2ma26ftu22h1qj1qbh1du", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-15T17:40:07.437Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
 {
@@ -713,6 +886,14 @@
     }
 },
 {
+    "pk": "oecu66ocis4ivocu60vulwatno2eomcq", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-19T00:45:44.933Z", 
+        "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
     "pk": "okvh1ak1xdfa4em133fv8bbbmvaz08ta", 
     "model": "sessions.session", 
     "fields": {
@@ -733,6 +914,14 @@
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-05-02T20:47:00.600Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "phmd0153s05ukgknicpil53tf6naio15", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-15T17:02:13.810Z", 
         "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
@@ -825,10 +1014,42 @@
     }
 },
 {
+    "pk": "t5xpk8l4ska5rvob0yv8utnrtp5uf3vj", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-20T03:01:25.981Z", 
+        "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
+    "pk": "tf9akejhh1u59dwdz54qa5pxbz0qbmcd", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T20:56:22.836Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
     "pk": "tpwfb2i304k5mab7khq7mvoo6hnbmnsm", 
     "model": "sessions.session", 
     "fields": {
         "expire_date": "2014-05-08T19:19:55.977Z", 
+        "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
+    }
+},
+{
+    "pk": "tx1786ri09vhy8mdollnt6qiea8rwxa4", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T03:13:45.210Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
+    "pk": "u1wt0kjjbh330jrfufn0n89l4w802tpv", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T02:22:52.099Z", 
         "session_data": "OWI1MDI3NzE5NTlmNDVkZTEzYTc1ZTM4OGRmNWRlYzgzODY5YTVmNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Mn0="
     }
 },
@@ -902,6 +1123,14 @@
     "fields": {
         "expire_date": "2014-05-04T23:37:16.509Z", 
         "session_data": "OTdkMTFlOTRiODUwNWFkM2QyM2YzYmZjMmZlZGIxZGI1M2Q1NGZhNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0="
+    }
+},
+{
+    "pk": "w32xru2waewco0fqvk56yx1xinkhh9zv", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T19:20:58.874Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
     }
 },
 {
@@ -1009,6 +1238,14 @@
     }
 },
 {
+    "pk": "y7igxjzuonndw8m1zi7r1z1bttvd9hmi", 
+    "model": "sessions.session", 
+    "fields": {
+        "expire_date": "2014-05-14T19:51:42.994Z", 
+        "session_data": "Mzc1YmMzZWU1M2RhNjNkZDUwZWNlZGQ1ZTgzZGFkNGI1YWUxZjYxMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6M30="
+    }
+},
+{
     "pk": "zvdg77cu1sfky8ewhrzmfhp6fug02tct", 
     "model": "sessions.session", 
     "fields": {
@@ -1041,13 +1278,13 @@
         "roles": [
             5
         ], 
-        "fCreacion": "2014-04-30", 
+        "fCreacion": "2014-05-14", 
         "fInicio": "2014-04-25", 
         "maxItems": 3, 
         "proyecto": 2, 
         "descripcion": "Planificacion del proyecto", 
         "nombre": "Primera Fase", 
-        "estado": "EJE"
+        "estado": "FIN"
     }
 },
 {
@@ -1058,7 +1295,7 @@
         "roles": [
             6
         ], 
-        "fCreacion": "2014-04-30", 
+        "fCreacion": "2014-05-14", 
         "fInicio": "2014-04-25", 
         "maxItems": 5, 
         "proyecto": 2, 
@@ -1126,13 +1363,47 @@
         "roles": [
             10
         ], 
-        "fCreacion": "2014-05-03", 
+        "fCreacion": "2014-05-20", 
         "fInicio": "2014-05-04", 
         "maxItems": 3, 
         "proyecto": 4, 
         "descripcion": "dfsdfd", 
         "nombre": "Fase 1 proyecto 3", 
-        "estado": "PEN"
+        "estado": "EJE"
+    }
+},
+{
+    "pk": 8, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 2, 
+        "roles": [
+            11
+        ], 
+        "fCreacion": "2014-05-20", 
+        "fInicio": "2014-05-20", 
+        "maxItems": 5, 
+        "proyecto": 4, 
+        "descripcion": "pro", 
+        "nombre": "Programacion", 
+        "estado": "EJE"
+    }
+},
+{
+    "pk": 9, 
+    "model": "fases.fase", 
+    "fields": {
+        "orden": 3, 
+        "roles": [
+            12
+        ], 
+        "fCreacion": "2014-05-20", 
+        "fInicio": "2014-06-20", 
+        "maxItems": 5, 
+        "proyecto": 4, 
+        "descripcion": ":D", 
+        "nombre": "Pruebas", 
+        "estado": "EJE"
     }
 },
 {
@@ -1146,9 +1417,9 @@
         "descripcion": "Project Managmenet System", 
         "nombre": "PMS", 
         "comite": [
+            3, 
             4, 
-            5, 
-            3
+            5
         ], 
         "estado": "ACT"
     }
@@ -1182,9 +1453,9 @@
         "descripcion": "Es un proyecto de prueba", 
         "nombre": "Proyecto 1", 
         "comite": [
-            6, 
+            8, 
             7, 
-            8
+            6
         ], 
         "estado": "ACT"
     }
@@ -1200,11 +1471,11 @@
         "descripcion": ":D", 
         "nombre": "Proyecto 3", 
         "comite": [
-            6, 
+            4, 
             7, 
-            4
+            6
         ], 
-        "estado": "PEN"
+        "estado": "ACT"
     }
 },
 {
@@ -1289,6 +1560,24 @@
     }
 },
 {
+    "pk": 19, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": ":D", 
+        "nombre": "Documentaciones", 
+        "fase": 8
+    }
+},
+{
+    "pk": 20, 
+    "model": "tiposDeItem.tipoitem", 
+    "fields": {
+        "descripcion": ":D", 
+        "nombre": "Documentaciones", 
+        "fase": 9
+    }
+},
+{
     "pk": 1, 
     "model": "tiposDeItem.atributo", 
     "fields": {
@@ -1317,7 +1606,9 @@
         "tipo": "NUM", 
         "tipoItem": [
             2, 
-            18
+            18, 
+            19, 
+            20
         ]
     }
 },
@@ -1476,13 +1767,247 @@
         "tipo_item": 3, 
         "fecha_creacion": "2014-05-07", 
         "costo": 442, 
-        "version": 1, 
-        "fecha_mod": "2014-05-07", 
+        "version": 4, 
+        "fecha_mod": "2014-05-14", 
         "descripcion": "d", 
-        "nombre": "Item", 
+        "nombre": "Requerimientos", 
+        "lineaBase": 18, 
+        "estado": "FIN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 4, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "tipo_item": 3, 
+        "fecha_creacion": "2014-05-14", 
+        "costo": 2000, 
+        "version": 4, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "ers", 
+        "nombre": "Funcionales", 
+        "lineaBase": 21, 
+        "estado": "FIN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 5, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "tipo_item": 3, 
+        "fecha_creacion": "2014-05-14", 
+        "costo": 5000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "nf", 
+        "nombre": "No funcional", 
+        "lineaBase": 21, 
+        "estado": "FIN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 6, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 200, 
+        "tipo": "Sucesor", 
+        "tipo_item": 4, 
+        "fecha_creacion": "2014-05-14", 
+        "costo": 3000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "Casos de uso", 
+        "nombre": "Casos de uso", 
+        "lineaBase": 22, 
+        "estado": "BLO", 
+        "relacion": 4
+    }
+},
+{
+    "pk": 7, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 5, 
+        "tipo": "Hijo", 
+        "tipo_item": 4, 
+        "fecha_creacion": "2014-05-14", 
+        "costo": 100, 
+        "version": 4, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "casos de uso del modulo de desarrollo", 
+        "nombre": "Modulo Desarrollo", 
+        "lineaBase": null, 
+        "estado": "REV", 
+        "relacion": 8
+    }
+},
+{
+    "pk": 8, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 45, 
+        "tipo": "Sucesor", 
+        "tipo_item": 4, 
+        "fecha_creacion": "2014-05-14", 
+        "costo": 54, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "diferentes diagramas uml", 
+        "nombre": "Diagramas UML", 
+        "lineaBase": 39, 
+        "estado": "CON", 
+        "relacion": 4
+    }
+},
+{
+    "pk": 9, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 100, 
+        "tipo": "Hijo", 
+        "tipo_item": 4, 
+        "fecha_creacion": "2014-05-14", 
+        "costo": 100, 
+        "version": 5, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "caso de uso de crear un item", 
+        "nombre": "Crear item", 
+        "lineaBase": null, 
+        "estado": "REV", 
+        "relacion": 8
+    }
+},
+{
+    "pk": 10, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 2000, 
+        "tipo": "Sucesor", 
+        "tipo_item": 4, 
+        "fecha_creacion": "2014-05-15", 
+        "costo": 5000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "hijo", 
+        "nombre": "Hijo", 
+        "lineaBase": null, 
+        "estado": "ANU", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 11, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 5, 
+        "tipo": "Hijo", 
+        "tipo_item": 14, 
+        "fecha_creacion": "2014-05-20", 
+        "costo": 5000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ":D", 
+        "nombre": "Requerimientos Funcionales", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 12
+    }
+},
+{
+    "pk": 12, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 5, 
+        "tipo": null, 
+        "tipo_item": 14, 
+        "fecha_creacion": "2014-05-20", 
+        "costo": 8000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ".", 
+        "nombre": "Requerimientos", 
         "lineaBase": null, 
         "estado": "PEN", 
         "relacion": null
+    }
+},
+{
+    "pk": 13, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "tipo_item": 14, 
+        "fecha_creacion": "2014-05-20", 
+        "costo": 1000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": "alta baja y modificacion de usuarios", 
+        "nombre": "ABM usuarios", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 11
+    }
+},
+{
+    "pk": 14, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 2, 
+        "tipo": null, 
+        "tipo_item": 18, 
+        "fecha_creacion": "2014-05-20", 
+        "costo": 500, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ".", 
+        "nombre": "Requerimientos", 
+        "lineaBase": 40, 
+        "estado": "FIN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 15, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 1, 
+        "tipo": "Sucesor", 
+        "tipo_item": 19, 
+        "fecha_creacion": "2014-05-20", 
+        "costo": 500, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ".", 
+        "nombre": "AMB usuarios", 
+        "lineaBase": 41, 
+        "estado": "BLO", 
+        "relacion": 14
+    }
+},
+{
+    "pk": 16, 
+    "model": "items.item", 
+    "fields": {
+        "tiempo": 2, 
+        "tipo": "Sucesor", 
+        "tipo_item": 20, 
+        "fecha_creacion": "2014-05-20", 
+        "costo": 500, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ":", 
+        "nombre": "AMB proyectos", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 15
     }
 },
 {
@@ -1521,6 +2046,537 @@
         "lineaBase": null, 
         "estado": "VAL", 
         "relacion": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 3, 
+        "tiempo": 5, 
+        "tipo": null, 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 442, 
+        "version": 1, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "d", 
+        "nombre": "Item", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 4, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 3, 
+        "tiempo": 5, 
+        "tipo": null, 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 442, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "d", 
+        "nombre": "Especificacion de Requerimientos", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 5, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 2000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "ers", 
+        "nombre": "Requerimientos Funcionales", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 6, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 3, 
+        "tiempo": 5, 
+        "tipo": null, 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 442, 
+        "version": 3, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "d", 
+        "nombre": "Esp. de Requerimientos", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 7, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 2000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "ers", 
+        "nombre": "Funcionales", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 2000, 
+        "version": 3, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "ers", 
+        "nombre": "Funcionales", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 5
+    }
+},
+{
+    "pk": 9, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 3, 
+        "tiempo": 5, 
+        "tipo": null, 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 442, 
+        "version": 4, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "d", 
+        "nombre": "Requerimientos", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": null
+    }
+},
+{
+    "pk": 10, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 5, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 5000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "nf", 
+        "nombre": "No funcionales", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 11, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 7, 
+        "tiempo": 5, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 1, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "casos de uso del modulo de desarrollo", 
+        "nombre": "Modulo Desarrollo", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 6
+    }
+},
+{
+    "pk": 12, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 7, 
+        "tiempo": 5, 
+        "tipo": "Sucesor", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "casos de uso del modulo de desarrollo", 
+        "nombre": "Modulo Desarrollo", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 13, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 2000, 
+        "version": 4, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "ers", 
+        "nombre": "Funcionales", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 14, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 4, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 2000, 
+        "version": 4, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "ers", 
+        "nombre": "Funcionales", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 15, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 5, 
+        "tiempo": 2, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 3, 
+        "costo": 5000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "nf", 
+        "nombre": "No funcional", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 16, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 6, 
+        "tiempo": 200, 
+        "tipo": "Sucesor", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 3000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "Casos de uso", 
+        "nombre": "Casos de uso", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 17, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 8, 
+        "tiempo": 45, 
+        "tipo": "Sucesor", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 54, 
+        "version": 1, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "diferentes diagramas uml", 
+        "nombre": "Diagramas UML", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 3
+    }
+},
+{
+    "pk": 18, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 7, 
+        "tiempo": 5, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 3, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "casos de uso del modulo de desarrollo", 
+        "nombre": "Modulo Desarrollo", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 6
+    }
+},
+{
+    "pk": 19, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 6, 
+        "tiempo": 200, 
+        "tipo": "Sucesor", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 3000, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "Casos de uso", 
+        "nombre": "Casos de uso", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 4
+    }
+},
+{
+    "pk": 20, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 8, 
+        "tiempo": 45, 
+        "tipo": "Sucesor", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 54, 
+        "version": 2, 
+        "fecha_mod": "2014-05-14", 
+        "descripcion": "diferentes diagramas uml", 
+        "nombre": "Diagramas UML", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 4
+    }
+},
+{
+    "pk": 21, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 9, 
+        "tiempo": 100, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 1, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "caso de uso de crear un item", 
+        "nombre": "Crear item", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 7
+    }
+},
+{
+    "pk": 22, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 9, 
+        "tiempo": 100, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 2, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "caso de uso de crear un item", 
+        "nombre": "Crear item y muchos muchos hijos en el", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 7
+    }
+},
+{
+    "pk": 23, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 9, 
+        "tiempo": 100, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 3, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "caso de uso de crear un item", 
+        "nombre": "Item de desarrollo uno", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 7
+    }
+},
+{
+    "pk": 24, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 10, 
+        "tiempo": 2000, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 5000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "hijo", 
+        "nombre": "Hijo", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 9
+    }
+},
+{
+    "pk": 25, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 9, 
+        "tiempo": 100, 
+        "tipo": "Hijo", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 100, 
+        "version": 4, 
+        "fecha_mod": "2014-05-15", 
+        "descripcion": "caso de uso de crear un item", 
+        "nombre": "Crear item y muchos muchos hijos en el", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": 7
+    }
+},
+{
+    "pk": 26, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 8, 
+        "tiempo": 45, 
+        "tipo": "Sucesor", 
+        "usuario": 3, 
+        "tipo_item": 4, 
+        "costo": 54, 
+        "version": 2, 
+        "fecha_mod": "2014-05-19", 
+        "descripcion": "diferentes diagramas uml", 
+        "nombre": "Diagramas UML", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 4
+    }
+},
+{
+    "pk": 27, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 11, 
+        "tiempo": 5, 
+        "tipo": null, 
+        "usuario": 6, 
+        "tipo_item": 14, 
+        "costo": 5000, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ":D", 
+        "nombre": "Requerimientos Funcionales", 
+        "lineaBase": null, 
+        "estado": "PEN", 
+        "relacion": null
+    }
+},
+{
+    "pk": 28, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 14, 
+        "tiempo": 2, 
+        "tipo": null, 
+        "usuario": 5, 
+        "tipo_item": 18, 
+        "costo": 500, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ".", 
+        "nombre": "Requerimientos", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": null
+    }
+},
+{
+    "pk": 29, 
+    "model": "items.versionitem", 
+    "fields": {
+        "id_item": 15, 
+        "tiempo": 1, 
+        "tipo": "Sucesor", 
+        "usuario": 5, 
+        "tipo_item": 19, 
+        "costo": 500, 
+        "version": 1, 
+        "fecha_mod": "2014-05-20", 
+        "descripcion": ".", 
+        "nombre": "AMB usuarios", 
+        "lineaBase": null, 
+        "estado": "VAL", 
+        "relacion": 14
+    }
+},
+{
+    "pk": 1, 
+    "model": "items.archivo", 
+    "fields": {
+        "id_item": 7, 
+        "nombre": "", 
+        "archivo": "archivos/electiva_1.odt"
+    }
+},
+{
+    "pk": 2, 
+    "model": "items.archivo", 
+    "fields": {
+        "id_item": 10, 
+        "nombre": "", 
+        "archivo": "archivos/pydot"
     }
 },
 {
@@ -1604,6 +2660,186 @@
     }
 },
 {
+    "pk": 9, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 11, 
+        "version": 1, 
+        "valor": "Azul"
+    }
+},
+{
+    "pk": 10, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 14, 
+        "version": 1, 
+        "valor": "3"
+    }
+},
+{
+    "pk": 11, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 16, 
+        "version": 1, 
+        "valor": "Verdadero"
+    }
+},
+{
+    "pk": 12, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 17, 
+        "version": 1, 
+        "valor": "12/04/2014"
+    }
+},
+{
+    "pk": 13, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 18, 
+        "version": 1, 
+        "valor": "cxdsfsdf"
+    }
+},
+{
+    "pk": 14, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 4, 
+        "id_atributo": 19, 
+        "version": 1, 
+        "valor": "01/04/2014"
+    }
+},
+{
+    "pk": 15, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 5, 
+        "id_atributo": 11, 
+        "version": 1, 
+        "valor": "Azul"
+    }
+},
+{
+    "pk": 16, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 5, 
+        "id_atributo": 14, 
+        "version": 1, 
+        "valor": "3"
+    }
+},
+{
+    "pk": 17, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 5, 
+        "id_atributo": 16, 
+        "version": 1, 
+        "valor": "Verdadero"
+    }
+},
+{
+    "pk": 18, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 5, 
+        "id_atributo": 17, 
+        "version": 1, 
+        "valor": "12/04/2014"
+    }
+},
+{
+    "pk": 19, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 5, 
+        "id_atributo": 18, 
+        "version": 1, 
+        "valor": "cxdsfsdf"
+    }
+},
+{
+    "pk": 20, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 5, 
+        "id_atributo": 19, 
+        "version": 1, 
+        "valor": "01/04/2014"
+    }
+},
+{
+    "pk": 21, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 11, 
+        "id_atributo": 23, 
+        "version": 1, 
+        "valor": "Facil"
+    }
+},
+{
+    "pk": 22, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 12, 
+        "id_atributo": 23, 
+        "version": 1, 
+        "valor": "Facil"
+    }
+},
+{
+    "pk": 23, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 13, 
+        "id_atributo": 23, 
+        "version": 1, 
+        "valor": "Facil"
+    }
+},
+{
+    "pk": 24, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 14, 
+        "id_atributo": 4, 
+        "version": 1, 
+        "valor": "10"
+    }
+},
+{
+    "pk": 25, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 15, 
+        "id_atributo": 4, 
+        "version": 1, 
+        "valor": "10"
+    }
+},
+{
+    "pk": 26, 
+    "model": "items.atributoitem", 
+    "fields": {
+        "id_item": 16, 
+        "id_atributo": 4, 
+        "version": 1, 
+        "valor": "10"
+    }
+},
+{
     "pk": 1, 
     "model": "lineasBase.lineabase", 
     "fields": {
@@ -1628,6 +2864,252 @@
         "nombre": "segunda lb", 
         "estado": "CERRADA", 
         "fase": 1
+    }
+},
+{
+    "pk": 18, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "Principal", 
+        "estado": "CERRADA", 
+        "fase": 2
+    }
+},
+{
+    "pk": 19, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "Requerimientos", 
+        "estado": "CERRADA", 
+        "fase": 2
+    }
+},
+{
+    "pk": 20, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "SD", 
+        "estado": "CERRADA", 
+        "fase": 2
+    }
+},
+{
+    "pk": 21, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "D", 
+        "estado": "CERRADA", 
+        "fase": 2
+    }
+},
+{
+    "pk": 22, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "Parcial", 
+        "estado": "ROTA", 
+        "fase": 3
+    }
+},
+{
+    "pk": 39, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "linea 2", 
+        "estado": "ROTA", 
+        "fase": 3
+    }
+},
+{
+    "pk": 40, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "linea 1", 
+        "estado": "CERRADA", 
+        "fase": 7
+    }
+},
+{
+    "pk": 41, 
+    "model": "lineasBase.lineabase", 
+    "fields": {
+        "nombre": "linea 2", 
+        "estado": "CERRADA", 
+        "fase": 8
+    }
+},
+{
+    "pk": 1, 
+    "model": "solicitudesCambio.solicitudcambio", 
+    "fields": {
+        "tiempo": 200, 
+        "usuario": 3, 
+        "fecha": "2014-05-18", 
+        "costo": 3000, 
+        "item": 6, 
+        "proyecto": 2, 
+        "descripcion": "Puedo?", 
+        "nombre": "Quiero modificar", 
+        "estado": "APROBADA"
+    }
+},
+{
+    "pk": 2, 
+    "model": "solicitudesCambio.solicitudcambio", 
+    "fields": {
+        "tiempo": 200, 
+        "usuario": 3, 
+        "fecha": "2014-05-18", 
+        "costo": 3000, 
+        "item": 6, 
+        "proyecto": 2, 
+        "descripcion": "jeje", 
+        "nombre": "jeje", 
+        "estado": "RECHAZADA"
+    }
+},
+{
+    "pk": 3, 
+    "model": "solicitudesCambio.solicitudcambio", 
+    "fields": {
+        "tiempo": 150, 
+        "usuario": 3, 
+        "fecha": "2014-05-19", 
+        "costo": 254, 
+        "item": 8, 
+        "proyecto": 2, 
+        "descripcion": "quiero modificar ", 
+        "nombre": "Modificacion necesaria", 
+        "estado": "APROBADA"
+    }
+},
+{
+    "pk": 4, 
+    "model": "solicitudesCambio.solicitudcambio", 
+    "fields": {
+        "tiempo": 200, 
+        "usuario": 3, 
+        "fecha": "2014-05-19", 
+        "costo": 3000, 
+        "item": 6, 
+        "proyecto": 2, 
+        "descripcion": "por favor", 
+        "nombre": "modificar", 
+        "estado": "PENDIENTE"
+    }
+},
+{
+    "pk": 5, 
+    "model": "solicitudesCambio.solicitudcambio", 
+    "fields": {
+        "tiempo": 3, 
+        "usuario": 5, 
+        "fecha": "2014-05-20", 
+        "costo": 1000, 
+        "item": 15, 
+        "proyecto": 4, 
+        "descripcion": "se necesita modificar el nombre", 
+        "nombre": "modficaciones necesarias", 
+        "estado": "PENDIENTE"
+    }
+},
+{
+    "pk": 1, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "", 
+        "usuario": 2, 
+        "solicitud": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 2, 
+        "solicitud": 2
+    }
+},
+{
+    "pk": 3, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 4, 
+        "solicitud": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 5, 
+        "solicitud": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 2, 
+        "solicitud": 3
+    }
+},
+{
+    "pk": 6, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 5, 
+        "solicitud": 3
+    }
+},
+{
+    "pk": 7, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 4, 
+        "solicitud": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "RECHAZAR", 
+        "usuario": 4, 
+        "solicitud": 2
+    }
+},
+{
+    "pk": 9, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "RECHAZAR", 
+        "usuario": 5, 
+        "solicitud": 2
+    }
+},
+{
+    "pk": 10, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "APROBAR", 
+        "usuario": 2, 
+        "solicitud": 4
+    }
+},
+{
+    "pk": 11, 
+    "model": "solicitudesCambio.voto", 
+    "fields": {
+        "voto": "RECHAZAR", 
+        "usuario": 5, 
+        "solicitud": 4
     }
 }
 ]

@@ -675,6 +675,9 @@ def editar_item(request,id_item):
     flag=es_miembro(request.user.id,id_fase,'cambiar_item')
     item_nuevo=get_object_or_404(Item,id=id_item)
 
+    if flag==False:
+        return HttpResponseRedirect('/denegado')
+
     if flag==True and item_nuevo.estado=='BLO':
         return HttpResponse('<h1> No se puede modificar el item, ya que ya ha sido generada una solicitud de cambio para el mismo</h1>')
 
@@ -708,7 +711,7 @@ def editar_item(request,id_item):
         else:
                 return render_to_response('403.html')
     else:
-        return HttpResponse('{% extends "base.html" %}<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
+        return HttpResponse('<h1> No se puede modificar el item, ya que su estado no es Pendiente</h1>')
 
 
 
