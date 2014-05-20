@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'tiposDeItem',
     'items',
     'lineasBase',
+    'solicitudesCambio',
 )
 
 
