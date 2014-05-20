@@ -1024,6 +1024,7 @@ def recorrer(id_item):
             recorrer(relacion.id)
 
 
+
 def getMaxIdItemEnLista(lista):
     '''
     Funcion para hallar el id maximo de los items de una lista

@@ -16,6 +16,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+RUTA_PROYECTO = os.path.dirname(os.path.realpath(__file__))
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,'templates'),
 )
@@ -51,6 +52,16 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'usuarios',
+    'fases',
+    'proyectos',
+    'tiposDeItem',
+    'items',
+    'lineasBase',
+<<<<<<< HEAD
+    'solicitudesCambio',
+=======
+    'solicitudesCambio'
+>>>>>>> 477b59bc15581f8f92250b7004a0f7281ad9e56b
 )
 
 
@@ -88,7 +99,7 @@ WSGI_APPLICATION = 'PMS.wsgi.application'
 DATABASES = {
  'default': {
  'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add ‘postgresql_psycopg2’, ‘mysql’, ‘sqlite3’ or ‘oracle’.
- 'NAME': 'PMS_db', # Or path to database file if using sqlite3.
+ 'NAME': 'PMS_desarrollo', # Or path to database file if using sqlite3.
  'USER': 'postgres', # Not used with sqlite3.
  'PASSWORD': '123456', # Not used with sqlite3.
  'HOST': 'localhost', # Set to empty string for localhost. Not used with sqlite3.
@@ -101,7 +112,7 @@ DATABASES = {
 INDEX_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/principal'
-
+LOGIN_URL='/login/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -118,3 +129,8 @@ USE_TZ = True
 
 SITE_ID = 1
 STATIC_URL = '/static/'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1800
+
+MEDIA_ROOT = '/home/yolile/archivosPMS/'

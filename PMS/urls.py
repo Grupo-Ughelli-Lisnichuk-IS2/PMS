@@ -20,7 +20,10 @@ urlpatterns = patterns('',
     url(r'^desarrollo/',include('items.urls')),
     url(r'^proyectos/',include('proyectos.urls')),
     url(r'^gestionDeCambios/lineasBase/',include('lineasBase.urls')),
+
      url(r'^gestionDeCambios/solicitudes/',include('solicitudesCambio.urls')),
+
+
     url(r'^principal/$',TemplateView.as_view(template_name='principal.html')),
     url(r'^denegado/$',TemplateView.as_view(template_name='403.html')),
    # url(r'^login/$', viewsUsuarios.LoginView.as_view(), name='login'),
