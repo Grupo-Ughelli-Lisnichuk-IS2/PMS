@@ -76,7 +76,7 @@ def listar_fases(request, id_proyecto):
         return render_to_response('403.html')
     nivel = 1
 
-    return render_to_response('items/abrir_fase.html', {'datos': fases, 'nivel':nivel}, context_instance=RequestContext(request))
+    return render_to_response('items/abrir_fase.html', {'datos': fases, 'nivel':nivel, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
 
 def es_miembro(id_usuario, id_fase,permiso):
