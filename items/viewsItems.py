@@ -389,7 +389,7 @@ def des(request, idarchivo):
     Vista para descargar un archivo de un item especifico
     '''
     archivo=get_object_or_404(Archivo,id=idarchivo)
-    item=get_object_or_404(Item, id=archivo.id_item)
+    item=get_object_or_404(Item, id=archivo.id_item.id)
     titem=item.tipo_item
     fase=titem.fase
     if es_miembro(request.user.id,fase.id,'')!=True:
