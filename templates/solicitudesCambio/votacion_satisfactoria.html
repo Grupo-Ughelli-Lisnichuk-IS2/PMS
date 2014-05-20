@@ -9,7 +9,15 @@
         {% block contenido %}
         <div class="container">
             <h4>Votacion realizada satisfactoriamente <span class="glyphicon glyphicon-ok"></span></h4>
-
+            {% if aprobada == 1 %}
+         <h4>La solicitud ha sido aprobada <span class="glyphicon glyphicon-ok"></span></h4>
+        {% endif %}
+            {% if aprobada  == 0 %}
+         <h4>La solicitud ha sido rechazada <span class="glyphicon glyphicon-ok"></span></h4>
+        {% endif %}
+         {% if aprobada  == 2 %}
+         <h4>Se aguardan los votos de los demas miembros del comite <span class="glyphicon glyphicon-ok"></span></h4>
+        {% endif %}
         </div>
             <button> <a href= '/gestionDeCambios/solicitudes/listar/' > Regresar </a> </button>
         {% endblock %}

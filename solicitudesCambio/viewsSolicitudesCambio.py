@@ -57,29 +57,34 @@ def votar(request, id_solicitud):
     solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     item=solicitud.item
     if request.method=='POST':
-        voto=Voto(solicitud=solicitud,usuario=request.user,voto=request.POST['voto'])
-        voto.save()
-        votacionCerrada(solicitud)
-        if votacionCerrada(solicitud):
-            resultado(solicitud)
-            if solicitud.estado=='APROBADA':
-                item.estado='FIN'
-                item.save()
-                listaitems =itemsProyecto(solicitud.proyecto)
-                maxiditem = getMaxIdItemEnLista(listaitems)
-                global nodos_visitados
-                nodos_visitados = [0]*(maxiditem+1)
-                estadoDependientes(item.id)
-                item.estado='CON'
-                item.save()
-                lb=item.lineaBase
-                lb.estado='ROTA'
-                lb.save()
-            else:
-                item.estado='FIN'
-                item.save()
+        formulario=VotoForm(request.POST)
+        if formulario.is_valid():
+            voto=Voto(solicitud=solicitud,usuario=request.user,voto=request.POST['voto'])
+            voto.save()
+            votacionCerrada(solicitud)
+            aprobada=2
+            if votacionCerrada(solicitud):
+                resultado(solicitud)
+                if solicitud.estado=='APROBADA':
+                    aprobada=1
+                    item.estado='FIN'
+                    item.save()
+                    listaitems =itemsProyecto(solicitud.proyecto)
+                    maxiditem = getMaxIdItemEnLista(listaitems)
+                    global nodos_visitados
+                    nodos_visitados = [0]*(maxiditem+1)
+                    estadoDependientes(item.id)
+                    item.estado='CON'
+                    item.save()
+                    lb=item.lineaBase
+                    lb.estado='ROTA'
+                    lb.save()
+                else:
+                    item.estado='FIN'
+                    item.save()
+                    aprobada=0
 
-        return render_to_response('solicitudesCambio/votacion_satisfactoria.html', context_instance=RequestContext(request))
+            return render_to_response('solicitudesCambio/votacion_satisfactoria.html',{'aprobada':aprobada}, context_instance=RequestContext(request))
     else:
         formulario=VotoForm()
     return render_to_response('solicitudesCambio/votar_solicitud.html',{'formulario':formulario,'solicitud':solicitud}, context_instance=RequestContext(request))
@@ -95,7 +100,7 @@ def estadoDependientes(id_item):
     item=get_object_or_404(Item,id=id_item)
 #    print item.estado
 #    print(not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN'))
-    if not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN'):
+    if not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN' or item.estado=='ANU'):
         item.estado='REV'
         item.save()
         relaciones = Item.objects.filter(relacion=item.id)
@@ -115,6 +120,24 @@ def votacionCerrada(solicitud):
     return True
 
 
+def detalle_solicitud(request,id_solicitud):
+    solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
+    id_usuario=request.user.id
+    lista_proyectos=Proyecto.objects.filter(comite__id=id_usuario, id=solicitud.proyecto.id)
+    if len(lista_proyectos)==0:
+        return HttpResponseRedirect('/denegado')
+
+    votos = Voto.objects.filter(solicitud_id=solicitud.id)
+    favor=0
+    contra=0
+    usuarios=[]
+    for voto in votos:
+        usuarios.append(voto.usuario)
+        if voto.voto=='RECHAZAR':
+            contra+=1
+        else:
+            favor+=1
+    return render_to_response('solicitudesCambio/detalle_solicitud.html',{'usuarios':usuarios,'solicitud':solicitud, 'favor':favor, 'contra':contra}, context_instance=RequestContext(request))
 
 
 def resultado(solicitud):

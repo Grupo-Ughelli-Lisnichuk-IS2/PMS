@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block contenido %}
-	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
+	<h1>Detalle de la solicitud {{ solicitud.nombre }}</h1>
         <br>
         <div><strong>Motivo: </strong>{{ solicitud.descripcion }}</div>
         <div><strong>Solicitante: </strong>{{ solicitud.usuario.first_name }} {{ solicitud.usuario.last_name }}</div>
@@ -9,9 +9,15 @@
         <div><strong>Item: </strong>{{ solicitud.item.nombre }}</div>
         <div><strong>Costo total de la modificacion: </strong>{{ solicitud.costo }}</div>
         <div><strong>Tiempo total de la modificacion: </strong>{{ solicitud.tiempo }}</div>
+        <div><strong>Votos a favor: </strong>{{ favor }}</div>
+        <div><strong>Votos en contra: </strong>{{ contra }}</div>
+        <div><strong>Mimbros que ya votaron: </strong></div>
+        {% for miembro in usuarios %}
+        <div><li>Nombre: </li>{{ miembro.first_name }} {{ miembro.last_name }}</div>
 
-        <p><input type='submit' value='Votar'/></p>
+        {% empty %}
+        <div><strong>Ningun miembro ha emitido su voto </strong></div>
 
-            <a class="btn" href="/gestionDeCambios/solicitudes/listar/"><li class="icon-backward"></li> Regresar</a>
-	</form>
+	{% endfor %}
+    <a class="btn" href="/gestionDeCambios/solicitudes/listar/"><li class="icon-backward"></li> Regresar</a>
 {% endblock %}
