@@ -133,3 +133,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1800
 
 MEDIA_ROOT = '/home/yolile/archivosPMS/'
+
+
+EMAIL_HOST_USER = 'pmsystem14@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'ughellilisnichuk'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

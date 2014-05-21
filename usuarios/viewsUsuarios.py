@@ -139,7 +139,7 @@ def cambiar_pass (request,
 
 
 @login_required
-@permission_required('user')
+
 def editar_perfil(request):
 
     '''

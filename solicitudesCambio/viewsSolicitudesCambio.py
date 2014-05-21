@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.mail import send_mail, EmailMessage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -52,9 +53,9 @@ def puede_votar(id_usuario,id_solicitud):
 
 @login_required
 def votar(request, id_solicitud):
+    solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     if puede_votar(request.user.id, id_solicitud)!=True:
         return HttpResponseRedirect('/denegado')
-    solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     item=solicitud.item
     if request.method=='POST':
         formulario=VotoForm(request.POST)
@@ -144,6 +145,11 @@ def resultado(solicitud):
     votos = Voto.objects.filter(solicitud_id=solicitud.id)
     favor=0
     contra=0
+    mail=solicitud.usuario.email
+    proyecto=str(solicitud.proyecto.nombre)
+    item=str(solicitud.item.nombre)
+    usuario=str(solicitud.usuario.first_name)
+    mail=str(solicitud.usuario.email)
     for voto in votos:
         if voto.voto=='RECHAZAR':
             contra+=1
@@ -152,6 +158,16 @@ def resultado(solicitud):
 
     if contra>favor:
         solicitud.estado='RECHAZADA'
+
+        titulo='Solicitud de cambio Rechazada'
+        mensaje=usuario + ', su solicitud de cambio para el item ' + item + ' del proyecto ' + proyecto + ' ha sido rechazada.'
+
+
     else:
         solicitud.estado='APROBADA'
+        titulo='Solicitud de cambio Aprobada'
+        mensaje=usuario + ', su solicitud de cambio para el item ' + item + ' del proyecto ' + proyecto + ' ha sido aprobada.'
+
+    correo=EmailMessage(titulo, mensaje, to=[mail])
+    correo.send()
     solicitud.save()
