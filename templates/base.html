@@ -26,13 +26,13 @@
 		    <div class = "navbar-inner">
 			    <a class = "brand" href="/principal"> Principal </a>
                 {% if request.session.nivel >= 1 %}
-                <a class = "brand" href="/desarrollo/proyectos/"> Proyectos </a>
+                    <a class = "brand" href="/desarrollo/proyectos/"> Proyectos </a>
                 {% endif %}
                 {% if request.session.nivel == 2 %}
-                <a class = "brand" href="/desarrollo/proyectos/fases/{{ request.session.proyectoID  }}"> Fases </a>
+                    <a class = "brand" href="/desarrollo/proyectos/fases/{{ request.session.proyectoID  }}"> Fases </a>
                 {% endif %}
                 {% if request.session.nivel >= 3 %}
-                <a class = "brand" href="/desarrollo/proyectos/fases/{{ request.session.proyectoID  }}"> Fases </a>
+                    <a class = "brand" href="/desarrollo/proyectos/fases/{{ request.session.proyectoID  }}"> Fases </a>
                 {% endif %}
                 <div class="btn-group pull-right">
                     <a class="btn btn-info" href="#"><i class="icon-user icon-white"></i> {{ user.username }}</a>
@@ -43,40 +43,49 @@
                         <li><a href='/logout'><i class="icon-off"></i> Cerrar Sesion</a></li>
                     </ul>
                 </div>
-                <div class="btn-group pull-right">
-                    <a class="btn btn-info" href="#"><i class="icon-signal icon-white"></i> Desarrollo</a>
-                    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/desarrollo/proyectos/"><i class="icon-folder-open"></i> Abrir Proyecto</a></li>
-                    </ul>
-                </div>
-                {% if request.session.cantSolicitudes > 0 %}
-                <div class="btn-group pull-right">
-                    <a class="btn btn-warning" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
-                    <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/gestionDeCambios/lineasBase/proyectos/"><i class="icon-th-list"></i> Lineas Base</a></li
-                        <li class="divider"></li>
-                        <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio ({{ request.session.cantSolicitudes }})</a></li>
-                    </ul>
-                </div>
-                {% else %}
-                <div class="btn-group pull-right">
-                    <a class="btn btn-info" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
-                    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/gestionDeCambios/lineasBase/proyectos/"><i class="icon-th-list"></i> Lineas Base</a></li>
-                        <li class="divider"></li>
-                        <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio</a></li>
-                    </ul>
-
+                {%  if perms.auth.user and perms.proyecto and perms.auth.groups %}
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info" href="#"><i class="icon-edit icon-white"></i> Administracion </a>
+                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/usuarios/"><i class="icon-user"></i> Usuarios </a></li>
+                            <li><a href="/roles/"><i class="icon-list-alt"></i> Roles </a></li>
+                            <li><a href="/proyectos/"><i class="icon-folder-close"></i> Proyectos </a></li>
+                        </ul>
+                    </div>
                 {% endif %}
-
-		    </div>
-	    </div>
-
-
-
+                {% if not user.is_superuser %}
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info" href="#"><i class="icon-signal icon-white"></i> Desarrollo</a>
+                        <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/desarrollo/proyectos/"><i class="icon-folder-open"></i> Abrir Proyecto</a></li>
+                        </ul>
+                    </div>
+                    {% if request.session.cantSolicitudes > 0 %}
+                        <div class="btn-group pull-right">
+                            <a class="btn btn-warning" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
+                            <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/gestionDeCambios/lineasBase/proyectos/"><i class="icon-th-list"></i> Lineas Base</a></li
+                                <li class="divider"></li>
+                                <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio ({{ request.session.cantSolicitudes }})</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <div class="btn-group pull-right">
+                            <a class="btn btn-info" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
+                            <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/gestionDeCambios/lineasBase/proyectos/"><i class="icon-th-list"></i> Lineas Base</a></li>
+                                <li class="divider"></li>
+                                <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endif %}
+	        </div>
+        </div>
     {% endif %}
 	
     <div class="container-fluid">
