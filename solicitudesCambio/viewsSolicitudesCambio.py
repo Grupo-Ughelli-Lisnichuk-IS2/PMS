@@ -17,7 +17,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 def listar_solicitudes(request):
 
     '''
-    vista para listar los proyectos asignados a un usuario expecifico
+    vista para listar las solicitudes de cambio de un usuario que pertenezca a algun
+    comite de cambios
     '''
 
     request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
@@ -40,6 +41,12 @@ def listar_solicitudes(request):
 
 
 def puede_votar(id_usuario,id_solicitud):
+    '''
+    funcion que sirve para determinar si un usuario puede o no votar,
+    puede votar si:
+    1) Pertenece al comite del proyecto
+    2) Aun no ha votado antes
+    '''
     solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     lista_proyectos=Proyecto.objects.filter(comite__id=id_usuario, id=solicitud.proyecto.id)
     if len(lista_proyectos)==0:
@@ -52,6 +59,13 @@ def puede_votar(id_usuario,id_solicitud):
 
 @login_required
 def votar(request, id_solicitud):
+    '''
+    vista en la cual un miembro del comite emite su voto
+    Tambien se comprueba que con el voto la solicitud ya sea aprobada, rechazada o siga pendiente
+    1) Si es aprobada el item pasa a CON y sus items relacionados a REV y la linea base a ROTA
+    2) Si es rechazada el item pasa a FIN y la linea base queda en CERRADA
+    3) Si sige pendiente el item continua BLO
+    '''
     solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     if puede_votar(request.user.id, id_solicitud)!=True:
         return HttpResponseRedirect('/denegado')
@@ -92,7 +106,7 @@ def votar(request, id_solicitud):
 def estadoDependientes(id_item):
     '''
     Funcion para recorrer el grafo de items del proyecto en profundidad
-    Sumando el costo y el tiempo de cada uno
+    Pasando todos los items relacionados con id_item a REV
     '''
     global nodos_visitados
 #    print id_item
@@ -111,6 +125,9 @@ def estadoDependientes(id_item):
 
 
 def votacionCerrada(solicitud):
+    '''
+    FUncion que comprueba si ya todos los mimebros del comite emitieron su voto
+    '''
     comite = User.objects.filter(comite__id=solicitud.proyecto.id)
     voto=[]
     for miembro in comite:
@@ -121,6 +138,10 @@ def votacionCerrada(solicitud):
 
 
 def detalle_solicitud(request,id_solicitud):
+    '''
+    Vista para ver los detalles de una solicitud, junto con la cantidad de miembros
+    y votos que se emitieron
+    '''
     solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     id_usuario=request.user.id
     lista_proyectos=Proyecto.objects.filter(comite__id=id_usuario, id=solicitud.proyecto.id)
@@ -141,6 +162,12 @@ def detalle_solicitud(request,id_solicitud):
 
 
 def resultado(solicitud):
+    '''
+    Funcion que cuenta los votos emitidos y que detemrina si la solicitud es aprobada o
+    rechazada
+    1) Se manda un mail al usuario solicitante comunicandole el resultado y tambien cambia
+    el estado de la solicitud
+    '''
     votos = Voto.objects.filter(solicitud_id=solicitud.id)
     favor=0
     contra=0
