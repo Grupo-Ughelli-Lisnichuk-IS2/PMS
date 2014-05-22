@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic import View, TemplateView, ListView
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
+from items.viewsItems import contar_solicitudes
 from usuarios.formsUsuarios import RegistrationForm, LoginForm, UserForm
 from django.views.generic.edit import FormView
 from PMS import settings
@@ -98,6 +99,13 @@ def lista_usuarios(request):
     return render_to_response('usuarios/lista_usuarios.html', {'datos': usuarios}, context_instance=RequestContext(request))
 
 @login_required
+def principal(request):
+
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
+    return render_to_response('principal.html', context_instance=RequestContext(request))
+
+
+@login_required
 @permission_required('user')
 def detalle_usuario(request, id_user):
 
@@ -115,7 +123,7 @@ def detalle_usuario(request, id_user):
 
 
 @login_required
-@permission_required('user')
+
 def cambiar_pass (request,
                     template_name='registration/editar_perfil.html',
                     post_change_redirect=None,

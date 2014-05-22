@@ -24,7 +24,7 @@ urlpatterns = patterns('',
      url(r'^gestionDeCambios/solicitudes/',include('solicitudesCambio.urls')),
 
 
-    url(r'^principal/$',TemplateView.as_view(template_name='principal.html')),
+    url(r'^principal/$',viewsUsuarios.principal),
     url(r'^denegado/$',TemplateView.as_view(template_name='403.html')),
    # url(r'^login/$', viewsUsuarios.LoginView.as_view(), name='login'),
     url(r'^logout/$', viewsUsuarios.LogoutView.as_view(), name='logout'),
