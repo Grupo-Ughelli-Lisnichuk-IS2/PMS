@@ -6,7 +6,7 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import RequestContext
 from PMS import settings
 from items.models import Item
-from items.viewsItems import getMaxIdItemEnLista, itemsProyecto
+from items.viewsItems import getMaxIdItemEnLista, itemsProyecto, contar_solicitudes
 from proyectos.models import Proyecto
 from solicitudesCambio.formsSolicitudes import VotoForm
 from solicitudesCambio.models import SolicitudCambio, Voto
@@ -20,6 +20,7 @@ def listar_solicitudes(request):
     vista para listar los proyectos asignados a un usuario expecifico
     '''
 
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     request.session['nivel'] = 0
 
     lista_proyectos=Proyecto.objects.filter(comite__id=request.user.id)
@@ -36,8 +37,6 @@ def listar_solicitudes(request):
 
 
     return render_to_response('solicitudesCambio/listar_solicitudes.html', {'datos': lista_solicitudes}, context_instance=RequestContext(request))
-
-
 
 
 def puede_votar(id_usuario,id_solicitud):
@@ -84,7 +83,7 @@ def votar(request, id_solicitud):
                     item.estado='FIN'
                     item.save()
                     aprobada=0
-
+            request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
             return render_to_response('solicitudesCambio/votacion_satisfactoria.html',{'aprobada':aprobada}, context_instance=RequestContext(request))
     else:
         formulario=VotoForm()

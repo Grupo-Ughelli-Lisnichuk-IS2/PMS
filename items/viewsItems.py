@@ -13,11 +13,26 @@ from PMS import settings
 from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
-from solicitudesCambio.models import SolicitudCambio
+from solicitudesCambio.models import SolicitudCambio, Voto
 from tiposDeItem.models import TipoItem, Atributo
 from items.formsItems import EstadoItemForm, SolicitudCambioForm
 from items.formsItems import PrimeraFaseForm
 from tiposDeItem.viewsTiposDeItem import validarAtributo
+
+
+def contar_solicitudes(id_usuario):
+    lista_proyectos=Proyecto.objects.filter(comite__id=id_usuario)
+    lista_solicitudes=[]
+    if len(lista_proyectos)==0:
+        return 0;
+
+    for proyecto in lista_proyectos:
+        lista=SolicitudCambio.objects.filter(proyecto=proyecto,estado='PENDIENTE')
+        for solicitud in lista:
+            votos=Voto.objects.filter(solicitud_id=solicitud.id, usuario_id=id_usuario)
+            if(len(votos)==0):
+                lista_solicitudes.append(solicitud)
+    return len(lista_solicitudes)
 
 @login_required
 def listar_proyectos(request):
@@ -28,7 +43,7 @@ def listar_proyectos(request):
     usuario = request.user
     #proyectos del cual es lider y su estado es activo
     proyectosLider = Proyecto.objects.filter(lider_id=usuario.id, estado='ACT')
-
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
     fases=[]
     proyectos=[]
@@ -53,6 +68,7 @@ def listar_fases(request, id_proyecto):
     vista para listar las fases asignadas a un usuario de un proyecto especifico
     '''
     #busca todas las fases del proyecto
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     fasesProyecto=Fase.objects.filter(Q(proyecto_id=id_proyecto) & (Q(estado='EJE') | Q(estado='FIN')))
     usuario = request.user
     proyecto=get_object_or_404(Proyecto,id=id_proyecto)
@@ -122,6 +138,7 @@ def listar_tiposDeItem(request, id_fase):
     vista para listar los tipos de item de las fases asignadas a un usuario de un proyecto especifico
     '''
     #se comprueba que el usuario sea miembro de esa fase, si no es alguien sin permisos
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     flag=es_miembro(request.user.id, id_fase,'')
     request.session['faseID'] = id_fase
     fase=Fase.objects.get(id=id_fase)
@@ -258,6 +275,7 @@ def listar_items(request,id_tipo_item):
     '''
     vista para listar los items pertenecientes a un tipo de item
     '''
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     titem=get_object_or_404(TipoItem,id=id_tipo_item)
     fase=titem.fase_id
     if es_miembro(request.user.id,fase,''):
@@ -279,6 +297,7 @@ def listar_versiones(request,id_item):
     '''
     vista para listar todas las versiones existentes de un item dado
     '''
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     item=get_object_or_404(Item,id=id_item)
     if item.estado!='PEN':
         return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
@@ -406,6 +425,7 @@ def detalle_item(request, id_item):
     '''
     vista para ver los detalles del item <id_item>
     '''
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     item=get_object_or_404(Item,id=id_item)
     tipoitem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=tipoitem.fase_id
@@ -425,6 +445,7 @@ def detalle_version_item(request, id_version):
     '''
     vista para ver los detalles del item <id_item>
     '''
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     item=get_object_or_404(VersionItem,id=id_version)
     tipoitem=get_object_or_404(TipoItem,id=item.tipo_item_id)
     fase=tipoitem.fase_id
@@ -620,6 +641,7 @@ def listar_archivos(request, id_item):
     '''
     vista para gestionar los archivos de un item dado'
     '''
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     item=get_object_or_404(Item,id=id_item)
     if item.estado!='PEN':
         return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
@@ -644,6 +666,7 @@ def listar_atributos(request, id_item):
     '''
     vista para gestionar los atributos de un item dado
     '''
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     item=get_object_or_404(Item,id=id_item)
     if item.estado!='PEN':
         return HttpResponse("<h1> No se pueden modificar un item cuyo estado no sea pendiente")
