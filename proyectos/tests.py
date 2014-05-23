@@ -3,7 +3,6 @@ from django.contrib.messages import get_messages
 from django.test import TestCase, Client
 
 from proyectos.models import Proyecto
-from usuarios.tests import PMSTestCase
 # Create your tests here.
 class PMSTestCase(TestCase):
 
