@@ -34,20 +34,35 @@
                 {% if request.session.nivel >= 3 %}
                 <a class = "brand" href="/desarrollo/proyectos/fases/{{ request.session.proyectoID  }}"> Fases </a>
                 {% endif %}
-                    <div class="btn-group pull-right">
-    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> {{ user.username }}</a>
-    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                <div class="btn-group pull-right">
+                    <a class="btn btn-info" href="#"><i class="icon-user icon-white"></i> {{ user.username }}</a>
+                    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/usuarios/configurar"><i class="icon-pencil"></i> Configurar Cuenta</a></li>
+                        <li class="divider"></li>
+                        <li><a href='/logout'><i class="icon-off"></i> Cerrar Sesion</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group pull-right">
+                    <a class="btn btn-info" href="#"><i class="icon-signal icon-white"></i> Desarrollo</a>
+                    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/usuarios/configurar"><i class="icon-folder-open"></i> Abrir Proyecto</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group pull-right">
+                    <a class="btn btn-info" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
+                    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/usuarios/configurar"><i class="icon-th-list"></i> Lineas Base</a></li>
+                        <li class="divider"></li>
+                        <li><a href='/logout'><i class="icon-file"></i> Solicitudes de cambio</a></li>
+                    </ul>
+                </div>
 
-                        <ul class="dropdown-menu">
-    <li><a href="/usuarios/configurar"><i class="icon-pencil"></i> Configurar Cuenta</a></li>
-    <li class="divider"></li>
-    <li><a href='/logout'><i class="icon-off"></i> Cerrar Sesion</a></li>
-    </ul>
-    </div>
-
-
-		       </div>
+		    </div>
 	    </div>
+
 
 
     {% endif %}
