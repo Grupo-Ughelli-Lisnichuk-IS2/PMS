@@ -38,8 +38,6 @@ def listar_solicitudes(request):
     return render_to_response('solicitudesCambio/listar_solicitudes.html', {'datos': lista_solicitudes}, context_instance=RequestContext(request))
 
 
-
-
 def puede_votar(id_usuario,id_solicitud):
     solicitud=get_object_or_404(SolicitudCambio, id=id_solicitud)
     lista_proyectos=Proyecto.objects.filter(comite__id=id_usuario, id=solicitud.proyecto.id)

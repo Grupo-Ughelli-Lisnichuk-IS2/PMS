@@ -47,18 +47,30 @@
                     <a class="btn btn-info" href="#"><i class="icon-signal icon-white"></i> Desarrollo</a>
                     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/usuarios/configurar"><i class="icon-folder-open"></i> Abrir Proyecto</a></li>
+                        <li><a href="/desarrollo/proyectos/"><i class="icon-folder-open"></i> Abrir Proyecto</a></li>
                     </ul>
                 </div>
+                {% if request.session.cantSolicitudes == 0 %}
                 <div class="btn-group pull-right">
                     <a class="btn btn-info" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
                     <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/usuarios/configurar"><i class="icon-th-list"></i> Lineas Base</a></li>
+                        <li><a href="/gestionDeCambios/lineasBase/proyectos/"><i class="icon-th-list"></i> Lineas Base</a></li>
                         <li class="divider"></li>
-                        <li><a href='/logout'><i class="icon-file"></i> Solicitudes de cambio</a></li>
+                        <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio</a></li>
                     </ul>
                 </div>
+                {% elif request.session.cantSolicitudes > 0 %}
+                <div class="btn-group pull-right">
+                    <a class="btn btn-warning" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
+                    <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/gestionDeCambios/lineasBase/proyectos/"><i class="icon-th-list"></i> Lineas Base</a></li
+                        <li class="divider"></li>
+                        <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio ({{ request.session.cantSolicitudes }})</a></li>
+                    </ul>
+                </div>
+                {% endif %}
 
 		    </div>
 	    </div>

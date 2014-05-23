@@ -19,6 +19,19 @@ from items.formsItems import EstadoItemForm, SolicitudCambioForm
 from items.formsItems import PrimeraFaseForm
 from tiposDeItem.viewsTiposDeItem import validarAtributo
 
+
+def contar_solicitudes(id_usuario):
+    lista_proyectos=Proyecto.objects.filter(comite__id=id_usuario)
+    lista_solicitudes=[]
+    if len(lista_proyectos)==0:
+        return 0;
+
+    for proyecto in lista_proyectos:
+        lista=SolicitudCambio.objects.filter(proyecto=proyecto,estado='PENDIENTE')
+        for solicitud in lista:
+            lista_solicitudes.append(solicitud)
+    return len(lista_solicitudes)
+
 @login_required
 def listar_proyectos(request):
 
@@ -28,7 +41,7 @@ def listar_proyectos(request):
     usuario = request.user
     #proyectos del cual es lider y su estado es activo
     proyectosLider = Proyecto.objects.filter(lider_id=usuario.id, estado='ACT')
-
+    request.session['cantSolicitudes']=contar_solicitudes(request.user.id)
     roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
     fases=[]
     proyectos=[]
