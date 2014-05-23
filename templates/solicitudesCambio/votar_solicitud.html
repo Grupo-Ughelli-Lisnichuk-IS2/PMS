@@ -7,8 +7,8 @@
         <div><strong>Proyecto: </strong>{{ solicitud.proyecto.nombre }}</div>
         <div><strong>Fase: </strong>{{ solicitud.item.tipo_item.fase.nombre }}</div>
         <div><strong>Item: </strong>{{ solicitud.item.nombre }}</div>
-        <div><strong>Costo total de la modificacion: </strong>{{ solicitud.costo }}</div>
-        <div><strong>Tiempo total de la modificacion: </strong>{{ solicitud.tiempo }}</div>
+        <div style="color: red"><strong>Costo total de la modificacion: </strong>  {{ solicitud.costo }}</div>
+        <div style="color: red"><strong>Tiempo total de la modificacion: </strong>{{ solicitud.tiempo }}</div>
 
         <p><input type='submit' value='Votar'/></p>
 
