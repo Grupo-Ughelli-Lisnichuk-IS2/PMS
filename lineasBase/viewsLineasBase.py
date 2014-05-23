@@ -39,6 +39,7 @@ def gestionar_proyectos(request):
     vista para listar los proyectos del lider
     '''
 
+    request.session['nivel'] = 0
     usuario = request.user
     #proyectos del cual es lider y su estado es activo
     proyectos = Proyecto.objects.filter(lider_id=usuario.id, estado='ACT')

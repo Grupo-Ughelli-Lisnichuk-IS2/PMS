@@ -56,6 +56,8 @@ def listar_fases(request, id_proyecto):
     fasesProyecto=Fase.objects.filter(Q(proyecto_id=id_proyecto) & (Q(estado='EJE') | Q(estado='FIN')))
     usuario = request.user
     proyecto=get_object_or_404(Proyecto,id=id_proyecto)
+    request.session['proyectoID'] = proyecto.id
+
     fases=[]
     flag=0
     #si es lider pertenece a todas las fases
@@ -75,6 +77,7 @@ def listar_fases(request, id_proyecto):
     if len(fases)==0 and flag==0:
         return render_to_response('403.html')
     nivel = 1
+    request.session['nivel'] = 1
 
     return render_to_response('items/abrir_fase.html', {'datos': fases, 'nivel':nivel, 'proyecto':proyecto}, context_instance=RequestContext(request))
 
@@ -120,13 +123,13 @@ def listar_tiposDeItem(request, id_fase):
     '''
     #se comprueba que el usuario sea miembro de esa fase, si no es alguien sin permisos
     flag=es_miembro(request.user.id, id_fase,'')
-
+    request.session['faseID'] = id_fase
     fase=Fase.objects.get(id=id_fase)
     if flag==True:
         tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
     else:
         return render_to_response('403.html')
-
+    request.session['nivel'] = 2
     nivel = 2
     return render_to_response('items/listar_tipoDeItem.html', {'datos': tiposItem, 'fase':fase, 'nivel':nivel}, context_instance=RequestContext(request))
 
@@ -260,6 +263,7 @@ def listar_items(request,id_tipo_item):
     if es_miembro(request.user.id,fase,''):
         items=Item.objects.filter(tipo_item_id=id_tipo_item).exclude(estado='ANU')
         if puede_add_items(fase):
+            request.session['nivel'] = 3
             nivel = 3
             id_proyecto=Fase.objects.get(id=fase).proyecto_id
             nombre=dibujarProyecto(id_proyecto)
@@ -885,6 +889,7 @@ def eliminar_item(request, id_item):
     id_proyecto=Fase.objects.get(id=fase).proyecto_id
     nombre=dibujarProyecto(id_proyecto)
     nivel=3
+    request.session['nivel'] = 3
     items=Item.objects.filter(tipo_item_id=titem.id).exclude(estado='ANU')
     return render_to_response('items/listar_items.html', {'datos': items, 'titem':titem, 'nivel':nivel,'proyecto':id_proyecto,'name':nombre}, context_instance=RequestContext(request))
 

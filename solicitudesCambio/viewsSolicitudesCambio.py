@@ -19,7 +19,7 @@ def listar_solicitudes(request):
     vista para listar los proyectos asignados a un usuario expecifico
     '''
 
-
+    request.session['nivel'] = 0
 
     lista_proyectos=Proyecto.objects.filter(comite__id=request.user.id)
     lista_solicitudes=[]
