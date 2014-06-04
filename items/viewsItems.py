@@ -526,14 +526,17 @@ def eliminar_archivo(request, id_archivo):
 
     archivo=get_object_or_404(Archivo,id=id_archivo)
     item=archivo.id_item
-    if item.estado!='PEN':
+    if item.estado!='PEN' and item.estado!='CON':
         return HttpResponse("<h1> No se puede modificar un item cuyo estado no sea pendiente")
     titem=item.tipo_item
     fase=titem.fase
     if es_miembro(request.user.id, fase.id, 'eliminar_archivo')!=True:
         return HttpResponseRedirect('/denegado')
     archivo.delete()
-    return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
+    if item.estado=='PEN':
+        return HttpResponseRedirect('/desarrollo/item/archivos/'+str(item.id))
+    if item.estado=='CON':
+        return HttpResponseRedirect('/desarrollo/item/modificar/'+str(item.id))
 
 def validar_hijos(item_hijo, item):
     if item_hijo!=None:
@@ -696,14 +699,56 @@ def listar_atributos(request, id_item):
 def editar_item(request,id_item):
     '''
     vista para cambiar el nombre y la descripcion del tipo de item, y ademas agregar atributos al mismo
+    Si el item se encuentra con el estado CON (solicitud de cambio aprobada), se puede modificar el item solo si el
+    usuario es el que realizo la solicittud de cambio
     '''
     id_tipoItem=get_object_or_404(Item,id=id_item).tipo_item_id
     id_fase=get_object_or_404(TipoItem,id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase,'cambiar_item')
     item_nuevo=get_object_or_404(Item,id=id_item)
-
+    atri=1
     if flag==False:
         return HttpResponseRedirect('/denegado')
+
+    atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+    if len(atributos)==0:
+        atri=0
+    if item_nuevo.estado=='CON':
+        archivos=Archivo.objects.filter(id_item=item_nuevo)
+        solicitud=get_object_or_404(SolicitudCambio, item=item_nuevo)
+        solicitante=solicitud.usuario
+        if request.user==solicitante:
+            if request.method=='POST':
+                formulario = PrimeraFaseForm(request.POST, instance=item_nuevo)
+
+                if formulario.is_valid():
+
+                    if request.FILES.get('file')!=None:
+                        archivo=Archivo(archivo=request.FILES['file'],nombre='', id_item_id=id_item)
+                        archivo.save()
+                    #generar_version(item_nuevo,request.user)
+                    today = datetime.now() #fecha actual
+                    dateFormat = today.strftime("%Y-%m-%d") # fecha con format
+
+                    formulario.save()
+                    item_nuevo.fecha_mod=dateFormat
+                    #item_nuevo.version=item_nuevo.version+1
+                    item_nuevo.save()
+                    for atributo in atributos:
+
+                        a=request.POST.get(atributo.nombre)
+                        if a!=None:
+                            #validar atributos antes de guardarlos
+                            if validarAtributo(request,atributo.tipo,a):
+                                aa=AtributoItem(id_item_id=item_nuevo.id, id_atributo=atributo,valor=a,version=1)
+                                aa.save()
+                    return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
+            else:
+
+                formulario = PrimeraFaseForm(instance=item_nuevo)
+            return render_to_response('items/modificar_item_solicitud.html', { 'formulario': formulario, 'item':item_nuevo,'titem':id_tipoItem, 'atributos':atributos, 'atri':atri, 'archivos':archivos}, context_instance=RequestContext(request))
+        else:
+            return HttpResponseRedirect ('/denegado')
 
     if flag==True and item_nuevo.estado=='BLO':
         return HttpResponse('<h1> No se puede modificar el item, ya que ya ha sido generada una solicitud de cambio para el mismo</h1>')
@@ -715,10 +760,11 @@ def editar_item(request,id_item):
         if flag==True:
 
                 if request.method=='POST':
-                    generar_version(item_nuevo,request.user)
+
                     formulario = PrimeraFaseForm(request.POST, instance=item_nuevo)
 
                     if formulario.is_valid():
+                        generar_version(item_nuevo,request.user)
                         today = datetime.now() #fecha actual
                         dateFormat = today.strftime("%Y-%m-%d") # fecha con format
 
@@ -761,9 +807,9 @@ def cambiar_estado_item(request,id_item):
     if not es_miembro(request.user.id, fase.id,''):
         return HttpResponseRedirect ('/denegado')
     titem=item.tipo_item_id
-    if item.estado=='REV' and lider!=request.user:
+    if lider!=request.user:
         return HttpResponseRedirect ('/denegado')
-    if item.estado=='REV' and lider==request.user:
+    if item.estado=='REV':
         if request.method == 'POST':
             item_form = EstadoItemForm(request.POST, instance=item)
             if item_form.is_valid():
@@ -785,7 +831,8 @@ def cambiar_estado_item(request,id_item):
                                 item.estado='FIN'
                             item.save()
                             return render_to_response('items/creacion_correcta.html',{'id_tipo_item':titem}, context_instance=RequestContext(request))
-
+                    else:
+                        messages.add_message(request,settings.DELETE_MESSAGE, 'El estado no puede cambiar de en Revision A Pendiente')
         else:
             # formulario inicial
             item_form = EstadoItemForm(instance=item)

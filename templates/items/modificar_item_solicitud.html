@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block contenido %}
+
+
+	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
+        <br>
+
+
+{% if atri !=  0%}
+    <br>
+Atributos
+	            	<div style="height:150px;width:430px;overflow:auto;">
+	            	<table width="50%" border="1">
+					<tr>
+					<th scope="col">Nombre</th>
+                    <th scope="col">Tipo</th>
+					<th scope="col">Valor</th>
+					</tr>
+					{% for atributo in atributos %}
+							<tr>
+								<td>{{ atributo.nombre }}</td>
+                                <td>{{ atributo.tipo }}</td>
+								<td><input type='text' name={{ atributo.nombre }} value="{{ atributo.valorDefecto }}"/></td>
+
+							</tr>
+
+					{% endfor %}
+					</table>
+				    <br>
+            </div>
+{% endif %}
+     <h3>Archivos </h3>
+
+ <br>
+
+  <center>
+    {% for dato in archivos %}
+        <br>
+
+
+
+                <a class="btn" href="/desarrollo/item/archivos/eliminar/{{ dato.id }}"><li class="icon-backward"></li>{{ dato.archivo }} Eliminar</a>
+
+
+    {% endfor %}
+
+    </center>
+
+
+<br>
+     <input type="file" name="file" id="id_file" />
+    <br>
+
+        <p><input type='submit' value='Confirmar'/></p>
+        <a class="btn" href="/desarrollo/item/listar/{{ titem }}"><li class="icon-backward"></li> Regresar</a>
+	</form>
+{% endblock %}
