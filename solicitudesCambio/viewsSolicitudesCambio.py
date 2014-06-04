@@ -9,7 +9,7 @@ from items.models import Item
 from items.viewsItems import getMaxIdItemEnLista, itemsProyecto, contar_solicitudes
 from proyectos.models import Proyecto
 from solicitudesCambio.formsSolicitudes import VotoForm
-from solicitudesCambio.models import SolicitudCambio, Voto
+from solicitudesCambio.models import SolicitudCambio, Voto, ItemsARevision
 from django.contrib.auth.decorators import login_required, permission_required
 
 
@@ -86,6 +86,8 @@ def votar(request, id_solicitud):
                     listaitems =itemsProyecto(solicitud.proyecto)
                     maxiditem = getMaxIdItemEnLista(listaitems)
                     global nodos_visitados
+                    global papa
+                    papa=item
                     nodos_visitados = [0]*(maxiditem+1)
                     estadoDependientes(item.id)
                     item.estado='CON'
@@ -115,6 +117,9 @@ def estadoDependientes(id_item):
 #    print item.estado
 #    print(not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN'))
     if not(item.estado=='CON' or item.estado=='BLO' or item.estado=='PEN' or item.estado=='ANU'):
+        if item!=papa:
+            revision=ItemsARevision(item_bloqueado=papa, item_revision=item)
+            revision.save()
         item.estado='REV'
         item.save()
         relaciones = Item.objects.filter(relacion=item.id)
