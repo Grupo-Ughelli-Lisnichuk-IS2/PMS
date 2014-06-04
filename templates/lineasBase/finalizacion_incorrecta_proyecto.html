@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block busqueda %} {% endblock %}
+    <head>
+       {% block titulo %} <title>Fase finalizada</title>{% endblock %}
+
+
+    </head>
+    <body>
+        {% block contenido %}
+        <div class="container">
+            <h4>Proyecto NO Finalizado: El proyecto posee fase(s) que aun no ha(n) sido finalizada(s)<span class="glyphicon glyphicon-ok"></span></h4>
+
+        </div>
+            <button> <a href= '/gestionDeCambios/lineasBase/proyectos/fases/{{proyecto.id}}' > Regresar al listado </a> </button>
+        {% endblock %}
+{% comment %}
+        <script type="text/javascript" src="{% static 'registration/js/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'registration/js/bootstrap.min.js' %}"></script>
+{% endcomment %}
+    </body>
+</html>
