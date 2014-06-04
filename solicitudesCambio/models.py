@@ -6,6 +6,7 @@ ESTADOS = (
     ('RECHAZADA','Rechazada'),
     ('APROBADA','Aprobada'),
     ('PENDIENTE','Pendiente'),
+    ('EJECUTADA', 'Ejecutada')
 )
 
 VOTO = (
@@ -30,3 +31,8 @@ class Voto(models.Model):
     solicitud=models.ForeignKey(SolicitudCambio)
     usuario=models.ForeignKey(User)
     voto=models.CharField(max_length=10, verbose_name='Voto',choices=VOTO, null=False)
+
+
+class ItemsARevision(models.Model):
+    item_bloqueado=models.ForeignKey(Item, unique=False, related_name='item_bloqueado')
+    item_revision=models.ForeignKey(Item, related_name='item_revision')

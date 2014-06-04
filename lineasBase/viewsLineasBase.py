@@ -173,7 +173,7 @@ def comprobar_items_fase(id_fase):
     Funcion que recibe el id de una fase y retorna verdadero o falso si es que todos los items de la
     misma se encuentran en una linea base
     '''
-    items=Item.objects.filter(tipo_item__fase=id_fase).exlude(estado='ANU')
+    items=Item.objects.filter(tipo_item__fase=id_fase).exclude(estado='ANU')
     for item in items:
         if item.lineaBase is None or item.estado!='FIN':
             return False
@@ -288,3 +288,27 @@ def descargar_reporteLB(request, id_proyecto):
     a=file(reporte_lineas_base(id_proyecto))
 
     return StreamingHttpResponse(a,content_type='application/pdf')
+
+
+def finalizar_proyecto(request, id_proyecto):
+
+    '''
+    vista para finalizar un Proyecyo. Los criterios que se tienen en cuenta para finalizarlo son:
+    1) Todas las fases deben estar finalizadas
+
+    '''
+    puede_finalizar=True
+    if not es_lider(request.user.id, id_proyecto):
+        return HttpResponseRedirect ('/denegado')
+    proyecto=get_object_or_404(Fase,id=id_proyecto)
+    fases=Fase.objects.filter(proyecto=proyecto)
+    for fase in fases:
+        if fase.estado!='FIN':
+            puede_finalizar=False
+            break
+    if puede_finalizar:
+        proyecto.estado='FIN'
+        proyecto.save()
+        return render_to_response('lineasBase/finalizacion_correcta_proyecto.html', {'proyecto':proyecto}, context_instance=RequestContext(request))
+    else:
+        return render_to_response('lineasBase/finalizacion_incorrecta_proyecto.html', {'proyecto':proyecto}, context_instance=RequestContext(request))

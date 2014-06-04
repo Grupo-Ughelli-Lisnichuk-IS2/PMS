@@ -13,7 +13,7 @@ from PMS import settings
 from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
 from proyectos.models import Proyecto
-from solicitudesCambio.models import SolicitudCambio, Voto
+from solicitudesCambio.models import SolicitudCambio, Voto, ItemsARevision
 from tiposDeItem.models import TipoItem, Atributo
 from items.formsItems import EstadoItemForm, SolicitudCambioForm
 from items.formsItems import PrimeraFaseForm
@@ -748,11 +748,49 @@ def cambiar_estado_item(request,id_item):
     vista para cambiar el estado de un item, teniendo en cuenta:
     1) Si se quiere pasar de PEN  a VAL, se verifica que el estado de su padre tambien sea VAL
     2) Si se quiere pasar de VAL a PEN se verifica que el estado de sus hijos tambien sea PEN
+    3) Si quiere pasar un item de REV a VAL, el item que origino la solicitud de cambio debe estar con estado FIN y
+        solo el lider puede cambiar este estado
     '''
 
+
     item=get_object_or_404(Item,id=id_item)
+
     nombre=item.nombre
+    fase=item.tipo_item.fase
+    lider=fase.proyecto.lider
+    if not es_miembro(request.user.id, fase.id,''):
+        return HttpResponseRedirect ('/denegado')
     titem=item.tipo_item_id
+    if item.estado=='REV' and lider!=request.user:
+        return HttpResponseRedirect ('/denegado')
+    if item.estado=='REV' and lider==request.user:
+        if request.method == 'POST':
+            item_form = EstadoItemForm(request.POST, instance=item)
+            if item_form.is_valid():
+                    puede_modificar=True
+                    if item_form.cleaned_data['estado']=='VAL':
+                        items_revision=ItemsARevision.objects.all()
+                        for itemR in items_revision:
+                            if itemR==item:
+                                puede_modificar=False
+                                break
+
+                        if puede_modificar==False:
+                            messages.add_message(request,settings.DELETE_MESSAGE, 'No se puede validar el item porque aun no se han aplicado los camvios de la solicitud')
+                            return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre, 'titem':titem}, context_instance=RequestContext(request))
+                        else:
+                            if item.lineaBase is None:
+                                item.estado='VAL'
+                            else:
+                                item.estado='FIN'
+                            item.save()
+                            return render_to_response('items/creacion_correcta.html',{'id_tipo_item':titem}, context_instance=RequestContext(request))
+
+        else:
+            # formulario inicial
+            item_form = EstadoItemForm(instance=item)
+        return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre,'titem':titem}, context_instance=RequestContext(request))
+
     if item.estado=='FIN':
         return HttpResponse('<h1>No se puede cambiar el estado de un item finalizado<h1>')
     if request.method == 'POST':
