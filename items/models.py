@@ -59,7 +59,7 @@ class AtributoItem(models.Model):
     id_item=models.ForeignKey(Item, verbose_name='Item')
     id_atributo=models.ForeignKey(Atributo, verbose_name='Atributo')
     valor=models.CharField(max_length=100, verbose_name='Valor')
-    version=models.PositiveSmallIntegerField(verbose_name='Version')
+
 
 
 

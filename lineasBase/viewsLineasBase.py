@@ -3,18 +3,20 @@ from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Image, Spacer, Indenter
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, render_to_response, get_object_or_404
 
-# Create your views here.
+
 from django.template import RequestContext
 import time
+from django.utils.datetime_safe import datetime
 from PMS import settings
 
 from fases.models import Fase
-from items.models import Item
+from items.models import Item, VersionItem
 from items.viewsItems import es_miembro, dibujarProyecto, generar_version
 from lineasBase.formsLineasBase import LineaBaseForm
 from lineasBase.models import LineaBase
@@ -220,61 +222,61 @@ def reporte_lineas_base(id_proyecto):
     proyecto = get_object_or_404(Proyecto,id=id_proyecto)
     doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_lineasBase"+proyecto.nombre+".pdf",pagesize=letter,
                             rightMargin=72,leftMargin=72,
-                            topMargin=72,bottomMargin=18)
+                            topMargin=30,bottomMargin=18)
 
     Story=[]
     logo = str(settings.BASE_DIR)+"/static/icono.png"
-
-
-
     styles=getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Principal',alignment=1,spaceAfter=20, fontSize=24))
-    styles.add(ParagraphStyle(name='Justify',fontName='Helvetica-bold', alignment=TA_JUSTIFY, fontSize=14,spaceAfter=5))
+    styles.add(ParagraphStyle(name='Justify',fontName='Courier-Oblique', alignment=TA_JUSTIFY, fontSize=14,spaceAfter=5))
     styles.add(ParagraphStyle(name='Titulo', fontName='Helvetica', fontSize=18, alignment=0, spaceAfter=10, spaceBefore=15))
     styles.add(ParagraphStyle(name='Header',fontName='Helvetica',fontSize=20))
     styles.add(ParagraphStyle(name='Items',fontName='Helvetica',fontSize=10,spaceAfter=3))
     styles.add(ParagraphStyle(name='Subtitulos',fontSize=12,spaceAfter=3))
     styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
-
+    im = Image(logo, width=100,height=50)
+    Story.append(im)
     titulo="<b>Lineas Base proyecto "+proyecto.nombre+"<br/>"
     Story.append(Paragraph(titulo,styles['Principal']))
 
-    im = Image(logo, width=100,height=50)
-    Story.append(im)
-    Story.append(Spacer(1, 12))
 
+    Story.append(Spacer(1, 12))
+    date=datetime.now()
+    dateFormat = date.strftime("%d-%m-%Y")
+    Story.append(Paragraph('Fecha: ' + str(dateFormat),styles['Subtitulos']))
     for f in fases:
         Story.append(Spacer(1, 10))
+        Story.append(Indenter(4))
         titulo = Paragraph('<b>' 'Fase '+ str(f.orden) + ' : '+ f.nombre + '<\b>', styles['Titulo'])
         Story.append(titulo)
-        Story.append(Spacer(1, 10))
+        Story.append(Indenter(-4))
+
         lineasBase=set(LineaBase.objects.filter(fase=f))
         contador=0
+
         for lb in lineasBase:
             contador+=1
-            ptext = str(contador)+ ") "+ lb.nombre + "<br/>"
-            Story.append(Paragraph(ptext, styles["Justify"]))
-            Story.append(Spacer(1, 12))
-            ptext ='Estado:  '+ lb.estado
-            Story.append(Paragraph(ptext, styles["Justify"]))
-            Story.append(Spacer(1, 12))
 
-            items=Item.objects.filter(lineaBase=lb.id)
+            ptext = str(contador)+ ". "+ lb.nombre + "/" + lb.estado + " <br/>"
 
+            Story.append(Indenter(15))
+            Story.append(Spacer(1, 10))
+            Story.append(Paragraph(ptext, styles["Justify"]))
+
+            Story.append(Indenter(-15))
+            if lb.estado=='CERRADA':
+                items=Item.objects.filter(lineaBase=lb.id)
+            else:
+                items=VersionItem.objects.filter(lineaBase=lb.id)
             ptext=''
-            if len(items)!=0:
-                Story.append(Paragraph('Items', styles["Subtitulos"]))
+
             for item in items:
-                text=''
-
-                Story.append(Indenter(8))
-                text = " - Nombre: "+ item.nombre+ "  Version: " +str(item.version)+"<br/"
+                text = ''
+                Story.append(Indenter(42))
+                Story.append(Spacer(1, 10))
+                text ="- " + item.nombre  +  ", Version: " + str(item.version)+"<br/"
                 Story.append(Paragraph(text, styles["Items"]))
-                Story.append(Spacer(1, 12))
-                text=''
-            if len(items)!=0:
-                Story.append(Indenter(-8))
-
+                Story.append(Indenter(-42))
     doc.build(Story)
     return str(settings.BASE_DIR)+"/reporte_lineasBase"+proyecto.nombre+".pdf"
 

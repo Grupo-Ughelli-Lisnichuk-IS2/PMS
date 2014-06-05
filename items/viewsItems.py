@@ -12,6 +12,7 @@ import pydot
 from PMS import settings
 from fases.models import Fase
 from items.models import Item, Archivo, AtributoItem, VersionItem
+from lineasBase.models import LineaBase
 from proyectos.models import Proyecto
 from solicitudesCambio.models import SolicitudCambio, Voto, ItemsARevision
 from tiposDeItem.models import TipoItem, Atributo
@@ -501,7 +502,7 @@ def crear_item_hijo(request,id_item):
                             a=request.POST[atributo.nombre]
                             #validar atributos antes de guardarlos
                             if validarAtributo(request,atributo.tipo,a):
-                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a)
                                 aa.save()
                         return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
                 else:
@@ -715,7 +716,8 @@ def editar_item(request,id_item):
         atri=0
     if item_nuevo.estado=='CON':
         archivos=Archivo.objects.filter(id_item=item_nuevo)
-        solicitud=get_object_or_404(SolicitudCambio, item=item_nuevo)
+        solicitudes=SolicitudCambio.objects.filter(item=item_nuevo, estado='APROBADA')
+        solicitud=solicitudes[0]
         solicitante=solicitud.usuario
         if request.user==solicitante:
             if request.method=='POST':
@@ -740,7 +742,7 @@ def editar_item(request,id_item):
                         if a!=None:
                             #validar atributos antes de guardarlos
                             if validarAtributo(request,atributo.tipo,a):
-                                aa=AtributoItem(id_item_id=item_nuevo.id, id_atributo=atributo,valor=a,version=1)
+                                aa=AtributoItem(id_item_id=item_nuevo.id, id_atributo=atributo,valor=a)
                                 aa.save()
                     return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
@@ -796,6 +798,9 @@ def cambiar_estado_item(request,id_item):
     2) Si se quiere pasar de VAL a PEN se verifica que el estado de sus hijos tambien sea PEN
     3) Si quiere pasar un item de REV a VAL, el item que origino la solicitud de cambio debe estar con estado FIN y
         solo el lider puede cambiar este estado
+    4) Si se quiere cambiar el estado de un item CON a VAL, se verifica que solo el que tiene la credencial pueda
+    cambiar el estado, y al cambiarlo, se crea una nueva linea base con todos los items de la anterior, se cambia el
+    estado del item a FIN y el estado de la solicitud a EJECUTADA
     '''
 
 
@@ -807,32 +812,77 @@ def cambiar_estado_item(request,id_item):
     if not es_miembro(request.user.id, fase.id,''):
         return HttpResponseRedirect ('/denegado')
     titem=item.tipo_item_id
-    if lider!=request.user:
-        return HttpResponseRedirect ('/denegado')
-    if item.estado=='REV':
+
+    if item.estado=='REV' or item.estado=='CON':
+        estado_anterior=item.estado
+        if lider!=request.user and item.estado=='REV':
+            return HttpResponseRedirect ('/denegado')
+        solicitudes=SolicitudCambio.objects.filter(item=item, estado='APROBADA')
+        if solicitudes is None and item.estado=='CON':
+            return HttpResponseRedirect ('/denegado')
+        if len(solicitudes)==0:
+            solicitud=None
+            solicitante=None
+        else:
+            solicitud=solicitudes[0]
+            solicitante=solicitud.usuario
+        if (solicitante!=request.user and item.estado=='CON'):
+            return HttpResponseRedirect ('/denegado')
         if request.method == 'POST':
             item_form = EstadoItemForm(request.POST, instance=item)
             if item_form.is_valid():
                     puede_modificar=True
                     if item_form.cleaned_data['estado']=='VAL':
-                        items_revision=ItemsARevision.objects.all()
-                        for itemR in items_revision:
-                            if itemR==item:
-                                puede_modificar=False
-                                break
-
-                        if puede_modificar==False:
-                            messages.add_message(request,settings.DELETE_MESSAGE, 'No se puede validar el item porque aun no se han aplicado los camvios de la solicitud')
-                            return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre, 'titem':titem}, context_instance=RequestContext(request))
-                        else:
-                            if item.lineaBase is None:
-                                item.estado='VAL'
-                            else:
-                                item.estado='FIN'
+                        if estado_anterior=='CON':
+                            #se obtienen todos los items perteneciente a la linea base rota
+                            item=get_object_or_404(Item, id=id_item)
+                            itemsLineaBase=Item.objects.filter(lineaBase=item.lineaBase)
+                            #se crea una linea base nueva
+                            vieja_lb=item.lineaBase
+                            cod=nueva_lb=LineaBase(nombre=vieja_lb.nombre+ ' Nueva', fase=vieja_lb.fase, estado='CERRADA')
+                            nueva_lb.save()
+                            for itemLB in itemsLineaBase:
+                                #se genera una nueva version para cada item
+                                generar_version(itemLB,request.user)
+                                #se agrega cada item a la nueva linea base
+                                instanciaItem=get_object_or_404(Item, id=itemLB.id)
+                                instanciaItem.version=item.version+1
+                                instanciaItem.lineaBase=cod
+                                instanciaItem.save()
+                            #se cambia el estado del item a FIN
+                            item.estado='FIN'
+                            item.version=item.version+1
+                            item.lineaBase=cod
                             item.save()
+                            #se cambia el estado de la solicitud de cambio a ejecutada
+                            solicitud.estado='EJECUTADA'
+                            solicitud.save()
+                            #se borran de la lista los items que estan relacionados con el item modificado
+                            items_revision=ItemsARevision.objects.filter(item_bloqueado=item)
+                            for itemRev in items_revision:
+                                instanciaItemRev=get_object_or_404(ItemsARevision, id=itemRev.id)
+                                instanciaItemRev.delete()
                             return render_to_response('items/creacion_correcta.html',{'id_tipo_item':titem}, context_instance=RequestContext(request))
+                        else:
+                            items_revision=ItemsARevision.objects.all()
+
+                            for itemR in items_revision:
+                                if itemR.item_revision.id==item.id:
+                                    puede_modificar=False
+                                    break
+
+                            if puede_modificar==False:
+                                messages.add_message(request,settings.DELETE_MESSAGE, 'No se puede validar el item porque aun no se han aplicado los cambios de la solicitud')
+                                return render_to_response('items/cambiar_estado_item.html', { 'item_form': item_form, 'nombre':nombre, 'titem':titem}, context_instance=RequestContext(request))
+                            else:
+                                if item.lineaBase is None:
+                                    item.estado='VAL'
+                                else:
+                                    item.estado='FIN'
+                                item.save()
+                                return render_to_response('items/creacion_correcta.html',{'id_tipo_item':titem}, context_instance=RequestContext(request))
                     else:
-                        messages.add_message(request,settings.DELETE_MESSAGE, 'El estado no puede cambiar de en Revision A Pendiente')
+                        messages.add_message(request,settings.DELETE_MESSAGE, 'El estado no puede cambiar de en Revision/Construccion A Pendiente')
         else:
             # formulario inicial
             item_form = EstadoItemForm(instance=item)
