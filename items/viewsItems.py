@@ -236,7 +236,7 @@ def crear_item(request,id_tipoItem):
                         if a!=None:
                             #validar atributos antes de guardarlos
                             if validarAtributo(request,atributo.tipo,a):
-                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a,version=1)
+                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a)
                                 aa.save()
                     return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
