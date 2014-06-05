@@ -296,7 +296,7 @@ def finalizar_proyecto(request, id_proyecto):
 
     '''
     vista para finalizar un Proyecyo. Los criterios que se tienen en cuenta para finalizarlo son:
-    1) Todas las fases deben estar finalizadas 
+    1) Todas las fases deben estar finalizadas
 
     '''
     puede_finalizar=True

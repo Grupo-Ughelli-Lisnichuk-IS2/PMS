@@ -742,7 +742,7 @@ def editar_item(request,id_item):
                         a=request.POST[atributo.id_atributo.nombre]
                         if a!=None:
                             #validar atributos antes de guardarlos
-                            if validarAtributo(request,atributo.tipo,a):
+                            if validarAtributo(request,atributo.id_atributo.tipo,a):
                                 aa=AtributoItem.objects.get(id=atributo.id)
                                 aa.valor=a
                                 aa.save()
