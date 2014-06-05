@@ -711,7 +711,7 @@ def editar_item(request,id_item):
     if flag==False:
         return HttpResponseRedirect('/denegado')
 
-    atributos=Atributo.objects.filter(tipoItem=id_tipoItem)
+    atributos=AtributoItem.objects.filter(id_item=id_item)
     if len(atributos)==0:
         atri=0
     if item_nuevo.estado=='CON':
@@ -736,13 +736,15 @@ def editar_item(request,id_item):
                     item_nuevo.fecha_mod=dateFormat
                     #item_nuevo.version=item_nuevo.version+1
                     item_nuevo.save()
+
                     for atributo in atributos:
 
-                        a=request.POST.get(atributo.nombre)
+                        a=request.POST[atributo.id_atributo.nombre]
                         if a!=None:
                             #validar atributos antes de guardarlos
                             if validarAtributo(request,atributo.tipo,a):
-                                aa=AtributoItem(id_item_id=item_nuevo.id, id_atributo=atributo,valor=a)
+                                aa=AtributoItem.objects.get(id=atributo.id)
+                                aa.valor=a
                                 aa.save()
                     return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
             else:
