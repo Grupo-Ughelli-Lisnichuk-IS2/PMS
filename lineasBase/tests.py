@@ -86,3 +86,18 @@ class PMSTestCase(TestCase):
         resp = c.get('/gestionDeCambios/lineasBase/reporte/2')
         a=self.assertEqual(resp.status_code,200)
         print 'Test reporte Linea Base'
+
+    def test_finalizar_proyecto(self):
+        c = Client()
+        c.login(username='mlopez', password='mlopez')
+        resp = c.get('/gestionDeCambios/lineasBase/proyecto/finalizar/1')
+        a=self.assertEqual(resp.status_code,302)
+        print 'Test finalizar proyecto sin permiso'
+
+        resp = c.get('/gestionDeCambios/lineasBase/proyecto/finalizar/2')
+        a=self.assertEqual(resp.status_code,200)
+        self.assertEqual([resp.context['proyecto'].nombre], ['Proyecto Beta'])
+        print 'Test finalizar proyecto que no puede ser finalizado'
+
+
+

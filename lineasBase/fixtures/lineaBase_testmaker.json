@@ -1545,7 +1545,7 @@
     "fields": {
         "id_item": 1, 
         "id_atributo": 4, 
-        "version": 1, 
+
         "valor": "50"
     }
 },
@@ -1555,7 +1555,7 @@
     "fields": {
         "id_item": 2, 
         "id_atributo": 4, 
-        "version": 1, 
+
         "valor": "100"
     }
 },
@@ -1565,7 +1565,7 @@
     "fields": {
         "id_item": 3, 
         "id_atributo": 11, 
-        "version": 1, 
+
         "valor": "Azul"
     }
 },
@@ -1575,7 +1575,7 @@
     "fields": {
         "id_item": 3, 
         "id_atributo": 14, 
-        "version": 1, 
+
         "valor": "3"
     }
 },
@@ -1585,7 +1585,7 @@
     "fields": {
         "id_item": 3, 
         "id_atributo": 16, 
-        "version": 1, 
+
         "valor": "Verdadero"
     }
 },
@@ -1595,7 +1595,7 @@
     "fields": {
         "id_item": 3, 
         "id_atributo": 17, 
-        "version": 1, 
+
         "valor": "12/04/2014"
     }
 },
@@ -1605,7 +1605,7 @@
     "fields": {
         "id_item": 3, 
         "id_atributo": 18, 
-        "version": 1, 
+
         "valor": "cxdsfsdf"
     }
 },
@@ -1615,7 +1615,7 @@
     "fields": {
         "id_item": 3, 
         "id_atributo": 19, 
-        "version": 1, 
+
         "valor": "01/04/2014"
     }
 },
