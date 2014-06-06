@@ -51,7 +51,8 @@ def importar_proyecto(request, id_proyecto):
     '''
     Vista para importar un proyecto, dado en <id_proyecto>  con su lider y miembros del comite
     '''
-    proyecto=Proyecto.objects.get(id=id_proyecto)
+
+    proyecto=get_object_or_404(Proyecto, id=id_proyecto)
     if request.method=='POST':
         formulario = ProyectoForm(request.POST, initial={'nombre':proyecto.nombre,'observaciones':proyecto.observaciones, 'descripcion':proyecto.descripcion, 'fecha_ini':proyecto.fecha_ini, 'fecha_fin':proyecto.fecha_fin} )
 
@@ -111,7 +112,7 @@ def listar_proyectos(request):
     vista para listar los proyectos del sistema del sistema junto con el nombre de su lider
     '''
 
-    proyectos = Proyecto.objects.all().exclude(estado='ACT')
+    proyectos = Proyecto.objects.filter((Q(estado='PEN')|Q(estado='ANU')))
 
 
     return render_to_response('proyectos/listar_proyectos.html', {'datos': proyectos}, context_instance=RequestContext(request))
@@ -146,6 +147,8 @@ def editar_proyecto(request,id_proyecto):
     '''
     proyecto= Proyecto.objects.get(id=id_proyecto)
     nombre= proyecto.nombre
+    if proyecto.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     if request.method == 'POST':
         # formulario enviado
         proyecto_form = ProyectoForm(request.POST, instance=proyecto)
@@ -177,7 +180,8 @@ def cambiar_estado_proyecto(request,id_proyecto):
     proyecto= Proyecto.objects.get(id=id_proyecto)
     nombre= proyecto.nombre
     comite = User.objects.filter(comite__id=id_proyecto)
-
+    if proyecto.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
 
     if request.method == 'POST':
         proyecto_form = CambiarEstadoForm(request.POST, instance=proyecto)

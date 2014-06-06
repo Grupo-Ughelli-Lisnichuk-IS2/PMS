@@ -1,11 +1,11 @@
 from django.conf.urls import patterns, url, include
 from django.contrib import admin
 from usuarios import viewsUsuarios
-from roles import viewsRoles
+
 from django.views.generic import edit, TemplateView
 from django.contrib.auth.decorators import login_required, permission_required
 admin.autodiscover()
-from fases import viewsFases
+
 
 
 urlpatterns = patterns('',
