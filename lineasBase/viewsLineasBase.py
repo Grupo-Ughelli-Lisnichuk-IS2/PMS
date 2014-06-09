@@ -63,6 +63,8 @@ def gestionar_fases(request, id_proyecto):
     if es_lider(request.user.id, id_proyecto)==False:
         return HttpResponseRedirect('/denegado')
     proyecto=get_object_or_404(Proyecto, id=id_proyecto)
+    if proyecto.estado!='ACT':
+       return HttpResponseRedirect ('/denegado')
     setfases=set(fases)
 
     nombre=dibujarProyecto(id_proyecto)
@@ -79,6 +81,8 @@ def listar_lineasBase(request, id_fase):
     usuario = request.user
     #proyectos del cual es lider y su estado es activo
     fase=get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='EJE':
+      return  HttpResponseRedirect ('/denegado')
     lineasbase=LineaBase.objects.filter(fase_id=id_fase)
     if es_lider(request.user.id, fase.proyecto_id)==False:
         return HttpResponseRedirect('/denegado')
@@ -100,7 +104,7 @@ def crear_lineaBase(request, id_fase):
     fase=get_object_or_404(Fase,id=id_fase)
     if es_lider(request.user.id, fase.proyecto_id)==False:
         return HttpResponseRedirect('/denegado')
-    if fase.estado=='FIN':
+    if fase.estado!='EJE':
         return HttpResponse('<h1>No se pueden crear lineas base ya que la fase ha finalizado</h1>')
     items=[]
     titem=TipoItem.objects.filter(fase_id=fase.id)
@@ -303,6 +307,8 @@ def finalizar_proyecto(request, id_proyecto):
     if not es_lider(request.user.id, id_proyecto):
         return HttpResponseRedirect ('/denegado')
     proyecto=get_object_or_404(Proyecto,id=id_proyecto)
+    if proyecto.estado!='ACT':
+        return HttpResponseRedirect ('/denegado')
     fases=Fase.objects.filter(proyecto=proyecto)
     for fase in fases:
         if fase.estado!='FIN':

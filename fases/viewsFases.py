@@ -20,8 +20,11 @@ def registrar_fase(request,id_proyecto):
         realiza las comprobaciones necesarias con respecto a la fecha de inicio y comprueba tambien que los roles
         asociados no pertenezcan a otra fase.
     '''
+    proyecto = Proyecto.objects.get(id=id_proyecto)
+    if proyecto.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     if request.method=='POST':
-        proyecto = Proyecto.objects.get(id=id_proyecto)
+
         formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
             if len(str(request.POST["fInicio"])) != 10 : #Comprobacion de formato de fecha
@@ -80,6 +83,7 @@ def listar_fases(request,id_proyecto):
 
     fases = Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
     proyecto = Proyecto.objects.get(id=id_proyecto)
+
     if proyecto.estado!='PEN':
         return render_to_response('fases/error_activo.html')
     else:
@@ -94,6 +98,8 @@ def fases_sistema(request,id_proyecto):
     '''
     fases = Fase.objects.all()
     proyecto = Proyecto.objects.get(id=id_proyecto)
+    if proyecto.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     return render_to_response('fases/fases_sistema.html', {'datos': fases, 'proyecto' : proyecto}, context_instance=RequestContext(request))
 
 
@@ -192,10 +198,12 @@ def importar_fase(request, id_fase,id_proyecto):
         Vista para importar los datos de una fase existente para su utilizacion en la creacion de una nueva.
         Realiza las comprobaciones necesarias con respecto a la fecha de inicio y orden de fase.
     '''
-
+    proyecto = get_object_or_404(id=id_proyecto)
+    if proyecto.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     fase= Fase.objects.get(id=id_fase)
     if request.method=='POST':
-        proyecto = Proyecto.objects.get(id=id_proyecto)
+
         formulario = CrearFaseForm(request.POST)
         if formulario.is_valid():
             if len(str(request.POST["fInicio"])) != 10 :
@@ -282,6 +290,8 @@ def asociar(request,id_rol,id_usuario,id_fase):
     vista para asociar un rol perteneciente a una face a un usuario, asociandolo de esta manera a la fase, y al proyecto
     '''
     fase=Fase.objects.get(id=id_fase)
+    if fase.estado!='PEN':
+        return render_to_response('fases/error_activo.html')
     usuario=User.objects.get(id=id_usuario)
     rol = Group.objects.get(id=id_rol)
     usuario.groups.add(rol)

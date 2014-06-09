@@ -20,6 +20,10 @@ def crear_tipoItem(request, id_fase):
     '''
     vista para crear un tipo de Item, que consta de un nombre y una descripcion
     '''
+    fase=get_object_or_404(Fase, id=id_fase)
+
+    if fase.estado != 'PEN':
+        return HttpResponseRedirect ('/denegado')
     if request.method == 'POST':
         # formulario enviado
         tipoItem_form = TipoItemForm(request.POST)
@@ -43,7 +47,10 @@ def listar_tiposItem(request,id_fase):
     '''
 
     tiposItem = TipoItem.objects.filter(fase_id=id_fase).order_by('nombre')
+
     fase = Fase.objects.get(id=id_fase)
+    if fase.estado!='PEN':
+       return HttpResponseRedirect ('/denegado')
     return render_to_response('tiposDeItem/listar_tipoDeItem.html', {'datos': tiposItem, 'fase' : fase}, context_instance=RequestContext(request))
 
 
@@ -95,7 +102,9 @@ def crear_atributo(request, id_tipoItem):
     vista para crear un tipo de atributo, que consta de un nombre, un tipo, un valor por defecto
     y esta relacionado con un tipo de Item
     '''
-
+    fase=get_object_or_404(TipoItem, id_tipoItem).fase
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     if request.method == 'POST':
         # formulario enviado
         atributo_form = AtributoForm(request.POST)
@@ -130,6 +139,8 @@ def eliminar_atributo(request, id_atributo, id_tipoItem):
     atributo = get_object_or_404(Atributo, pk=id_atributo)
     tipoItem = get_object_or_404(TipoItem, pk=id_tipoItem)
     fase = tipoItem.fase
+    if fase.estado!='PEN':
+       return HttpResponseRedirect ('/denegado')
     tipoItem.atributo_set.remove(atributo)
     if(atributo.tipoItem.count() == 0):
         atributo.delete()
@@ -149,6 +160,9 @@ def editar_TipoItem(request,id_tipoItem):
     tipoItem= get_object_or_404(TipoItem,id=id_tipoItem)
     atributos=Atributo.objects.filter(tipoItem__id=id_tipoItem)
     id_fase=tipoItem.fase_id
+    fase=tipoItem.fase
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     if request.method == 'POST':
         # formulario enviado
         tipoItem_form = TipoItemModForm(request.POST, instance=tipoItem)
@@ -169,7 +183,11 @@ def importar_tipoItem(request, id_tipoItem,id_fase):
     '''
     Vista para importar un tipo de Item, dado en <id_fase>
     '''
+
     tipoItem=get_object_or_404(TipoItem,id=id_tipoItem)
+    fase=tipoItem.fase
+    if fase.estado!='PEN':
+       return HttpResponseRedirect ('/denegado')
     if request.method=='POST':
         formulario = TipoItemForm(request.POST, initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )
 
@@ -194,6 +212,8 @@ def eliminar_tipoItem(request, id_tipoItem):
     '''
     tipoItem = get_object_or_404(TipoItem, pk=id_tipoItem)
     fase = tipoItem.fase
+    if fase.estado!='PEN':
+       return HttpResponseRedirect ('/denegado')
     for atributo in tipoItem.atributo_set.all():
         tipoItem.atributo_set.remove(atributo)
         if(atributo.tipoItem.count() == 0):
@@ -211,6 +231,8 @@ def listar_tiposItemProyecto(request,id_fase):
     vista para listar las fases pertenecientes a un proyecto
     '''
     fase = get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='PEN':
+       return HttpResponseRedirect ('/denegado')
     proyecto_id = fase.proyecto_id
     fases = Fase.objects.filter(proyecto_id=proyecto_id)
     tiposItem = TipoItem.objects.all()

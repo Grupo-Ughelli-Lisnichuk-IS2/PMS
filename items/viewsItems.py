@@ -232,7 +232,9 @@ def crear_item(request,id_tipoItem):
 
                     for atributo in atributos:
 
+
                         a=request.POST.get(atributo.nombre)
+
                         if a!=None:
                             #validar atributos antes de guardarlos
                             if validarAtributo(request,atributo.tipo,a):
@@ -499,11 +501,12 @@ def crear_item_hijo(request,id_item):
                     #guardar atributos
                         for atributo in atributos:
 
-                            a=request.POST[atributo.nombre]
+                            a=request.POST.get(atributo.nombre)
                             #validar atributos antes de guardarlos
-                            if validarAtributo(request,atributo.tipo,a):
-                                aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a)
-                                aa.save()
+                            if a!=None:
+                                if validarAtributo(request,atributo.tipo,a):
+                                    aa=AtributoItem(id_item_id=cod.id, id_atributo=atributo,valor=a)
+                                    aa.save()
                         return render_to_response('items/creacion_correcta.html',{'id_tipo_item':id_tipoItem}, context_instance=RequestContext(request))
                 else:
 
