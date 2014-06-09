@@ -295,7 +295,7 @@ def descargar_reporteLB(request, id_proyecto):
 
     return StreamingHttpResponse(a,content_type='application/pdf')
 
-
+@login_required
 def finalizar_proyecto(request, id_proyecto):
 
     '''

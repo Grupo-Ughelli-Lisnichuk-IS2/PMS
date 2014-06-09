@@ -9,7 +9,14 @@
         margin-bottom: 15px;
         padding: 7px 9px;
       }</style>
-
+<head>
+<script>
+function mostrar(id) {
+  obj = document.getElementById(id);
+  obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+}
+</script>
+</head>
 <body>
 
 	{% csrf_token %}
@@ -26,7 +33,16 @@
         {% endif %}
           {% if perms.proyecto %}
 		     <ul> <a href='/proyectos'>Proyectos</a></ul>
+              <ul onclick="mostrar('divTexto1'); return false" > <a href='#'>Reportes</a></ul>
           {% endif %}
+
+            <div id="divTexto1" style="visibility:hidden">
+                   <ul> <a style="font-size: 12px; color: #000000" href='/usuarios'>Usuarios del Sistema</a></ul>
+                    <br>
+                    <ul><a href='/usuarios'>Roles del Sistema</a></ul>
+                    <br>
+                  <ul>  <a href='/usuarios'>Proyectos del Sistema</a></ul>
+            </div>
 
         {% if not user.is_superuser %}
 	    <h2><a href="#">  Modulo de  Desarrollo</a></h2>
