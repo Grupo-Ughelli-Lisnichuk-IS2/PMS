@@ -6,7 +6,8 @@
 Antecesor:
 <select name="entradalista">
     {% for item in items %}
-    <option>{{ item.nombre}}</option>
+    <option label="{{ item.nombre}}">{{ item.id }}</option>
+
     {% endfor %}
 
 </select>
@@ -25,7 +26,7 @@ Atributos
 							<tr>
 								<td>{{ atributo.nombre }}</td>
                                 <td>{{ atributo.tipo }}</td>
-								<td><input type='text' name={{ atributo.nombre }} value="{{ atributo.valorDefecto }}"/></td>
+								<td><input type='text' name={{ atributo.id }} value="{{ atributo.valorDefecto }}"/></td>
 
 							</tr>
 

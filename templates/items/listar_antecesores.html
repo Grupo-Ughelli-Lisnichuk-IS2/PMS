@@ -6,7 +6,7 @@
 Antecesor:
 <select name="entradalista">
     {% for item in items %}
-    <option>{{ item.nombre}}</option>
+    <option label="{{ item.nombre}}">{{ item.id }}</option>
     {% endfor %}
 
 </select>

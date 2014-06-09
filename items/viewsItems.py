@@ -213,12 +213,12 @@ def crear_item(request,id_tipoItem):
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
                     #obtener item con el cual relacionar
-                    item_nombre=request.POST.get('entradalista')
+                    item_nombre=int(request.POST.get('entradalista'))
                     if item_nombre!=None:
-                        item=''
-                        itemss=Item.objects.filter(nombre=item_nombre)
-                        for i in itemss:
-                            item=i
+                        #item=''
+                        #itemss=Item.objects.filter(nombre=item_nombre)
+                        #for i in itemss:
+                        item=Item.objects.get(id=item_nombre)
                         cod=newItem=Item(nombre=request.POST['nombre'],descripcion=request.POST['descripcion'],costo=request.POST['costo'],tiempo=request.POST['tiempo'],estado='PEN',version=1, relacion_id=item.id, tipo='Sucesor',tipo_item_id=id_tipoItem,fecha_creacion=dateFormat, fecha_mod=dateFormat)
                         newItem.save()
                     else:
@@ -232,8 +232,8 @@ def crear_item(request,id_tipoItem):
 
                     for atributo in atributos:
 
-
-                        a=request.POST.get(atributo.nombre)
+                        aa=str(atributo.id)
+                        a=request.POST.get(aa)
 
                         if a!=None:
                             #validar atributos antes de guardarlos
@@ -500,8 +500,8 @@ def crear_item_hijo(request,id_item):
                             archivo.save()
                     #guardar atributos
                         for atributo in atributos:
-
-                            a=request.POST.get(atributo.nombre)
+                            aa=str(atributo.id)
+                            a=request.POST.get(aa)
                             #validar atributos antes de guardarlos
                             if a!=None:
                                 if validarAtributo(request,atributo.tipo,a):
@@ -570,7 +570,7 @@ def cambiar_padre(request, id_item):
                 if aa != item and item.relacion!=aa and item!=aa.relacion:
                     items.append(aa)
         if request.method=='POST':
-            item_nombre=request.POST.get('entradalista')
+            item_nombre=int(request.POST.get('entradalista'))
             if item_nombre!=None:
 
                     item_rel=''
@@ -580,9 +580,9 @@ def cambiar_padre(request, id_item):
                     generar_version(item, request.user)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
-                    itemss=Item.objects.filter(nombre=item_nombre)
-                    for i in itemss:
-                        item_rel=i
+                    #itemss=Item.objects.filter(nombre=item_nombre)
+                    #for i in itemss:
+                    item_rel=Item.objects.get(id=item_nombre)
                     if validar_hijos(item_rel,item):
 
                         item.relacion=item_rel
@@ -624,14 +624,15 @@ def cambiar_antecesor(request, id_item):
                         if it!=item.relacion:
                             items.append(it)
         if request.method=='POST':
-            item_nombre=request.POST.get('entradalista')
-            if item_nombre!=None:
+            item_id=int(request.POST.get('entradalista'))
+            print item_id
+            if item_id!=None:
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
                     generar_version(item,request.user)
                     item.fecha_mod=dateFormat
                     item.version=item.version+1
-                    item_rel=Item.objects.get(nombre=item_nombre)
+                    item_rel=Item.objects.get(id=item_id)
                     item.relacion=item_rel
                     item.tipo='Sucesor'
                     item.save()
