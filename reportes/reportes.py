@@ -7,8 +7,10 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Image, Spacer, Inde
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group, Permission
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from django.utils.datetime_safe import datetime
 from PMS import settings
@@ -20,8 +22,7 @@ from lineasBase.formsLineasBase import LineaBaseForm
 from lineasBase.models import LineaBase
 from lineasBase.viewsLineasBase import es_lider
 from proyectos.models import Proyecto
-from tiposDeItem.models import TipoItem
-
+from tiposDeItem.models import TipoItem, Atributo
 
 
 def reporte_usuarios():
@@ -120,6 +121,163 @@ def descargar_reporteUsuarios(request):
     if request.user.is_superuser!=True:
         return HttpResponseRedirect('/denegado')
     a=file(reporte_usuarios())
+
+    return StreamingHttpResponse(a,content_type='application/pdf')
+
+
+def reporte_proyectos():
+    '''
+    Funcion que genera el reporte de proyectos del sistema
+    '''
+
+
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_proyectos.pdf",pagesize=letter,
+                            rightMargin=72,leftMargin=72,
+                            topMargin=30,bottomMargin=18)
+
+    Story=[]
+    logo = str(settings.BASE_DIR)+"/static/icono.png"
+    styles=getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Principal',alignment=1,spaceAfter=20, fontSize=24))
+    styles.add(ParagraphStyle(name='Justify',fontName='Courier-Oblique', alignment=TA_JUSTIFY, fontSize=14,spaceAfter=5))
+    styles.add(ParagraphStyle(name='Titulo', fontName='Helvetica', fontSize=18, alignment=0, spaceAfter=25, spaceBefore=15))
+    styles.add(ParagraphStyle(name='Header',fontName='Helvetica',fontSize=20))
+    styles.add(ParagraphStyle(name='SubsubsubItems',fontName='Helvetica',fontSize=8,spaceAfter=3))
+    styles.add(ParagraphStyle(name='SubsubItems',fontName='Helvetica',fontSize=10,spaceAfter=3))
+    styles.add(ParagraphStyle(name='SubItems',fontName='Helvetica',fontSize=12,spaceAfter=3))
+    styles.add(ParagraphStyle(name='Items',fontName='Helvetica',fontSize=14,spaceAfter=10, spaceBefore=10))
+    styles.add(ParagraphStyle(name='Subtitulos',fontSize=12,spaceAfter=3))
+    styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
+    im = Image(logo, width=100,height=50)
+    Story.append(im)
+    contador_act=1
+    titulo="<b>Proyectos del Sistema<br/>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+    Story.append(Spacer(1, 12))
+    date=datetime.now()
+    dateFormat = date.strftime("%d-%m-%Y")
+    Story.append(Paragraph('Fecha: ' + str(dateFormat),styles['Subtitulos']))
+    proyectos_activos=Proyecto.objects.filter(estado='ACT')
+    proyectos_fin=Proyecto.objects.filter(estado='FIN')
+    proyectos_pen=Proyecto.objects.filter(estado='PEN')
+    proyectos_anu=Proyecto.objects.filter(estado='ANU')
+    proyectos=[]
+    for p in proyectos_pen:
+        proyectos.append(p)
+    for p in proyectos_activos:
+        proyectos.append(p)
+    for p in proyectos_fin:
+        proyectos.append(p)
+    for p in proyectos_anu:
+        proyectos.append(p)
+    cantidad_pen=len(proyectos_pen)
+    cantidad_act=len(proyectos_activos)
+    cantidad_fin=len(proyectos_fin)
+    contador1=0
+    contador2=0
+    contador3=0
+    contador=0
+    titulo = Paragraph('<b>Proyectos Pendientes <\b>', styles['Titulo'])
+    Story.append(Spacer(1, 12))
+    Story.append(titulo)
+    Story.append(Indenter(25))
+    text ="__________________________________________________________<br>"
+    Story.append(Paragraph(text, styles["Items"]))
+    Story.append(Spacer(1, 12))
+    Story.append(Indenter(-25))
+    for proyecto in proyectos:
+            contador+=1
+            if proyecto.estado=='ACT' and contador1==0:
+                titulo = Paragraph('<b>Proyectos Activos <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                contador1=1
+                contador=1
+            if proyecto.estado=='FIN' and contador2==0:
+                titulo = Paragraph('<b>Proyectos Activos <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                contador2=1
+                contador=1
+            if proyecto.estado=='ANU' and contador3==0:
+                titulo = Paragraph('<b>Proyectos Activos <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                contador3=1
+                contador=1
+
+            Story.append(Indenter(25))
+            text="<strong>"+str(contador)+".</strong>"
+            Story.append(Paragraph(text, styles["Subtitulos"]))
+            text ="<strong>Nombre: </strong>" + proyecto.nombre +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Descripcion: </strong>" + proyecto.descripcion +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            dateFormat = proyecto.fecha_ini.strftime("%d-%m-%Y")
+            text ="<strong>Fecha de creacion: </strong>" + str(dateFormat) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            dateFormat = proyecto.fecha_fin.strftime("%d-%m-%Y")
+            text ="<strong>Fecha de finalizacion: </strong>" + str(dateFormat) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Observaciones: </strong>" + proyecto.observaciones +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Lider: </strong>" + proyecto.lider.username +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Fases: </strong> <br>"
+            Story.append(Paragraph(text, styles["SubItems"]))
+            Story.append(Indenter(-25))
+            fases=Fase.objects.filter(proyecto=proyecto)
+            for fase in fases:
+                text = ''
+                Story.append(Indenter(42))
+                Story.append(Spacer(1, 10))
+                text ="- " + fase.nombre +"<br>"
+                Story.append(Paragraph(text, styles["SubItems"]))
+                Story.append(Indenter(-42))
+                tipoi=TipoItem.objects.filter(fase=fase)
+                Story.append(Indenter(50))
+                text ="<strong>Tipos de Item: </strong> <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                Story.append(Indenter(-50))
+                for ti in tipoi:
+                    text = ''
+                    Story.append(Indenter(50))
+
+                    text ="- " + ti.nombre +"<br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    Story.append(Indenter(-50))
+                    atributos=Atributo.objects.filter(tipoItem__id=ti.id)
+                    Story.append(Indenter(60))
+                    text ="<strong>Tipos de Atributo: </strong> <br>"
+                    Story.append(Paragraph(text, styles["SubsubsubItems"]))
+                    Story.append(Indenter(-60))
+                    for atributo in atributos:
+                        text = ''
+                        Story.append(Indenter(70))
+                        text ="- " + atributo.nombre + ", Tipo "+ atributo.tipo + "<br>"
+                        Story.append(Paragraph(text, styles["SubsubsubItems"]))
+                        Story.append(Indenter(-70))
+
+
+
+            Story.append(Indenter(25))
+            text ="__________________________________________________________<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            Story.append(Spacer(1, 12))
+            Story.append(Indenter(-25))
+            contador_act+=1
+    doc.build(Story)
+    return str(settings.BASE_DIR)+"/reporte_proyectos.pdf"
+
+
+
+def descargar_reporteProyectos(request):
+    '''
+    Vista para descargar el reporte de lineas base de un proyecto especifico
+    '''
+    if request.user.is_superuser!=True:
+        return HttpResponseRedirect('/denegado')
+    a=file(reporte_proyectos())
 
     return StreamingHttpResponse(a,content_type='application/pdf')
 
@@ -292,3 +450,21 @@ def descargar_reporteLB(request, id_proyecto):
     a=file(reporte_lineas_base(id_proyecto))
 
     return StreamingHttpResponse(a,content_type='application/pdf')
+
+
+
+@login_required
+def listar_proyectos_reporte(request):
+
+    '''
+    vista para listar los proyectos del lider
+    '''
+
+    request.session['nivel'] = 0
+    usuario = request.user
+    #proyectos del cual es lider y su estado es activo
+    proyectos = Proyecto.objects.filter(Q(lider=request.user)&((Q(estado='ACT')|Q(estado='FIN'))))
+    if len(proyectos)==0:
+        return HttpResponseRedirect('/denegado')
+    setproyectos=set(proyectos)
+    return render_to_response('listar_proyectos_reporte.html', {'datos': setproyectos, 'user':usuario}, context_instance=RequestContext(request))

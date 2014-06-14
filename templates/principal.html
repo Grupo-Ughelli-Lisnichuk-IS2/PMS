@@ -34,16 +34,16 @@ function mostrar(id) {
           {% if perms.proyecto %}
 		     <ul> <a href='/proyectos'>Proyectos</a></ul>
               <ul onclick="mostrar('divTexto1'); return false" > <a href='#'>Reportes</a></ul>
-          {% endif %}
+
 
             <div id="divTexto1" style="visibility:hidden">
                    <ul> <a style="font-size: 12px; color: #000000" href='/reporte/usuarios/'>Usuarios del Sistema</a></ul>
                     <br>
                     <ul><a href='/reporte/roles/'>Roles del Sistema</a></ul>
                     <br>
-                  <ul>  <a href='/usuarios'>Proyectos del Sistema</a></ul>
+                  <ul>  <a href='/reporte/proyectos/'>Proyectos del Sistema</a></ul>
             </div>
-
+{% endif %}
         {% if not user.is_superuser %}
 	    <h2><a href="#">  Modulo de  Desarrollo</a></h2>
 
@@ -54,6 +54,8 @@ function mostrar(id) {
 
 			<ul> <a href='/gestionDeCambios/lineasBase/proyectos/'>Lineas Base</a></ul>
 		    <ul> <a href='/gestionDeCambios/solicitudes/listar/'>Solicitudes de Cambios</a></ul>
+
+        <h2><a href="/reporte/listar_proyectos_reporte">  Reportes</a></h2>
 
     {% endif %}
 </center>

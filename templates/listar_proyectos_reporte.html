@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+    <center><h1>Proyectos del usuario {{ user.username }}</h1></center>
+
+ <br>
+    <center>
+	<table class='table table-hover' width="80%" border="2">
+        <theader>
+	        <tr>
+	            {% comment %}<th scope="col"> </th> {% endcomment %}
+	            <th style="text-align:center">Nombre</th>
+	            <th style="text-align:center">Estado</th>
+	            <th colspan="6" style="text-align:center">Reportes</th>
+            </tr>
+        </theader>
+
+	    {% for dato in datos  %}
+
+			<tr border="2">
+				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
+				<td>{{ dato.nombre }}</td>
+				<td>{{ dato.estado }}</td>
+
+
+
+		                <td>
+                            <center>
+                	        <a class="btn" href="/reporte/proyecto/proyecto/{{ dato.pk }}"><li class="icon-certificate"></li> Proyecto </a>
+                            <a class="btn" href="/reporte/proyecto/fases/{{ dato.pk }}"><li class="icon-certificate"></li> Fases </a>
+                            <a class="btn" href="/reporte/proyecto/lineasBase/{{ dato.pk }}"><li class="icon-certificate"></li> Lineas Base </a>
+                            <a class="btn" href="/reporte/proyecto/solicitudesCambio/{{ dato.pk }}"><li class="icon-certificate"></li> Solicitudes de Cambio </a>
+                            <a class="btn" href="/reporte/proyecto/items/{{ dato.pk }}"><li class="icon-certificate"></li> Items </a>
+                            <a class="btn" href="/reporte/proyecto/versionesItem/{{ dato.pk }}"><li class="icon-certificate"></li> Versiones de Items </a>
+                        </center>
+                </td>
+			</tr>
+
+            {% empty %}
+                <li>Usted aun no tiene proyectos asignados</li>
+
+{% endfor %}
+	</table>
+    </center>
+
+</form>
+
+       <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="/principal"><li class="icon-arrow-left"></li> Regresar</a>
+            </ul>
+       </div>
+
+	<br>
+
+{% endblock %}
+
+ {% block busqueda %}
+
+    {% endblock %}
