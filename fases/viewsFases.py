@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from PMS import settings
 from fases.models import Fase
+from items.viewsItems import es_miembro
+from lineasBase.viewsLineasBase import es_lider
 from proyectos.models import Proyecto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -20,7 +22,7 @@ def registrar_fase(request,id_proyecto):
         realiza las comprobaciones necesarias con respecto a la fecha de inicio y comprueba tambien que los roles
         asociados no pertenezcan a otra fase.
     '''
-    proyecto = Proyecto.objects.get(id=id_proyecto)
+    proyecto = get_object_or_404(Proyecto, id=id_proyecto)
     if proyecto.estado!='PEN':
         return HttpResponseRedirect ('/denegado')
     if request.method=='POST':
@@ -125,9 +127,11 @@ def editar_fase(request,id_fase):
         Vista para modificar la descripcion, cantidad maxima de items y fecha de Inicio de una fase.
         Realiza las comprobaciones necesarias con respecto a la fecha de inicio.
     '''
-    fase= Fase.objects.get(id=id_fase)
+    fase= get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     id_proyecto= fase.proyecto_id
-    proyecto = Proyecto.objects.get(id=id_proyecto)
+    proyecto = get_object_or_404(Proyecto,id=id_proyecto)
     if proyecto.estado!='PEN':
         return render_to_response('fases/error_activo.html')
     if request.method == 'POST':
@@ -257,15 +261,23 @@ def importar_fase(request, id_fase,id_proyecto):
 @permission_required('fase')
 def asignar_usuario(request,id_fase):
     '''
-    vista auxiliar para obtener un listado de usuarios para asociar a la fase
+    vista auxiliar para obtener un listado de usuarios para asociar a la fase, verificando que el usuario
+    ya no tenga un rol en esa fase
     '''
 
     usuarios=User.objects.filter(is_active=True)
-    fase=Fase.objects.get(id=id_fase)
+    fase=get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
+    users=[]
+    for usuario in usuarios:
+        if es_miembro(usuario.id,id_fase,'') and not es_lider(usuario.id, fase.proyecto.id):
+            users.append(usuario)
+
     proyecto = Proyecto.objects.get(id=fase.proyecto_id)
     if proyecto.estado!='PEN':
         return render_to_response('fases/error_activo.html')
-    return render_to_response('fases/lista_usuarios.html', {'datos': usuarios, 'fase' : fase}, context_instance=RequestContext(request))
+    return render_to_response('fases/lista_usuarios.html', {'datos': users, 'fase' : fase}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -274,7 +286,9 @@ def asignar_rol(request,id_usuario, id_fase):
     '''
     vista auxiliar para obtener el listado de roles asociados a una fase para asociarlos a un usuario
     '''
-    fase=Fase.objects.get(id=id_fase)
+    fase=get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     usuario=User.objects.get(id=id_usuario)
     roles=Group.objects.filter(fase__id=id_fase)
     proyecto = Proyecto.objects.get(id=fase.proyecto_id)
@@ -305,7 +319,9 @@ def des(request,id_fase):
     '''
     vista para listar a los usuario de una fase, para poder desasociarlos
     '''
-    fase=Fase.objects.get(id=id_fase)
+    fase=get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     proyecto = Proyecto.objects.get(id=fase.proyecto_id)
     if proyecto.estado!='PEN':
         return render_to_response('fases/error_activo.html')
@@ -323,7 +339,9 @@ def desasociar(request,id_usuario, id_fase):
     '''
     vista para remover un rol al usuario, desasociandolo asi de una fase
     '''
-    fase=Fase.objects.get(id=id_fase)
+    fase=get_object_or_404(Fase,id=id_fase)
+    if fase.estado!='PEN':
+        return HttpResponseRedirect ('/denegado')
     proyecto = Proyecto.objects.get(id=fase.proyecto_id)
     if proyecto.estado!='PEN':
         return render_to_response('fases/error_activo.html')
