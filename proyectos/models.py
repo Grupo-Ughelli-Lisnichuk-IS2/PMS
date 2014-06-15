@@ -19,3 +19,4 @@ class Proyecto(models.Model):
     lider = models.ForeignKey(User, related_name='lider')
     observaciones = models.TextField(verbose_name='Observaciones')
     comite = models.ManyToManyField(User, related_name='comite')
+    fecha_fin_real=models.DateField()

@@ -25,7 +25,7 @@ class ProyectoForm(forms.ModelForm):
 
         class Meta:
             model = Proyecto
-            exclude = ['estado']
+            exclude = ['estado', 'fecha_fin_real']
 class CambiarEstadoForm(forms.ModelForm):
     estado=forms.CharField(max_length=3,widget=forms.Select(choices= ESTADOS))
     class Meta:
