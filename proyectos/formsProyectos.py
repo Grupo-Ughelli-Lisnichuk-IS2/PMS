@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
+from django.utils.datetime_safe import datetime
 from proyectos.models import Proyecto
 from django.contrib.admin.widgets import AdminDateWidget, FilteredSelectMultiple
 from django.core.exceptions import ValidationError
@@ -11,12 +12,13 @@ ESTADOS = (
     ('ANU','Anulado'),
     ('ACT', 'Activo'),
 )
-
+today = datetime.now() #fecha actual
+dateFormat = today.strftime("%d/%m/%Y") # fecha con format
 
 class ProyectoForm(forms.ModelForm):
         nombre= forms.CharField(max_length=100)
         descripcion= forms.CharField(label='Descripcion', widget=forms.Textarea)
-        fecha_ini=forms.DateField(widget = AdminDateWidget, label='Fecha de Inicio')
+        fecha_ini=forms.DateField(widget = AdminDateWidget, label='Fecha de Inicio',initial=dateFormat)
         fecha_fin=forms.DateField(widget = AdminDateWidget, label='Fecha de finalizacion')
         lider = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True))
         observaciones = forms.CharField(label='Observaciones', widget=forms.Textarea)
