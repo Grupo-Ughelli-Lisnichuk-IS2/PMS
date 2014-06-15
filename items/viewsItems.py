@@ -712,6 +712,7 @@ def editar_item(request,id_item):
     id_fase=get_object_or_404(TipoItem,id=id_tipoItem).fase_id
     flag=es_miembro(request.user.id,id_fase,'cambiar_item')
     item_nuevo=get_object_or_404(Item,id=id_item)
+    item_viejo=get_object_or_404(Item,id=id_item)
     atri=1
     if flag==False:
         return HttpResponseRedirect('/denegado')
@@ -773,7 +774,8 @@ def editar_item(request,id_item):
                     formulario = PrimeraFaseForm(request.POST, instance=item_nuevo)
 
                     if formulario.is_valid():
-                        generar_version(item_nuevo,request.user)
+
+                        generar_version(item_viejo,request.user)
                         today = datetime.now() #fecha actual
                         dateFormat = today.strftime("%Y-%m-%d") # fecha con format
 
