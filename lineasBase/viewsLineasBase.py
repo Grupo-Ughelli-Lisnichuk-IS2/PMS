@@ -147,6 +147,7 @@ def crear_lineaBase(request, id_fase):
                                 generar_version(i,request.user)
                             for item in items:
                                 i=Item.objects.get(id=item)
+                                i.version=i.version+1
                                 i.estado='FIN'
                                 i.lineaBase=cod
                                 i.save()
