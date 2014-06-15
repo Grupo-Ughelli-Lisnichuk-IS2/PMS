@@ -213,8 +213,9 @@ def crear_item(request,id_tipoItem):
                     today = datetime.now() #fecha actual
                     dateFormat = today.strftime("%Y-%m-%d") # fecha con format
                     #obtener item con el cual relacionar
-                    item_nombre=int(request.POST.get('entradalista'))
-                    if item_nombre!=None:
+
+                    if request.POST.get('entradalista')!=None:
+                        item_nombre=int(request.POST.get('entradalista'))
                         #item=''
                         #itemss=Item.objects.filter(nombre=item_nombre)
                         #for i in itemss:
