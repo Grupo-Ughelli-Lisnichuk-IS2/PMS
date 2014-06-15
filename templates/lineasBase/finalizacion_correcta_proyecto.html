@@ -10,13 +10,13 @@
         <div class="container">
             <h4>Proyecto Finalizado Correctamente <span class="glyphicon glyphicon-ok"></span></h4>
             {% if adelanto == 0 %}
-                <h4>Se ha finalizado con {{ dias }} dia(s) de retraso</h4>
+                <h4>Se ha finalizado con <b style="color: red">{{ dias }}</b> dia(s) de retraso</h4>
             {% endif %}
             {% if adelanto == 1  %}
-                <h4>Se ha finalizado con {{ dias }} dia(s) de adelanto </h4>
+                <h4>Se ha finalizado con <b style="color: green">{{ dias }}</b> dia(s) de adelanto </h4>
             {% endif %}
             {% if adelanto == 2 %}
-                <h4>Se ha finalizado en tiempo </h4>
+                <h4>Se ha finalizado en el plazo previsto </h4>
             {% endif %}
 
 

@@ -948,7 +948,7 @@ def dibujarProyecto(proyecto):
     Funcion que grafica los items con sus relaciones de un proyecto dado
     '''
     #inicializar estructuras
-    grafo = pydot.Dot(graph_type='digraph',fontname="Verdana",rankdir="LR")
+    grafo = pydot.Dot(graph_type='digraph',fontname="Verdana",rankdir="UD")
     fases = Fase.objects.filter(proyecto_id=proyecto).order_by('orden')
     clusters = []
     clusters.append(None)
