@@ -48,18 +48,18 @@
                         <a class="btn btn-info" href="#"><i class="icon-edit icon-white"></i> Administracion </a>
                         <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/reporte/usuarios/"><i class="icon-user"></i> Usuarios </a></li>
-                            <li><a href="/reporte/roles/"><i class="icon-list-alt"></i> Roles </a></li>
-                            <li><a href="/reporte/proyectos/"><i class="icon-folder-close"></i> Proyectos </a></li>
+                            <li><a href="/usuarios/"><i class="icon-user"></i> Usuarios </a></li>
+                            <li><a href="/roles/"><i class="icon-list-alt"></i> Roles </a></li>
+                            <li><a href="/proyectos/"><i class="icon-folder-close"></i> Proyectos </a></li>
                         </ul>
                     </div>
                     <div class="btn-group pull-right">
                         <a class="btn btn-info" href="#"><i class="icon-edit icon-white"></i> Reportes </a>
                         <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/usuarios/"><i class="icon-user"></i> Usuarios </a></li>
-                            <li><a href="/roles/"><i class="icon-list-alt"></i> Roles </a></li>
-                            <li><a href="/proyectos/"><i class="icon-folder-close"></i> Proyectos </a></li>
+                            <li><a href="/reporte/usuarios/"><i class="icon-user"></i> Usuarios </a></li>
+                            <li><a href="/reporte/roles/"><i class="icon-list-alt"></i> Roles </a></li>
+                            <li><a href="/reporte/proyectos/"><i class="icon-folder-close"></i> Proyectos </a></li>
                         </ul>
                     </div>
                 {% endif %}
@@ -71,6 +71,7 @@
                             <li><a href="/desarrollo/proyectos/"><i class="icon-folder-open"></i> Abrir Proyecto</a></li>
                         </ul>
                     </div>
+
                     {% if request.session.cantSolicitudes > 0 %}
                         <div class="btn-group pull-right">
                             <a class="btn btn-warning" href="#"><i class="icon-calendar icon-white"></i> Gestion de Cambios</a>
@@ -90,6 +91,7 @@
                                 <li class="divider"></li>
                                 <li><a href='/gestionDeCambios/solicitudes/listar/'><i class="icon-file"></i> Solicitudes de cambio</a></li>
                             </ul>
+                        <a class="btn btn-info" href="/reporte/listar_proyectos_reporte/"><i class="icon-file icon-white"></i> Reportes</a>
                         </div>
                     {% endif %}
                 {% endif %}
