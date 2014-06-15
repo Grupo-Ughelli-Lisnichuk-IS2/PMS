@@ -18,7 +18,7 @@ from PMS import settings
 
 from fases.models import Fase
 from items.models import Item, VersionItem
-from items.viewsItems import es_miembro, dibujarProyecto, generar_version
+from items.viewsItems import es_miembro, dibujarProyecto, generar_version, itemsProyecto
 from lineasBase.formsLineasBase import LineaBaseForm
 from lineasBase.models import LineaBase
 from lineasBase.viewsLineasBase import es_lider
@@ -726,5 +726,114 @@ def descargar_reporteItems(request, id_proyecto):
     if not es_lider(request.user.id, id_proyecto):
         return HttpResponseRedirect('/denegado')
     a=file(reporte_items(id_proyecto))
+
+    return StreamingHttpResponse(a,content_type='application/pdf')
+
+
+
+def reporte_versiones_items(id_proyecto):
+    '''
+    Funcion que genera el reporte de las versiones de los items de un proyecto
+    '''
+
+    fases=Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
+    proyecto = get_object_or_404(Proyecto,id=id_proyecto)
+    items = itemsProyecto(proyecto.id)
+
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_versiones.pdf",pagesize=letter,
+                            rightMargin=72,leftMargin=72,
+                            topMargin=30,bottomMargin=18)
+
+
+    Story=[]
+    logo = str(settings.BASE_DIR)+"/static/icono.png"
+    styles=getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Principal',alignment=1,spaceAfter=20, fontSize=24))
+    styles.add(ParagraphStyle(name='Justify',fontName='Courier-Oblique', alignment=TA_JUSTIFY, fontSize=14,spaceAfter=5))
+    styles.add(ParagraphStyle(name='Titulo', fontName='Helvetica', fontSize=18, alignment=0, spaceAfter=25, spaceBefore=3))
+    styles.add(ParagraphStyle(name='Header',fontName='Helvetica',fontSize=20))
+    styles.add(ParagraphStyle(name='SubsubsubItems',fontName='Helvetica',fontSize=8,spaceAfter=3))
+    styles.add(ParagraphStyle(name='SubsubItems',fontName='Helvetica',fontSize=10,spaceAfter=3))
+    styles.add(ParagraphStyle(name='SubItems',fontName='Helvetica',fontSize=12,spaceAfter=10))
+    styles.add(ParagraphStyle(name='Items',fontName='Helvetica',fontSize=14,spaceAfter=5, spaceBefore=5))
+    styles.add(ParagraphStyle(name='Subtitulos',fontSize=12,spaceAfter=3))
+    styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
+    im = Image(logo, width=100,height=50)
+    Story.append(im)
+    contador_act=1
+    titulo="<b>Versiones de Items del Proyecto "+proyecto.nombre+"<br/>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+    Story.append(Spacer(1, 12))
+    date=datetime.now()
+    dateFormat = date.strftime("%d-%m-%Y")
+    Story.append(Paragraph('Fecha: ' + str(dateFormat),styles['Subtitulos']))
+
+    titulo = Paragraph('<b>Items <\b>', styles['Titulo'])
+    Story.append(Spacer(1, 12))
+    Story.append(titulo)
+    Story.append(Indenter(25))
+    Story.append(Spacer(1, 12))
+    Story.append(Indenter(-25))
+    for it in items:
+            Story.append(Indenter(25))
+            text=""+it.nombre+"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="______________________________________________<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Versiones: </strong> <br>"
+            Story.append(Paragraph(text, styles["SubItems"]))
+            Story.append(Indenter(-25))
+            versiones=VersionItem.objects.filter(id_item=it.id)
+            for ver in versiones:
+                text = ''
+                Story.append(Indenter(42))
+                Story.append(Spacer(1, 10))
+                text ="-Version " + str(ver.version) +"<br>"
+                Story.append(Paragraph(text, styles["SubItems"]))
+                Story.append(Indenter(-42))
+
+                text = ''
+                Story.append(Indenter(50))
+                text ="<strong>Nombre: </strong>" + ver.nombre +"<br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                Story.append(Indenter(-50))
+                Story.append(Indenter(60))
+                text ="<strong>Descripcion: </strong>"+ver.descripcion+" <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                text ="<strong>Costo: </strong>"+str(ver.costo)+" <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                text ="<strong>Tiempo: </strong>"+str(ver.tiempo)+" <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                text ="<strong>Estado: </strong>"+ver.estado+" <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                if ver.relacion!=None:
+                   rel=get_object_or_404(Item,id=ver.relacion_id)
+                   text ="<strong>Relacion: </strong> "+ver.tipo+" de "+rel.nombre+"<br>"
+                else:
+                   text ="<strong>Relacion: </strong> No tiene <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                dateFormat = ver.fecha_mod.strftime("%d-%m-%Y")
+                text ="<strong>Fecha de modificacion: </strong>"+dateFormat+" <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                if ver.lineaBase!=None:
+                   lb=get_object_or_404(LineaBase,id=ver.lineaBase_id)
+                   text ="<strong>Linea Base: </strong>"+lb.nombre+" <br><br><br>"
+                else:
+                   text ="<strong>Linea Base: </strong> Ninguna <br><br><br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
+                Story.append(Indenter(-60))
+
+
+    doc.build(Story)
+    return str(settings.BASE_DIR)+"/reporte_versiones.pdf"
+
+
+def descargar_reporteVersionesItems(request, id_proyecto):
+    '''
+    Vista para descargar el reporte de lineas base de un proyecto especifico
+    '''
+    if not es_lider(request.user.id, id_proyecto):
+        return HttpResponseRedirect('/denegado')
+    a=file(reporte_versiones_items(id_proyecto))
 
     return StreamingHttpResponse(a,content_type='application/pdf')
