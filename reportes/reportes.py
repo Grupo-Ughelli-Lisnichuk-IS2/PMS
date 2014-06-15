@@ -23,6 +23,7 @@ from lineasBase.formsLineasBase import LineaBaseForm
 from lineasBase.models import LineaBase
 from lineasBase.viewsLineasBase import es_lider
 from proyectos.models import Proyecto
+from solicitudesCambio.models import SolicitudCambio, Voto
 from tiposDeItem.models import TipoItem, Atributo
 
 
@@ -841,5 +842,142 @@ def descargar_reporteVersionesItems(request, id_proyecto):
     if not es_lider(request.user.id, id_proyecto):
         return HttpResponseRedirect('/denegado')
     a=file(reporte_versiones_items(id_proyecto))
+
+    return StreamingHttpResponse(a,content_type='application/pdf')
+
+
+def reporte_solicitudes(id_proyecto):
+    '''
+    Funcion que genera el reporte de roles del sistema
+    '''
+
+    proyecto = get_object_or_404(Proyecto,id=id_proyecto)
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_solicitudes.pdf",pagesize=letter,
+                            rightMargin=72,leftMargin=72,
+                            topMargin=30,bottomMargin=18)
+
+    Story=[]
+    logo = str(settings.BASE_DIR)+"/static/icono.png"
+    styles=getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Principal',alignment=1,spaceAfter=20, fontSize=24))
+    styles.add(ParagraphStyle(name='Justify',fontName='Courier-Oblique', alignment=TA_JUSTIFY, fontSize=14,spaceAfter=5))
+    styles.add(ParagraphStyle(name='Titulo', fontName='Helvetica', fontSize=18, alignment=0, spaceAfter=25, spaceBefore=15))
+    styles.add(ParagraphStyle(name='Header',fontName='Helvetica',fontSize=20))
+    styles.add(ParagraphStyle(name='SubItems',fontName='Helvetica',fontSize=10,spaceAfter=3))
+    styles.add(ParagraphStyle(name='Items',fontName='Helvetica',fontSize=12,spaceAfter=10, spaceBefore=10))
+    styles.add(ParagraphStyle(name='Subtitulos',fontSize=12,spaceAfter=3))
+    styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
+    im = Image(logo, width=100,height=50)
+    Story.append(im)
+    contador_act=1
+    titulo="<b>Solicitudes del proyecto "+proyecto.nombre+"<br/>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+
+
+    Story.append(Spacer(1, 12))
+    date=datetime.now()
+    dateFormat = date.strftime("%d-%m-%Y")
+    Story.append(Paragraph('Fecha: ' + str(dateFormat),styles['Subtitulos']))
+    solicitudes=[]
+    solicitudesPen=SolicitudCambio.objects.filter(proyecto=proyecto,estado='PENDIENTE')
+    for s in solicitudesPen:
+        solicitudes.append(s)
+    pen=0
+    solicitudesApr=SolicitudCambio.objects.filter(proyecto=proyecto,estado='APROBADA')
+    for s in solicitudesApr:
+        solicitudes.append(s)
+    apr=0
+    solicitudesRec=SolicitudCambio.objects.filter(proyecto=proyecto,estado='RECHAZADA')
+    for s in solicitudesRec:
+        solicitudes.append(s)
+    rec=0
+    solicitudesEje=SolicitudCambio.objects.filter(proyecto=proyecto,estado='EJECUTADA')
+    for s in solicitudesEje:
+        solicitudes.append(s)
+    eje=0
+    contador=0
+
+
+    for solicitud in solicitudes:
+
+            contador+=1
+            if solicitud.estado=='PENDIENTE' and pen==0:
+                titulo = Paragraph('<b>Solicitudes Pendientes <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                text ="__________________________________________________________<br>"
+                Story.append(Paragraph(text, styles["Items"]))
+                pen=1
+                contador=1
+            if solicitud.estado=='APROBADA' and apr==0:
+                titulo = Paragraph('<b>Solicitudes Aprobadas <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                text ="__________________________________________________________<br>"
+                Story.append(Paragraph(text, styles["Items"]))
+                apr=1
+                contador=1
+
+            if solicitud.estado=='RECHAZADA' and rec==0:
+                titulo = Paragraph('<b>Solicitudes Rechazadas <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                text ="__________________________________________________________<br>"
+                Story.append(Paragraph(text, styles["Items"]))
+                rec=1
+                contador=1
+
+            if solicitud.estado=='EJECUTADA' and eje==0:
+                titulo = Paragraph('<b>Solicitudes Ejecutadas <\b>', styles['Titulo'])
+                Story.append(Spacer(1, 12))
+                Story.append(titulo)
+                text ="__________________________________________________________<br>"
+                Story.append(Paragraph(text, styles["Items"]))
+                eje=1
+                contador=1
+
+            Story.append(Indenter(25))
+            text="<strong>"+str(contador)+".</strong>"
+            Story.append(Paragraph(text, styles["Subtitulos"]))
+            text ="<strong>Nombre: </strong>" + solicitud.nombre +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Descripcion: </strong>" + solicitud.descripcion +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            it=get_object_or_404(Item,id=solicitud.item_id)
+            text ="<strong>Item: </strong>" + it.nombre +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            dateFormat = solicitud.fecha.strftime("%d-%m-%Y %H:%M:%S")
+            text ="<strong>Fecha de creacion: </strong>" + str(dateFormat) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Costo: </strong>" + str(solicitud.costo) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Tiempo: </strong>" + str(solicitud.tiempo) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Usuario: </strong>" + solicitud.usuario.first_name +" "+ solicitud.usuario.last_name +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            favor=Voto.objects.filter(solicitud_id=solicitud.id,voto="APROBAR").count()
+            contra=Voto.objects.filter(solicitud_id=solicitud.id,voto="RECHAZAR").count()
+            text ="<strong>Votos a favor: </strong>" + str(favor) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Votos en contra: </strong>" + str(contra) +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+
+            text ="__________________________________________________________<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            Story.append(Spacer(1, 12))
+            Story.append(Indenter(-25))
+
+
+    doc.build(Story)
+    return str(settings.BASE_DIR)+"/reporte_solicitudes.pdf"
+
+
+def descargar_reporteSolicitudes(request, id_proyecto):
+    '''
+    Vista para descargar el reporte de solicitudes de un proyecto especifico
+    '''
+    if not es_lider(request.user.id, id_proyecto):
+        return HttpResponseRedirect('/denegado')
+    a=file(reporte_solicitudes(id_proyecto))
 
     return StreamingHttpResponse(a,content_type='application/pdf')
