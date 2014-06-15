@@ -269,17 +269,9 @@ def reporte_proyectos():
             Story.append(Spacer(1, 12))
             Story.append(Indenter(-25))
             contador_act+=1
-    doc.build(Story, onFirstPage=myFirstPage, onLaterPages=myLaterPages)
+    doc.build(Story)
     return str(settings.BASE_DIR)+"/reporte_proyectos.pdf"
-def myFirstPage(canvas, doc):
-    canvas.saveState()
-    canvas.rotate(90)
-    canvas.restoreState()
 
-def myLaterPages(canvas, doc):
-    canvas.saveState()
-    canvas.rotate(90)
-    canvas.restoreState()
 
 def descargar_reporteProyectos(request):
     '''
@@ -399,6 +391,10 @@ def reporte_proyectoLider(id_proyecto):
 
     Story=[]
     logo = str(settings.BASE_DIR)+"/static/icono.png"
+    costos=itemsProyecto(id_proyecto)
+    total=0
+    for costo in costos:
+        total=costo.costo+total
 
     styles=getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Principal',alignment=1,spaceAfter=20, fontSize=24))
@@ -412,7 +408,10 @@ def reporte_proyectoLider(id_proyecto):
     im = Image(logo, width=100,height=50)
     Story.append(im)
     contador_act=1
-    titulo="<b>Proyecto " + proyecto.nombre+ "<br/>"
+    titulo="<b>Proyecto </b>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+    Story.append(Spacer(1, 12))
+    titulo="<b>"+ proyecto.nombre+ "</b>"
     Story.append(Paragraph(titulo,styles['Principal']))
     Story.append(Spacer(1, 12))
     date=datetime.now()
@@ -430,6 +429,8 @@ def reporte_proyectoLider(id_proyecto):
     text ="<strong>Descripcion: </strong>" + proyecto.descripcion+ "<br>"
     Story.append(Paragraph(text, styles["Items"]))
     text ="<strong>Observaciones: </strong>" + proyecto.observaciones+ "<br>"
+    Story.append(Paragraph(text, styles["Items"]))
+    text ="<strong>Costo Total: </strong>" + str(total) + " GS <br>"
     Story.append(Paragraph(text, styles["Items"]))
     dato=get_object_or_404(Proyecto,pk=id_proyecto)
     dateFormat = dato.fecha_ini.strftime("%d-%m-%Y")
@@ -544,7 +545,12 @@ def reporte_lineas_base(id_proyecto):
     styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
     im = Image(logo, width=100,height=50)
     Story.append(im)
-    titulo="<b>Lineas Base proyecto "+proyecto.nombre+"<br/>"
+    titulo="<b>Lineas Base proyecto </b>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+
+
+    Story.append(Spacer(1, 12))
+    titulo="<b>" + proyecto.nombre+"</b>"
     Story.append(Paragraph(titulo,styles['Principal']))
 
 
@@ -625,7 +631,7 @@ def reporte_items(id_proyecto):
 
     fases=Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
     proyecto = get_object_or_404(Proyecto,id=id_proyecto)
-    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_items.pdf",pagesize=letter,
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_items"+proyecto.nombre+".pdf",pagesize=letter,
                             rightMargin=72,leftMargin=72,
                             topMargin=30,bottomMargin=18)
 
@@ -646,7 +652,10 @@ def reporte_items(id_proyecto):
     im = Image(logo, width=100,height=50)
     Story.append(im)
     contador_act=1
-    titulo="<b>Items del Proyecto "+proyecto.nombre+"<br/>"
+    titulo="<b>Items del Proyecto </b>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+    Story.append(Spacer(1, 12))
+    titulo="<b>" + proyecto.nombre+"<br/>"
     Story.append(Paragraph(titulo,styles['Principal']))
     Story.append(Spacer(1, 12))
     date=datetime.now()
@@ -721,7 +730,7 @@ def reporte_items(id_proyecto):
 
 
     doc.build(Story)
-    return str(settings.BASE_DIR)+"/reporte_items.pdf"
+    return str(settings.BASE_DIR)+"/reporte_items"+proyecto.nombre+".pdf"
 
 
 def descargar_reporteItems(request, id_proyecto):
@@ -745,7 +754,7 @@ def reporte_versiones_items(id_proyecto):
     proyecto = get_object_or_404(Proyecto,id=id_proyecto)
     items = itemsProyecto(proyecto.id)
 
-    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_versiones.pdf",pagesize=letter,
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_versiones"+proyecto.nombre+".pdf",pagesize=letter,
                             rightMargin=72,leftMargin=72,
                             topMargin=30,bottomMargin=18)
 
@@ -766,7 +775,10 @@ def reporte_versiones_items(id_proyecto):
     im = Image(logo, width=100,height=50)
     Story.append(im)
     contador_act=1
-    titulo="<b>Versiones de Items del Proyecto "+proyecto.nombre+"<br/>"
+    titulo="<b>Versiones de Items del Proyecto "
+    Story.append(Paragraph(titulo,styles['Principal']))
+    Story.append(Spacer(1, 12))
+    titulo= "<b>" + proyecto.nombre + "</b>"
     Story.append(Paragraph(titulo,styles['Principal']))
     Story.append(Spacer(1, 12))
     date=datetime.now()
@@ -789,6 +801,12 @@ def reporte_versiones_items(id_proyecto):
             Story.append(Paragraph(text, styles["SubItems"]))
             Story.append(Indenter(-25))
             versiones=VersionItem.objects.filter(id_item=it.id)
+            if len(versiones)==0:
+                Story.append(Indenter(42))
+                Story.append(Spacer(1, 10))
+                text ="<b>El item aun no se ha modificado desde su creacion. </b><br><br>"
+                Story.append(Paragraph(text, styles["SubItems"]))
+                Story.append(Indenter(-42))
             for ver in versiones:
                 text = ''
                 Story.append(Indenter(42))
@@ -832,7 +850,7 @@ def reporte_versiones_items(id_proyecto):
 
 
     doc.build(Story)
-    return str(settings.BASE_DIR)+"/reporte_versiones.pdf"
+    return str(settings.BASE_DIR)+"/reporte_versiones"+proyecto.nombre+".pdf"
 
 
 def descargar_reporteVersionesItems(request, id_proyecto):
@@ -852,7 +870,7 @@ def reporte_solicitudes(id_proyecto):
     '''
 
     proyecto = get_object_or_404(Proyecto,id=id_proyecto)
-    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_solicitudes.pdf",pagesize=letter,
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_solicitudes"+proyecto.nombre+".pdf",pagesize=letter,
                             rightMargin=72,leftMargin=72,
                             topMargin=30,bottomMargin=18)
 
@@ -870,7 +888,12 @@ def reporte_solicitudes(id_proyecto):
     im = Image(logo, width=100,height=50)
     Story.append(im)
     contador_act=1
-    titulo="<b>Solicitudes del proyecto "+proyecto.nombre+"<br/>"
+    titulo="<b>Solicitudes del proyecto </b>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+
+
+    Story.append(Spacer(1, 12))
+    titulo="<b>" +proyecto.nombre+ "</b>"
     Story.append(Paragraph(titulo,styles['Principal']))
 
 
@@ -946,14 +969,14 @@ def reporte_solicitudes(id_proyecto):
             it=get_object_or_404(Item,id=solicitud.item_id)
             text ="<strong>Item: </strong>" + it.nombre +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
-            dateFormat = solicitud.fecha.strftime("%d-%m-%Y %H:%M:%S")
+            dateFormat = solicitud.fecha.strftime("%d-%m-%Y")
             text ="<strong>Fecha de creacion: </strong>" + str(dateFormat) +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
-            text ="<strong>Costo: </strong>" + str(solicitud.costo) +"<br>"
+            text ="<strong>Costo Total: </strong>" + str(solicitud.costo) +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
-            text ="<strong>Tiempo: </strong>" + str(solicitud.tiempo) +"<br>"
+            text ="<strong>Tiempo Total: </strong>" + str(solicitud.tiempo) +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
-            text ="<strong>Usuario: </strong>" + solicitud.usuario.first_name +" "+ solicitud.usuario.last_name +"<br>"
+            text ="<strong>Usuario solicitante: </strong>" + solicitud.usuario.first_name +" "+ solicitud.usuario.last_name +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
             favor=Voto.objects.filter(solicitud_id=solicitud.id,voto="APROBAR").count()
             contra=Voto.objects.filter(solicitud_id=solicitud.id,voto="RECHAZAR").count()
@@ -961,15 +984,15 @@ def reporte_solicitudes(id_proyecto):
             Story.append(Paragraph(text, styles["Items"]))
             text ="<strong>Votos en contra: </strong>" + str(contra) +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
-
+            Story.append(Spacer(1, 12))
             text ="__________________________________________________________<br>"
             Story.append(Paragraph(text, styles["Items"]))
-            Story.append(Spacer(1, 12))
+
             Story.append(Indenter(-25))
 
 
     doc.build(Story)
-    return str(settings.BASE_DIR)+"/reporte_solicitudes.pdf"
+    return str(settings.BASE_DIR)+"/reporte_solicitudes"+proyecto.nombre+".pdf"
 
 
 def descargar_reporteSolicitudes(request, id_proyecto):

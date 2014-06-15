@@ -267,7 +267,7 @@ def es_miembro(id_usuario, id_fase,permiso):
     proyecto=get_object_or_404(Proyecto,id=fase.proyecto_id)
     if usuario.is_superuser:
         return True
-    
+
 
     rol_usuario=None
     roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
