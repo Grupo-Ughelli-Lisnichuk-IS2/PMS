@@ -815,6 +815,8 @@ def reporte_versiones_items(id_proyecto):
                 dateFormat = ver.fecha_mod.strftime("%d-%m-%Y")
                 text ="<strong>Fecha de modificacion: </strong>"+dateFormat+" <br>"
                 Story.append(Paragraph(text, styles["SubsubItems"]))
+                text ="<strong>Usuario: </strong>"+ ver.usuario.first_name + " " + ver.usuario.last_name +" <br>"
+                Story.append(Paragraph(text, styles["SubsubItems"]))
                 if ver.lineaBase!=None:
                    lb=get_object_or_404(LineaBase,id=ver.lineaBase_id)
                    text ="<strong>Linea Base: </strong>"+lb.nombre+" <br><br><br>"

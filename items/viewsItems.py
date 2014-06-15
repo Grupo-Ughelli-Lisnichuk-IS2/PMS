@@ -852,7 +852,7 @@ def cambiar_estado_item(request,id_item):
                                 generar_version(itemLB,request.user)
                                 #se agrega cada item a la nueva linea base
                                 instanciaItem=get_object_or_404(Item, id=itemLB.id)
-                                instanciaItem.version=item.version+1
+                                instanciaItem.version=instanciaItem.version+1
                                 instanciaItem.lineaBase=cod
                                 instanciaItem.save()
                             #se cambia el estado del item a FIN
