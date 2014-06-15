@@ -348,17 +348,21 @@ def reporte_roles():
                 Story.append(Paragraph(text, styles["SubItems"]))
                 Story.append(Indenter(-42))
             fases=Fase.objects.filter(roles__id=rol.id)
-            text="<strong>Proyecto: </strong>" + fases[0].proyecto.nombre + "<br>"
-            Story.append(Paragraph(text, styles["Items"]))
-            text ="<strong>Fases asociadas: </strong> <br>"
-            Story.append(Paragraph(text, styles["Items"]))
-            for fase in fases:
-                text = ''
-                Story.append(Indenter(42))
-                Story.append(Spacer(1, 10))
-                text ="- " + fase.nombre + "<br>"
-                Story.append(Paragraph(text, styles["SubItems"]))
-                Story.append(Indenter(-42))
+            if(len(fases)!=0):
+                text="<strong>Proyecto: </strong>" + fases[0].proyecto.nombre + "<br>"
+                Story.append(Paragraph(text, styles["Items"]))
+                text ="<strong>Fases asociadas: </strong> <br>"
+                Story.append(Paragraph(text, styles["Items"]))
+                for fase in fases:
+                    text = ''
+                    Story.append(Indenter(42))
+                    Story.append(Spacer(1, 10))
+                    text ="- " + fase.nombre + "<br>"
+                    Story.append(Paragraph(text, styles["SubItems"]))
+                    Story.append(Indenter(-42))
+            else:
+                text="<strong>Proyecto: </strong> Ninguno<br>"
+                Story.append(Paragraph(text, styles["Items"]))
             Story.append(Indenter(-25))
             Story.append(Indenter(25))
             text ="__________________________________________________________<br>"
