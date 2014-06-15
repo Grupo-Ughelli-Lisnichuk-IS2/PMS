@@ -611,3 +611,120 @@ def listar_proyectos_reporte(request):
         return HttpResponseRedirect('/denegado')
     setproyectos=set(proyectos)
     return render_to_response('listar_proyectos_reporte.html', {'datos': setproyectos, 'user':usuario}, context_instance=RequestContext(request))
+
+
+def reporte_items(id_proyecto):
+    '''
+    Funcion que genera el reporte de los items de un proyecto
+    '''
+
+    fases=Fase.objects.filter(proyecto_id=id_proyecto).order_by('orden')
+    proyecto = get_object_or_404(Proyecto,id=id_proyecto)
+    doc = SimpleDocTemplate(str(settings.BASE_DIR)+"/reporte_items.pdf",pagesize=letter,
+                            rightMargin=72,leftMargin=72,
+                            topMargin=30,bottomMargin=18)
+
+
+    Story=[]
+    logo = str(settings.BASE_DIR)+"/static/icono.png"
+    styles=getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Principal',alignment=1,spaceAfter=20, fontSize=24))
+    styles.add(ParagraphStyle(name='Justify',fontName='Courier-Oblique', alignment=TA_JUSTIFY, fontSize=14,spaceAfter=5))
+    styles.add(ParagraphStyle(name='Titulo', fontName='Helvetica', fontSize=18, alignment=0, spaceAfter=25, spaceBefore=3))
+    styles.add(ParagraphStyle(name='Header',fontName='Helvetica',fontSize=20))
+    styles.add(ParagraphStyle(name='SubsubsubItems',fontName='Helvetica',fontSize=8,spaceAfter=3))
+    styles.add(ParagraphStyle(name='SubsubItems',fontName='Helvetica',fontSize=10,spaceAfter=3))
+    styles.add(ParagraphStyle(name='SubItems',fontName='Helvetica',fontSize=12,spaceAfter=10))
+    styles.add(ParagraphStyle(name='Items',fontName='Helvetica',fontSize=14,spaceAfter=5, spaceBefore=5))
+    styles.add(ParagraphStyle(name='Subtitulos',fontSize=12,spaceAfter=3))
+    styles.add(ParagraphStyle(name='Encabezado',fontSize=10,spaceAfter=10, left=1, bottom=1))
+    im = Image(logo, width=100,height=50)
+    Story.append(im)
+    contador_act=1
+    titulo="<b>Items del Proyecto "+proyecto.nombre+"<br/>"
+    Story.append(Paragraph(titulo,styles['Principal']))
+    Story.append(Spacer(1, 12))
+    date=datetime.now()
+    dateFormat = date.strftime("%d-%m-%Y")
+    Story.append(Paragraph('Fecha: ' + str(dateFormat),styles['Subtitulos']))
+
+    titulo = Paragraph('<b>Fases <\b>', styles['Titulo'])
+    Story.append(Spacer(1, 12))
+    Story.append(titulo)
+    Story.append(Indenter(25))
+    Story.append(Spacer(1, 12))
+    Story.append(Indenter(-25))
+    for fase in fases:
+            Story.append(Indenter(25))
+            text=""+str(fase.orden)+". "+fase.nombre+"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="______________________________________________<br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Tipos de item: </strong> <br>"
+            Story.append(Paragraph(text, styles["SubItems"]))
+            Story.append(Indenter(-25))
+            tipoi=TipoItem.objects.filter(fase=fase)
+            for ti in tipoi:
+                text = ''
+                Story.append(Indenter(42))
+                Story.append(Spacer(1, 10))
+                text ="- " + ti.nombre +"<br>"
+                Story.append(Paragraph(text, styles["SubItems"]))
+                Story.append(Indenter(-42))
+                items=Item.objects.filter(tipo_item=ti.id)
+                Story.append(Indenter(50))
+#                text ="<strong>Items: </strong> <br>"
+ #               Story.append(Paragraph(text, styles["SubsubItems"]))
+                Story.append(Indenter(-50))
+                for it in items:
+                    text = ''
+                    Story.append(Indenter(50))
+
+                    text ="<strong>Item: </strong>" + it.nombre +"<br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    Story.append(Indenter(-50))
+                    Story.append(Indenter(60))
+                    text ="<strong>Descripcion: </strong>"+it.descripcion+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    text ="<strong>Costo: </strong>"+str(it.costo)+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    text ="<strong>Tiempo: </strong>"+str(it.tiempo)+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    text ="<strong>Estado: </strong>"+it.estado+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    text ="<strong>Version: </strong>"+str(it.version)+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    if it.relacion!=None:
+                       rel=get_object_or_404(Item,id=it.relacion_id)
+                       text ="<strong>Relacion: </strong> "+it.tipo+" de "+rel.nombre+"<br>"
+                    else:
+                       text ="<strong>Relacion: </strong> No tiene <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    dateFormat = it.fecha_creacion.strftime("%d-%m-%Y")
+                    text ="<strong>Fecha de creacion: </strong>"+dateFormat+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    dateFormat = it.fecha_mod.strftime("%d-%m-%Y")
+                    text ="<strong>Fecha de modificacion: </strong>"+dateFormat+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    if it.lineaBase!=None:
+                       lb=get_object_or_404(LineaBase,id=it.lineaBase_id)
+                       text ="<strong>Linea Base: </strong>"+lb.nombre+" <br><br><br>"
+                    else:
+                       text ="<strong>Linea Base: </strong> Ninguna <br><br><br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
+                    Story.append(Indenter(-60))
+
+
+    doc.build(Story)
+    return str(settings.BASE_DIR)+"/reporte_items.pdf"
+
+
+def descargar_reporteItems(request, id_proyecto):
+    '''
+    Vista para descargar el reporte de lineas base de un proyecto especifico
+    '''
+    if not es_lider(request.user.id, id_proyecto):
+        return HttpResponseRedirect('/denegado')
+    a=file(reporte_items(id_proyecto))
+
+    return StreamingHttpResponse(a,content_type='application/pdf')

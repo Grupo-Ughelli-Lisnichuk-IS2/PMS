@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 
     url(r'^reporte/listar_proyectos_reporte/$','reportes.reportes.listar_proyectos_reporte'),
     url(r'^reporte/proyecto/proyecto/(?P<id_proyecto>\d+)$','reportes.reportes.descargar_reporteProyectoLider'),
+    url(r'^reporte/proyecto/items/(?P<id_proyecto>\d+)$','reportes.reportes.descargar_reporteItems'),
     url(r'^reporte/proyecto/lineasBase/(?P<id_proyecto>\d+)$','reportes.reportes.descargar_reporteLB'),
     url(r'^reporte/usuarios/$','reportes.reportes.descargar_reporteUsuarios'),
     url(r'^reporte/roles/$','reportes.reportes.descargar_reporteRoles'),
