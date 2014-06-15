@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.shortcuts import render
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from PMS import settings
 from fases.models import Fase
-from items.viewsItems import es_miembro
-from lineasBase.viewsLineasBase import es_lider
+
+
 from proyectos.models import Proyecto
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
@@ -255,7 +255,37 @@ def importar_fase(request, id_fase,id_proyecto):
     else:
         formulario = CrearFaseForm(initial={'descripcion':fase.descripcion, 'maxItems':fase.maxItems, 'fInicio':fase.fInicio, 'orden':fase.orden}) #'fInicio':datetime.strptime(str(fase.fInicio),'%Y-%m-%d').strftime('%d/%m/%y')
     return render_to_response('fases/registrarFase.html',{'formulario':formulario}, context_instance=RequestContext(request))
+def es_miembro(id_usuario, id_fase,permiso):
+    '''
+    funcion que recibe el id de un usuario y de una fase y devuelve true si el usuario tiene alguna fase asignada
+    o false si no tiene ningun rol en esa fase
+    Ademas verifica que el estado de la fase se EJE
+    '''
 
+    fase=get_object_or_404(Fase,id=id_fase)
+    usuario=User.objects.get(id=id_usuario)
+    proyecto=get_object_or_404(Proyecto,id=fase.proyecto_id)
+    if usuario.is_superuser:
+        return True
+    
+
+    rol_usuario=None
+    roles=Group.objects.filter(user__id=usuario.id).exclude(name='Lider')
+    roles_fase=Group.objects.filter(fase__id=fase.id)
+    for rol in roles:
+        for r in roles_fase:
+            if rol.id==r.id:
+                rol_usuario=rol
+    if permiso=='' and rol_usuario!=None:
+        return True
+    if rol_usuario!=None:
+        perm=Permission.objects.get(codename=permiso)
+        permisos=Permission.objects.filter(group__id=rol_usuario.id)
+        for p in permisos:
+            if p==perm:
+                return True
+
+    return False
 
 @login_required
 @permission_required('fase')
@@ -271,7 +301,8 @@ def asignar_usuario(request,id_fase):
         return HttpResponseRedirect ('/denegado')
     users=[]
     for usuario in usuarios:
-        if es_miembro(usuario.id,id_fase,'') and not es_lider(usuario.id, fase.proyecto.id):
+        if not es_miembro(usuario.id,id_fase,''):
+
             users.append(usuario)
 
     proyecto = Proyecto.objects.get(id=fase.proyecto_id)
