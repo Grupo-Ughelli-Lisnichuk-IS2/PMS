@@ -142,7 +142,7 @@ def editar_fase(request,id_fase):
         fase_form = ModificarFaseForm(request.POST, instance=fase)
 
         if fase_form.is_valid():
-            if not verificarNombre(proyecto.id,request.POST["nombre"] ):
+            if not verificarNombre(proyecto.id,request.POST["nombre"] and request.POST["nombre"]!=fase.nombre):
                 messages.add_message(request, settings.DELETE_MESSAGE, "Error: Ya existe ese nombre de fase en el proyecto")
             else:
                 if len(str(request.POST["fInicio"])) != 10 : #comprobacion de formato de fecha
