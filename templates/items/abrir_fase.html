@@ -13,7 +13,7 @@
         <theader>
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
-	            <th style="text-align:center">Id</th>
+
 	            <th style="text-align:center">Orden</th>
 	            <th style="text-align:center">Nombre</th>
 	            <th style="text-align:center">Estado</th>
@@ -24,7 +24,7 @@
 	    {% for dato in datos %}
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
-				<td>{{ dato.id }}</td>
+
 				<td>{{ dato.orden }}</td>
 				<td>{{ dato.nombre }}</td>
 				<td>{{ dato.estado }}</td>
