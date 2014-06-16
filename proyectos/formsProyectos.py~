@@ -32,6 +32,6 @@ class CambiarEstadoForm(forms.ModelForm):
     estado=forms.CharField(max_length=3,widget=forms.Select(choices= ESTADOS))
     class Meta:
         model = Proyecto
-        exclude = ['nombre', 'descripcion', 'fecha_ini', 'fecha_fin', 'lider', 'observaciones', 'comite', 'fecha_fin_real']
+        exclude = ['nombre', 'descripcion', 'fecha_ini', 'fecha_fin', 'lider', 'observaciones', 'comite']
 
 
