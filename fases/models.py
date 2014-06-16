@@ -13,7 +13,7 @@ ESTADOS = (
 # usar get_estado_display()
 
 class Fase(models.Model):
-    nombre = models.CharField(max_length=100, verbose_name='Nombre', unique=True)
+    nombre = models.CharField(max_length=100, verbose_name='Nombre')
     descripcion = models.TextField(verbose_name='Descripcion')
     maxItems = models.SmallIntegerField(verbose_name='Cantidad max de Items')
     fInicio = models.DateField(verbose_name='Fecha de Inicio')

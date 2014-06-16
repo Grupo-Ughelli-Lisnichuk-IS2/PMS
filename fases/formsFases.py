@@ -20,7 +20,7 @@ class CrearFaseForm(ModelForm):
 class ModificarFaseForm(ModelForm):
     class Meta:
         model = Fase
-        fields = ('descripcion', 'maxItems', 'fInicio')
+        fields = ('nombre', 'descripcion', 'maxItems', 'fInicio')
 
 
 class RolesForm(forms.Form):

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block contenido %}
+    <h1><center> Crear Solicitud de Cambio</center> </h1>
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
         <br>
 

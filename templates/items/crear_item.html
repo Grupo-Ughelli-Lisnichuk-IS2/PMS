@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% block contenido %}
+<h1><center> Crear Item</center> </h1>
 	<form  method='post' action='' enctype="multipart/form-data">{% csrf_token %}{{formulario.as_p}}
         <br>
 {% if not hijo %}

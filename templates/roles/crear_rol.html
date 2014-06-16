@@ -15,8 +15,14 @@
             });
             }
                 </script>
-
+<h1><center> Crear Rol</center> </h1>
 <form id="formulario" method="post" action="">{% csrf_token %} {{ group_form }}
 <p><input type="submit" value="Crear Rol"></p>
 </form>
+    <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>
+
+            </ul>
+       </div>
 {% endblock %}

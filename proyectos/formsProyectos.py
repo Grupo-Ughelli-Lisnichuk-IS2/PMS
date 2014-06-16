@@ -20,10 +20,10 @@ class ProyectoForm(forms.ModelForm):
         descripcion= forms.CharField(label='Descripcion', widget=forms.Textarea)
         fecha_ini=forms.DateField(widget = AdminDateWidget, label='Fecha de Inicio',initial=dateFormat)
         fecha_fin=forms.DateField(widget = AdminDateWidget, label='Fecha de finalizacion')
-        lider = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True))
+        lider = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True, is_superuser=False))
         observaciones = forms.CharField(label='Observaciones', widget=forms.Textarea)
 
-        comite = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_active=True), widget=FilteredSelectMultiple("Comite", is_stacked=False))
+        comite = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_active=True, is_superuser=False), widget=FilteredSelectMultiple("Comite", is_stacked=False))
 
         class Meta:
             model = Proyecto
