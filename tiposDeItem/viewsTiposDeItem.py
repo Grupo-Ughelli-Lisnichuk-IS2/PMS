@@ -102,7 +102,7 @@ def crear_atributo(request, id_tipoItem):
     vista para crear un tipo de atributo, que consta de un nombre, un tipo, un valor por defecto
     y esta relacionado con un tipo de Item
     '''
-    fase=get_object_or_404(TipoItem, id_tipoItem).fase
+    fase=get_object_or_404(TipoItem, id= id_tipoItem).fase
     if fase.estado!='PEN':
         return HttpResponseRedirect ('/denegado')
     if request.method == 'POST':
@@ -186,7 +186,8 @@ def importar_tipoItem(request, id_tipoItem,id_fase):
 
     tipoItem=get_object_or_404(TipoItem,id=id_tipoItem)
     fase=tipoItem.fase
-    if fase.estado!='PEN':
+    fase1=get_object_or_404(Fase,id=id_fase)
+    if fase1.estado!='PEN':
        return HttpResponseRedirect ('/denegado')
     if request.method=='POST':
         formulario = TipoItemForm(request.POST, initial={'nombre':tipoItem.nombre,'descripcion':tipoItem.descripcion} )

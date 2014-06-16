@@ -11,7 +11,7 @@
         <theader>
 	        <tr>
 	            {% comment %}<th scope="col"> </th> {% endcomment %}
-	       >
+
 	            <th style="text-align:center">Nombre</th>
 
 
@@ -22,7 +22,7 @@
 	    {% for dato in datos %}
 			<tr border="2">
 				{% comment %}<td><input name="select" type="hidden" value="{{ dato.pk }}" /></td> {% endcomment %}
-				
+
 				<td>{{ dato.nombre }}</td>
 		                <td>
                         <a class="btn"  href="/tiposDeItem/{{ dato.pk }}"><li class="icon-eye-open"></li> Ver Detalle</a>
