@@ -197,13 +197,13 @@ def reporte_proyectos():
                 contador1=1
                 contador=1
             if proyecto.estado=='FIN' and contador2==0:
-                titulo = Paragraph('<b>Proyectos Activos <\b>', styles['Titulo'])
+                titulo = Paragraph('<b>Proyectos Finalizados <\b>', styles['Titulo'])
                 Story.append(Spacer(1, 12))
                 Story.append(titulo)
                 contador2=1
                 contador=1
             if proyecto.estado=='ANU' and contador3==0:
-                titulo = Paragraph('<b>Proyectos Activos <\b>', styles['Titulo'])
+                titulo = Paragraph('<b>Proyectos Anulados <\b>', styles['Titulo'])
                 Story.append(Spacer(1, 12))
                 Story.append(titulo)
                 contador3=1
