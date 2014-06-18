@@ -698,6 +698,8 @@ def reporte_items(id_proyecto):
                     Story.append(Paragraph(text, styles["SubsubItems"]))
                     Story.append(Indenter(-50))
                     Story.append(Indenter(60))
+                    text ="<strong>Codigo: </strong>"+str(it.id)+" <br>"
+                    Story.append(Paragraph(text, styles["SubsubItems"]))
                     text ="<strong>Descripcion: </strong>"+it.descripcion+" <br>"
                     Story.append(Paragraph(text, styles["SubsubItems"]))
                     text ="<strong>Costo: </strong>"+str(it.costo)+" <br>"
@@ -969,6 +971,8 @@ def reporte_solicitudes(id_proyecto):
             it=get_object_or_404(Item,id=solicitud.item_id)
             text ="<strong>Item: </strong>" + it.nombre +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
+            text ="<strong>Linea Base afectada: </strong>" + it.lineaBase.nombre +"<br>"
+            Story.append(Paragraph(text, styles["Items"]))
             dateFormat = solicitud.fecha.strftime("%d-%m-%Y")
             text ="<strong>Fecha de creacion: </strong>" + str(dateFormat) +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
@@ -980,6 +984,15 @@ def reporte_solicitudes(id_proyecto):
             Story.append(Paragraph(text, styles["Items"]))
             favor=Voto.objects.filter(solicitud_id=solicitud.id,voto="APROBAR").count()
             contra=Voto.objects.filter(solicitud_id=solicitud.id,voto="RECHAZAR").count()
+            votos = Voto.objects.filter(solicitud_id=solicitud.id)
+            text ="<strong>Mimbros que ya votaron: </strong> <br>"
+            Story.append(Paragraph(text, styles["Items"]))
+            if len(votos)==0:
+                text = "Ningun miembro del comite a emitido su voto"
+                Story.append(Paragraph(text, styles["SubItems"]))
+            for voto in votos:
+                text = "- " + voto.usuario.first_name + " " +voto.usuario.last_name +"<br>"
+                Story.append(Paragraph(text, styles["SubItems"]))
             text ="<strong>Votos a favor: </strong>" + str(favor) +"<br>"
             Story.append(Paragraph(text, styles["Items"]))
             text ="<strong>Votos en contra: </strong>" + str(contra) +"<br>"
