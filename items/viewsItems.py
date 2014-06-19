@@ -687,7 +687,9 @@ def listar_atributos(request, id_item):
 
         if request.method=='POST':
             for atributo in atributos:
-                a=request.POST[atributo.id_atributo.nombre]
+                aaa=str(atributo.id_atributo.id)
+                a=request.POST.get(aaa)
+                #a=request.POST[atributo.id_atributo.nombre]
 
                 #validar atributos antes de guardarlos
                 if validarAtributo(request,atributo.id_atributo.tipo,a):
