@@ -419,13 +419,17 @@ def reporte_proyectoLider(id_proyecto):
     Story.append(Paragraph('Fecha: ' + str(dateFormat),styles['Subtitulos']))
     name=dibujarProyecto(id_proyecto)
     grafo = str(settings.BASE_DIR)+'/static/img/'+str(name)
+    referencias=str(settings.BASE_DIR)+'/static/referencias2.jpg'
     im = Image(grafo)
-
     h=im.imageHeight*0.35
     w=im.imageWidth*0.35
+    im2=Image(referencias)
     im = Image(grafo,width=w,height=h)
-
+    h=im2.imageHeight*0.15
+    w=im2.imageWidth*0.15
+    im2=Image(referencias, width=w, height=h)
     Story.append(im)
+    Story.append(im2)
     text ="<strong>Descripcion: </strong>" + proyecto.descripcion+ "<br>"
     Story.append(Paragraph(text, styles["Items"]))
     text ="<strong>Observaciones: </strong>" + proyecto.observaciones+ "<br>"
@@ -502,6 +506,7 @@ def reporte_proyectoLider(id_proyecto):
                 uu=user.first_name + " " + user.last_name  +  "  -  " + rol.name  +" en la fase   " + fase.nombre +"\n"
                 Story.append(Paragraph(uu, styles["SubItems"]))
                 Story.append(Indenter(-30))
+
 
     doc.build(Story)
     return str(settings.BASE_DIR)+"/reporte_proyecto"+proyecto.nombre+".pdf"
