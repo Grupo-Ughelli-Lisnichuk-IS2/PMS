@@ -513,7 +513,7 @@ def crear_item_hijo(request,id_item):
 
                     formulario = PrimeraFaseForm()
                     hijo=True
-                return render_to_response('items/crear_item.html', { 'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
+                return render_to_response('items/crear_item.html', { 'titem': id_tipoItem,'formulario': formulario, 'atributos':atributos,'hijo':hijo,'atri':atri}, context_instance=RequestContext(request))
             else:
                 return render_to_response('403.html')
         else:
@@ -910,10 +910,10 @@ def cambiar_estado_item(request,id_item):
                             papa=item.relacion
 
 
-                            if papa.estado=='PEN':
+                            if papa.estado=='PEN' or papa.estado=='REV' or papa.estado=='BLO' or papa.estado=='CON':
                                 messages.add_message(request,settings.DELETE_MESSAGE,'No se puede cambiar a Validado ya que su padre no ha sido validado o Finalizado')
                                 bandera=True
-                            if papa.estado=='VAL':
+                            if papa.estado=='VAL' or papa.estado=='FIN':
                                 bandera=False
                     if item_form.cleaned_data['estado']=='PEN':
                             hijos=Item.objects.filter(relacion=item).exclude(estado='ANU')

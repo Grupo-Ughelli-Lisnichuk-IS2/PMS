@@ -2,8 +2,10 @@
 {% block contenido %}
     <h1><center> Crear Fase</center> </h1>
 	<form id='formulario' method='post' action=''>{% csrf_token %}{{formulario.as_p}}
-		<p><input type='submit' value='Confirmar'/></p>
+		<a class="btn" href="/roles/crear/" ><li class="icon-plus"></li> Agregar Rol</a>
+        <p><input type='submit' value='Confirmar'/></p>
 	</form>
+
         <div class="well sidebar-nav">
             <ul class="nav nav-list">
                 <a class="btn" href="javascript:window.history.back();" ><li class="icon-arrow-left"></li> Regresar</a>
