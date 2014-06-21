@@ -181,6 +181,8 @@ def comprobar_items_fase(id_fase):
     misma se encuentran en una linea base
     '''
     items=Item.objects.filter(tipo_item__fase=id_fase).exclude(estado='ANU')
+    if len(items)==0:
+        return False
     for item in items:
         if item.lineaBase is None or item.estado!='FIN':
             return False
